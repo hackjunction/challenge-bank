@@ -1,67 +1,24 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
-import _ from 'lodash';
+import Header from './components/Header';
+import Home from './components/Home';
+import Challenge from './components/Challenge';
+import Cities from './components/Cities';
 
-//Test component
-class App extends Component {
+const App = () => (
+  <Router>
+    <div>
+      <Header />
+      <main>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/cities" component={Cities} />
+          <Route path="/challenge/:id" component={Challenge} />
+        </Switch>
+      </main>
+    </div>
+  </Router>
+);
 
-  renderChallenges() {
-    const challenges = this.props.data.allChallenges;
-
-    return _.map(challenges, (challenge) => {
-      return(
-        <div key={challenge.id}>
-           <h1>{challenge.name}</h1>
-           <p>{challenge.shortDescription}</p>
-        </div>
-      );
-    });
-  }
-
-  render() {
-
-    const {loading, error } = this.props.data;
-
-    if (loading) {
-      return(
-        <div className="App">
-          <h1>{'Loading...'}</h1>
-        </div>
-      );
-    }
-
-    if (error) {
-      return(
-        <div className="App">
-          <h1>{'Error'}</h1>
-        </div>
-      );
-    }
-
-    return (
-      <div className="App">
-        <h1>{'Total challenges: ' + this.props.data._allChallengesMeta.count}</h1>
-        {this.renderChallenges()}
-      </div>
-    );
-  }
-}
-
-export const allChallenges = gql`
-  query allChallenges {
-    allChallenges {
-      id
-      name
-      shortDescription
-    },
-    _allChallengesMeta {
-      count
-    }
-  }
-`;
-
-export default graphql(allChallenges)(App);
+export default App;
