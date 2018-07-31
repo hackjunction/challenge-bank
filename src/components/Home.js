@@ -72,6 +72,14 @@ export const allChallenges = gql`
       id
       name
       shortDescription
+      challengeCategory {
+        color
+        name
+      }
+      challengeDifficulty {
+        name
+        difficultyvalue
+      }
     }
     _allChallengesMeta {
       count
