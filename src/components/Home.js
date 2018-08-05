@@ -14,8 +14,19 @@ const Home = ({ data: { loading, error, allChallenges } }) => {
               <div className="grid-item" key={`challenge-${challenge.id}`}>
                 <div className="grid-content">
                   <div className="flexrow">
-                    <p className="category">Category</p>
-                    <p className="difficulty">Difficulty</p>
+                    <p
+                      className="category"
+                      style={{
+                        color: `rgba(${Object.values(
+                          JSON.parse(challenge.challengeCategory.color)
+                        ).join(',')})`
+                      }}
+                    >
+                      <b>{challenge.challengeCategory.name}</b>
+                    </p>
+                    <p className="difficulty">
+                      {challenge.challengeDifficulty.name}
+                    </p>
                   </div>
                   <h5>
                     <b>{challenge.name}</b>
@@ -43,6 +54,13 @@ export const allChallenges = gql`
       id
       name
       shortDescription
+      challengeCategory {
+        name
+        color
+      }
+      challengeDifficulty {
+        name
+      }
     }
     _allChallengesMeta {
       count

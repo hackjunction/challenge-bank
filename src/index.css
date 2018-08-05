@@ -594,7 +594,7 @@ there.
 }
 
 .header {
-  margin-bottom: 10%;
+  margin-bottom: 5%;
   height: 250px;
   background-image: url(./header.png);
   display: flex;
@@ -606,4 +606,10 @@ there.
   color: white;
   margin: 0 auto;
   text-align: center;
+}
+
+.challenge-cointainer {
+  margin: 0 auto;
+  text-align: left;
+  width: 60%;
 }

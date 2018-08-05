@@ -1,10 +1,12 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 export default () => (
   <div className="header">
     <div className="header-content">
-      <h2>Challenge Bank</h2>
+      <Link to={`/`}>
+        <h2>Challenge Bank</h2>
+      </Link>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris risus
         lorem, commodo fringilla urna in, venenatis imperdiet mi. Vivamus luctus
