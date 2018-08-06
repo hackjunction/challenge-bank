@@ -1,26 +1,17 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default () => (
-  <header className="Header-header">
-    <h1 className="Header-h1">Challenge Bank front</h1>
-    <nav className="Header-nav">
-      <NavLink
-        exact
-        to="/"
-        className="Header-navLink"
-        activeClassName="Header-isActive"
-      >
-        Home
-      </NavLink>
-      <NavLink
-        exact
-        to="/cities"
-        className="Header-navLink"
-        activeClassName="Header-isActive"
-      >
-        Cities
-      </NavLink>
-    </nav>
-  </header>
+  <div className="header">
+    <div className="header-content">
+      <Link to={`/`}>
+        <h2>Challenge Bank</h2>
+      </Link>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris risus
+        lorem, commodo fringilla urna in, venenatis imperdiet mi. Vivamus luctus
+        ipsum vitae enim aliquet, eget fringilla eros vulputate.{' '}
+      </p>
+    </div>
+  </div>
 );

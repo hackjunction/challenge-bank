@@ -7,11 +7,31 @@ const Challenge = ({ data: { loading, error, Challenge } }) => {
   if (error) return <h1>Error fetching the challenge!</h1>;
   if (!loading) {
     return (
-      <article>
-        <h1>{Challenge.name}</h1>
-        <div className="challenge-placeholder" />
-        <Markdown source={Challenge.shortDescription} escapeHtml={false} />
-      </article>
+      <div className="challenge-cointainer">
+        <div className="challenge-header">
+          <h4
+            style={{
+              color: `rgba(${Object.values(
+                JSON.parse(Challenge.challengeCategory.color)
+              ).join(',')})`
+            }}
+          >
+            {Challenge.name}
+          </h4>
+          <div className="flexrow">
+            <p>{Challenge.challengeCategory.name}</p>
+            <p>{Challenge.challengeDifficulty.name}</p>
+          </div>
+        </div>
+        <Markdown
+          className="challenge-desc"
+          source={Challenge.description}
+          escapeHtml={false}
+        />
+        <h5>Submit new answer</h5>
+        <textarea className="inputfield" />
+        <button>Submit</button>
+      </div>
     );
   }
   return <h2>Loading challenge...</h2>;
@@ -23,6 +43,14 @@ export const singleChallenge = gql`
       id
       name
       shortDescription
+      description
+      challengeDifficulty {
+        name
+      }
+      challengeCategory {
+        name
+        color
+      }
     }
   }
 `;
