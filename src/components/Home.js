@@ -1,16 +1,99 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import _ from 'lodash';
 
-const Home = ({ data: { loading, error, allChallenges } }) => {
-  if (error) return <h1>Error fetching challenges!</h1>;
-  if (!loading) {
+class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      difficulties: [],
+      categories: []
+    };
+  }
+
+  checkDifficulty(difficulty) {
+    if (this.state.difficulties.includes(difficulty)) {
+      this.setState({
+        difficulties: _.pull(this.state.difficulties, difficulty)
+      });
+    } else {
+      this.setState({
+        difficulties: _.concat(this.state.difficulties, difficulty)
+      });
+    }
+  }
+
+  checkCategory(category) {
+    if (this.state.categories.includes(category)) {
+      this.setState({
+        categories: _.pull(this.state.categories, category)
+      });
+    } else {
+      this.setState({
+        categories: _.concat(this.state.categories, category)
+      });
+    }
+  }
+
+  renderCategoryfilters() {
+    const allCategories = _.uniq(
+      _.map(this.props.data.allChallenges, 'challengeCategory.name')
+    );
+    return _.map(allCategories, filter => {
+      return (
+        <div>
+          <label> {filter} </label>
+          <input
+            type="checkbox"
+            checked={this.state.categories.includes(filter)}
+            onChange={() => this.checkCategory(filter)}
+          />
+        </div>
+      );
+    });
+  }
+
+  renderDifficultyfilters() {
+    const allDifficulties = _.uniq(
+      _.map(this.props.data.allChallenges, 'challengeDifficulty.name')
+    );
+    return _.map(allDifficulties, filter => {
+      return (
+        <div>
+          <label> {filter} </label>
+          <input
+            type="checkbox"
+            checked={this.state.difficulties.includes(filter)}
+            onChange={() => this.checkDifficulty(filter)}
+          />
+        </div>
+      );
+    });
+  }
+
+  renderChallenges() {
+    let filtered;
+    if (this.state.difficulties.length === 0) {
+      filtered = this.props.data.allChallenges;
+    } else {
+      filtered = _.filter(this.props.data.allChallenges, challenge => {
+        return this.state.difficulties.includes(
+          challenge.challengeDifficulty.name
+        );
+      });
+    }
+    if (this.state.categories.length !== 0) {
+      filtered = _.filter(filtered, challenge => {
+        return this.state.categories.includes(challenge.challengeCategory.name);
+      });
+    }
     return (
       <div className="container">
         <div className="row">
           <div className="grid">
-            {allChallenges.map(challenge => (
+            {_.map(filtered, challenge => (
               <div className="grid-item" key={`challenge-${challenge.id}`}>
                 <div className="grid-content">
                   <div className="flexrow">
@@ -45,8 +128,25 @@ const Home = ({ data: { loading, error, allChallenges } }) => {
       </div>
     );
   }
-  return <h2>Loading challenges...</h2>;
-};
+
+  render() {
+    const { error, loading, allChallenges } = this.props.data;
+    if (error) return <h1>Error fetching challenges!</h1>;
+    if (loading) return <h2>Loading challenges...</h2>;
+    return (
+      <div className="filtercontainer">
+        <p>Select categories</p>
+        <div className="categoryButtons"> {this.renderCategoryfilters()} </div>
+        <p>Select difficulties</p>
+        <div className="difficultyButtons">
+          {' '}
+          {this.renderDifficultyfilters()}{' '}
+        </div>
+        <ul>{this.renderChallenges()}</ul>
+      </div>
+    );
+  }
+}
 
 export const allChallenges = gql`
   query allChallenges {
@@ -55,11 +155,12 @@ export const allChallenges = gql`
       name
       shortDescription
       challengeCategory {
-        name
         color
+        name
       }
       challengeDifficulty {
         name
+        difficultyvalue
       }
     }
     _allChallengesMeta {

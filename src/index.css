@@ -630,3 +630,22 @@ there.
   width: 100%;
   resize: vertical;
 }
+
+.categoryButtons {
+  margin: 0 auto;
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.difficultyButtons {
+  margin: 0 auto;
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filtercontainer {
+  margin: 0 auto;
+  text-align: center;
+}
