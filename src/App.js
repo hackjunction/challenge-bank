@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Header from "./components/Header";
-import Home from "./components/Home";
+import Home from "./components/Home/";
 import Challenge from "./components/Challenge";
 import Cities from "./components/Cities";
 
