@@ -9,29 +9,49 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filters: []
+      difficulties: [],
+      categories: []
     };
   }
 
-  checkFunction(difficulty) {
-    if (this.state.filters.includes(difficulty)) {
+  checkDifficulty(difficulty) {
+    if (this.state.difficulties.includes(difficulty)) {
       this.setState({
-        filters: _.pull(this.state.filters, difficulty)
+        difficulties: _.pull(this.state.difficulties, difficulty)
       });
     } else {
       this.setState({
-        filters: _.concat(this.state.filters, difficulty)
+        difficulties: _.concat(this.state.difficulties, difficulty)
+      });
+    }
+  }
+
+  checkCategory(category) {
+    if (this.state.categories.includes(category)) {
+      this.setState({
+        categories: _.pull(this.state.categories, category)
+      });
+    } else {
+      this.setState({
+        categories: _.concat(this.state.categories, category)
       });
     }
   }
 
   renderChallenges() {
     let filtered;
-    if (this.state.filters.length === 0) {
+    if (this.state.difficulties.length === 0) {
       filtered = this.props.data.allChallenges;
     } else {
       filtered = _.filter(this.props.data.allChallenges, challenge => {
-        return this.state.filters.includes(challenge.challengeDifficulty.name);
+        return this.state.difficulties.includes(
+          challenge.challengeDifficulty.name
+        );
+      });
+    }
+    if (this.state.categories.length !== 0) {
+      filtered = _.filter(filtered, challenge => {
+        return this.state.categories.includes(challenge.challengeCategory.name);
       });
     }
     return _.map(filtered, challenge => {
@@ -46,18 +66,36 @@ class Home extends Component {
     });
   }
 
-  renderFilters() {
-    const allFilters = _.uniq(
-      _.map(this.props.data.allChallenges, "challengeDifficulty.name")
+  renderCategoryfilters() {
+    const allCategories = _.uniq(
+      _.map(this.props.data.allChallenges, "challengeCategory.name")
     );
-    return _.map(allFilters, filter => {
+    return _.map(allCategories, filter => {
       return (
         <div>
           <label> {filter} </label>
           <input
             type="checkbox"
-            checked={this.state.filters.includes(filter)}
-            onChange={() => this.checkFunction(filter)}
+            checked={this.state.categories.includes(filter)}
+            onChange={() => this.checkCategory(filter)}
+          />
+        </div>
+      );
+    });
+  }
+
+  renderDifficultyfilters() {
+    const allDifficulties = _.uniq(
+      _.map(this.props.data.allChallenges, "challengeDifficulty.name")
+    );
+    return _.map(allDifficulties, filter => {
+      return (
+        <div>
+          <label> {filter} </label>
+          <input
+            type="checkbox"
+            checked={this.state.difficulties.includes(filter)}
+            onChange={() => this.checkDifficulty(filter)}
           />
         </div>
       );
@@ -70,7 +108,11 @@ class Home extends Component {
     if (loading) return <h2>Loading challenges...</h2>;
     return (
       <section>
-        <div className="filterButtons"> {this.renderFilters()} </div>
+        <div className="categoryButtons"> {this.renderCategoryfilters()} </div>
+        <div className="difficultyButtons">
+          {" "}
+          {this.renderDifficultyfilters()}{" "}
+        </div>
         <ul className="Home-ul">{this.renderChallenges()}</ul>
       </section>
     );
