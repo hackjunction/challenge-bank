@@ -608,8 +608,25 @@ there.
   text-align: center;
 }
 
+.header-content a {
+  color: white;
+  text-decoration-line: none;
+}
 .challenge-cointainer {
   margin: 0 auto;
   text-align: left;
   width: 60%;
+  padding-bottom: 5%;
+}
+
+.challenge-desc {
+  background-color: skyblue;
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 5%;
+}
+
+.inputfield {
+  width: 100%;
+  resize: vertical;
 }
