@@ -226,6 +226,7 @@ h5 {
   font-size: 1.8rem;
   line-height: 1.5;
   letter-spacing: -0.05rem;
+  font-weight: 900;
 }
 h6 {
   font-size: 1.5rem;
@@ -549,7 +550,7 @@ there.
 @media (min-width: 1200px) {
 }
 
-/* Grid for Junction Challenge Bank use */
+/* Junction Challenge Bank use */
 
 .grid {
   display: inline-grid;
@@ -557,7 +558,7 @@ there.
   grid-column-gap: 20px;
   grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: 1fr;
-  margin-bottom: 5%;
+  margin: 0 0% 5% 0%;
 }
 
 .grid-item {
@@ -594,7 +595,7 @@ there.
 }
 
 .header {
-  margin-bottom: 5%;
+  margin-bottom: 2%;
   height: 250px;
   background-image: url(./header.png);
   display: flex;
@@ -605,12 +606,26 @@ there.
   width: 60%;
   color: white;
   margin: 0 auto;
-  text-align: center;
+}
+
+.junctionlogo {
+  height: 60px;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  content: url(./junction_logo.png);
 }
 
 .header-content a {
+  text-align: center;
+  margin-top: 20%;
   color: white;
   text-decoration-line: none;
+}
+
+.header-content h2 {
+  margin-bottom: 5px;
+  margin-top: 10%;
 }
 .challenge-cointainer {
   margin: 0 auto;
@@ -631,21 +646,77 @@ there.
   resize: vertical;
 }
 
-.categoryButtons {
-  margin: 0 auto;
-  width: 60%;
+.filterboxes {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.difficultyButtons {
-  margin: 0 auto;
-  width: 60%;
+.filteritem {
   display: flex;
-  justify-content: space-between;
+  color: gray;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 10px 0px 10px;
 }
 
 .filtercontainer {
   margin: 0 auto;
   text-align: center;
+}
+
+input[type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  outline: 2px solid gray;
+}
+.checkboxcontainer {
+  width: 20px;
+  height: 20px;
+  margin-right: 15px;
+}
+
+label {
+  user-select: none;
+}
+/* On mouse-over, add a grey background color */
+.checkboxcontainer:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkboxcontainer input:checked ~ .checkmark {
+  background-color: #2196f3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkboxcontainer input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkboxcontainer .checkmark:after {
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }

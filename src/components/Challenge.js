@@ -9,7 +9,7 @@ const Challenge = ({ data: { loading, error, Challenge } }) => {
     return (
       <div className="challenge-cointainer">
         <div className="challenge-header">
-          <h4
+          <h5
             style={{
               color: `rgba(${Object.values(
                 JSON.parse(Challenge.challengeCategory.color)
@@ -17,7 +17,7 @@ const Challenge = ({ data: { loading, error, Challenge } }) => {
             }}
           >
             {Challenge.name}
-          </h4>
+          </h5>
           <div className="flexrow">
             <p>{Challenge.challengeCategory.name}</p>
             <p>{Challenge.challengeDifficulty.name}</p>

@@ -43,14 +43,17 @@ class Home extends Component {
     );
     return _.map(allCategories, filter => {
       return (
-        <div>
-          <label> {filter} </label>
-          <input
-            type="checkbox"
-            checked={this.state.categories.includes(filter)}
-            onChange={() => this.checkCategory(filter)}
-          />
-        </div>
+        <label className="filteritem">
+          <div className="checkboxcontainer">
+            <input
+              type="checkbox"
+              checked={this.state.categories.includes(filter)}
+              onChange={() => this.checkCategory(filter)}
+            />
+            <span class="checkmark" />
+          </div>
+          {filter}
+        </label>
       );
     });
   }
@@ -61,14 +64,17 @@ class Home extends Component {
     );
     return _.map(allDifficulties, filter => {
       return (
-        <div>
-          <label> {filter} </label>
-          <input
-            type="checkbox"
-            checked={this.state.difficulties.includes(filter)}
-            onChange={() => this.checkDifficulty(filter)}
-          />
-        </div>
+        <label className="filteritem">
+          <div className="checkboxcontainer">
+            <input
+              type="checkbox"
+              checked={this.state.difficulties.includes(filter)}
+              onChange={() => this.checkDifficulty(filter)}
+            />
+            <span class="checkmark" />
+          </div>
+          {filter}
+        </label>
       );
     });
   }
@@ -90,59 +96,52 @@ class Home extends Component {
       });
     }
     return (
-      <div className="container">
-        <div className="row">
-          <div className="grid">
-            {_.map(filtered, challenge => (
-              <div className="grid-item" key={`challenge-${challenge.id}`}>
-                <div className="grid-content">
-                  <div className="flexrow">
-                    <p
-                      className="category"
-                      style={{
-                        color: `rgba(${Object.values(
-                          JSON.parse(challenge.challengeCategory.color)
-                        ).join(',')})`
-                      }}
-                    >
-                      <b>{challenge.challengeCategory.name}</b>
-                    </p>
-                    <p className="difficulty">
-                      {challenge.challengeDifficulty.name}
-                    </p>
-                  </div>
-                  <h5>
-                    <b>{challenge.name}</b>
-                  </h5>
-                  <p>{challenge.shortDescription}</p>
-                </div>
+      <div className="row">
+        <div className="grid">
+          {_.map(filtered, challenge => (
+            <div className="grid-item" key={`challenge-${challenge.id}`}>
+              <div className="grid-content">
                 <div className="flexrow">
-                  <Link to={`/challenge/${challenge.id}`} className="grid-link">
-                    See Details >
-                  </Link>
+                  <p
+                    className="category"
+                    style={{
+                      color: `rgba(${Object.values(
+                        JSON.parse(challenge.challengeCategory.color)
+                      ).join(',')})`
+                    }}
+                  >
+                    <b>{challenge.challengeCategory.name}</b>
+                  </p>
+                  <p className="difficulty">
+                    {challenge.challengeDifficulty.name}
+                  </p>
                 </div>
+                <h5>{challenge.name}</h5>
+                <p>{challenge.shortDescription}</p>
               </div>
-            ))}
-          </div>
+              <div className="flexrow">
+                <Link to={`/challenge/${challenge.id}`} className="grid-link">
+                  See Details >
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     );
   }
 
   render() {
-    const { error, loading, allChallenges } = this.props.data;
+    const { error, loading } = this.props.data;
     if (error) return <h1>Error fetching challenges!</h1>;
     if (loading) return <h2>Loading challenges...</h2>;
     return (
-      <div className="filtercontainer">
-        <p>Select categories</p>
-        <div className="categoryButtons"> {this.renderCategoryfilters()} </div>
-        <p>Select difficulties</p>
-        <div className="difficultyButtons">
-          {' '}
-          {this.renderDifficultyfilters()}{' '}
-        </div>
-        <ul>{this.renderChallenges()}</ul>
+      <div className="container">
+        <h5>Filter Challenges by Difficulty</h5>
+        <div className="filterboxes">{this.renderDifficultyfilters()}</div>
+        <h5>Filter Challenges by Category</h5>
+        <div className="filterboxes">{this.renderCategoryfilters()}</div>
+        {this.renderChallenges()}
       </div>
     );
   }
