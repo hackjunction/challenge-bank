@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import _ from 'lodash';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
+import _ from "lodash";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 class Home extends Component {
   constructor(props) {
@@ -39,16 +41,19 @@ class Home extends Component {
 
   renderCategoryfilters() {
     const allCategories = _.uniq(
-      _.map(this.props.data.allChallenges, 'challengeCategory.name')
+      _.map(this.props.data.allChallenges, "challengeCategory.name")
     );
     return _.map(allCategories, filter => {
       return (
         <div>
-          <label> {filter} </label>
-          <input
-            type="checkbox"
-            checked={this.state.categories.includes(filter)}
-            onChange={() => this.checkCategory(filter)}
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={this.state.categories.includes(filter)}
+                onChange={() => this.checkCategory(filter)}
+              />
+            }
+            label={filter}
           />
         </div>
       );
@@ -57,16 +62,20 @@ class Home extends Component {
 
   renderDifficultyfilters() {
     const allDifficulties = _.uniq(
-      _.map(this.props.data.allChallenges, 'challengeDifficulty.name')
+      _.map(this.props.data.allChallenges, "challengeDifficulty.name")
     );
     return _.map(allDifficulties, filter => {
       return (
         <div>
-          <label> {filter} </label>
-          <input
-            type="checkbox"
-            checked={this.state.difficulties.includes(filter)}
-            onChange={() => this.checkDifficulty(filter)}
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={this.state.difficulties.includes(filter)}
+                onChange={() => this.checkDifficulty(filter)}
+                color="primary"
+              />
+            }
+            label={filter}
           />
         </div>
       );
@@ -102,7 +111,7 @@ class Home extends Component {
                       style={{
                         color: `rgba(${Object.values(
                           JSON.parse(challenge.challengeCategory.color)
-                        ).join(',')})`
+                        ).join(",")})`
                       }}
                     >
                       <b>{challenge.challengeCategory.name}</b>
@@ -139,8 +148,8 @@ class Home extends Component {
         <div className="categoryButtons"> {this.renderCategoryfilters()} </div>
         <p>Select difficulties</p>
         <div className="difficultyButtons">
-          {' '}
-          {this.renderDifficultyfilters()}{' '}
+          {" "}
+          {this.renderDifficultyfilters()}{" "}
         </div>
         <ul>{this.renderChallenges()}</ul>
       </div>

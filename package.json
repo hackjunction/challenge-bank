@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^1.4.3",
     "ajv": "^6.5.2",
     "apollo-cache-inmemory": "^1.2.5",
     "apollo-client": "^2.3.5",
