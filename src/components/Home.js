@@ -62,7 +62,16 @@ class Home extends Component {
 
   renderDifficultyfilters() {
     const allDifficulties = _.uniq(
-      _.map(this.props.data.allChallenges, "challengeDifficulty.name")
+      _.map(
+        _.sortBy(_.map(this.props.data.allChallenges, "challengeDifficulty"), [
+          function(o) {
+            return o.difficultyvalue;
+          }
+        ]),
+        difficulty => {
+          return difficulty.name;
+        }
+      )
     );
     return _.map(allDifficulties, filter => {
       return (
