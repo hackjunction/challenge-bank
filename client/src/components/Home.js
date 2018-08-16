@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import _ from 'lodash';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
+import _ from "lodash";
 
 class Home extends Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class Home extends Component {
 
   renderCategoryfilters() {
     const allCategories = _.uniq(
-      _.map(this.props.data.allChallenges, 'challengeCategory.name')
+      _.map(this.props.data.allChallenges, "challengeCategory.name")
     );
     return _.map(allCategories, filter => {
       return (
@@ -60,7 +60,16 @@ class Home extends Component {
 
   renderDifficultyfilters() {
     const allDifficulties = _.uniq(
-      _.map(this.props.data.allChallenges, 'challengeDifficulty.name')
+      _.map(
+        _.sortBy(_.map(this.props.data.allChallenges, "challengeDifficulty"), [
+          function(o) {
+            return o.difficultyvalue;
+          }
+        ]),
+        difficulty => {
+          return difficulty.name;
+        }
+      )
     );
     return _.map(allDifficulties, filter => {
       return (
@@ -82,7 +91,9 @@ class Home extends Component {
   renderChallenges() {
     let filtered;
     if (this.state.difficulties.length === 0) {
-      filtered = this.props.data.allChallenges;
+      filtered = _.filter(this.props.data.allChallenges, challenge => {
+        return challenge.challengeCategory && challenge.challengeDifficulty;
+      });
     } else {
       filtered = _.filter(this.props.data.allChallenges, challenge => {
         return this.state.difficulties.includes(
@@ -107,7 +118,7 @@ class Home extends Component {
                     style={{
                       color: `rgba(${Object.values(
                         JSON.parse(challenge.challengeCategory.color)
-                      ).join(',')})`
+                      ).join(",")})`
                     }}
                   >
                     <b>{challenge.challengeCategory.name}</b>
