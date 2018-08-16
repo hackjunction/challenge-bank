@@ -553,11 +553,10 @@ there.
 /* Junction Challenge Bank use */
 
 .grid {
-  display: inline-grid;
+  display: grid;
   grid-row-gap: 20px;
   grid-column-gap: 20px;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   margin: 0 0% 5% 0%;
 }
 
@@ -631,14 +630,35 @@ there.
   margin: 0 auto;
   text-align: left;
   width: 60%;
-  padding-bottom: 5%;
+}
+
+.box {
+  outline: 1px solid gray;
+  padding: 20px;
+}
+
+.submit-container {
+  margin: 0 auto;
+  text-align: left;
+  width: 60%;
+  outline: 1px solid gray;
+  margin-top: 3%;
+  margin-bottom: 5%;
 }
 
 .challenge-desc {
-  background-color: skyblue;
-  border-radius: 3px;
-  padding: 10px;
   margin-bottom: 5%;
+}
+
+.challenge-desc h1,
+.challenge-desc h2,
+.challenge-desc h3,
+.challenge-desc h4,
+.challenge-desc h5,
+.challenge-desc h6 {
+  font-size: 1.8rem;
+  line-height: 1.35;
+  letter-spacing: -0.08rem;
 }
 
 .inputfield {
