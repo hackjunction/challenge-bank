@@ -38,9 +38,11 @@ class Home extends Component {
   }
 
   renderCategoryfilters() {
-    const allCategories = _.uniq(
+    const allCategories = _.filter(_.uniq(
       _.map(this.props.data.allChallenges, "challengeCategory.name")
-    );
+    ), filter => {
+      return filter
+    });
     return _.map(allCategories, filter => {
       return (
         <label className="filteritem">

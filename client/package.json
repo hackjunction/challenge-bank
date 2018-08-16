@@ -1,5 +1,5 @@
 {
-    "name": "challenge-bank",
+    "name": "challenge-bank-client",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
