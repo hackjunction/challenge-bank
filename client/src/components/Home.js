@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import _ from 'lodash';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
+import _ from "lodash";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 class Home extends Component {
   constructor(props) {
@@ -39,7 +41,7 @@ class Home extends Component {
 
   renderCategoryfilters() {
     const allCategories = _.uniq(
-      _.map(this.props.data.allChallenges, 'challengeCategory.name')
+      _.map(this.props.data.allChallenges, "challengeCategory.name")
     );
     return _.map(allCategories, filter => {
       return (
@@ -60,7 +62,16 @@ class Home extends Component {
 
   renderDifficultyfilters() {
     const allDifficulties = _.uniq(
-      _.map(this.props.data.allChallenges, 'challengeDifficulty.name')
+      _.map(
+        _.sortBy(_.map(this.props.data.allChallenges, "challengeDifficulty"), [
+          function(o) {
+            return o.difficultyvalue;
+          }
+        ]),
+        difficulty => {
+          return difficulty.name;
+        }
+      )
     );
     return _.map(allDifficulties, filter => {
       return (
