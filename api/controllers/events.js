@@ -85,8 +85,21 @@ const EventController = {
                     });
             })
             .catch(error => {
-                console.log('JOI ERROR', error);
+                console.log('ERROR', error);
                 throw new Error('Event validation failed');
+            });
+    },
+
+    getEvents: () => {
+        return mongoose
+            .model('Event')
+            .find({})
+            .then(events => {
+                return events;
+            })
+            .catch(error => {
+                console.log('ERROR', error);
+                throw new Error('Unexpected error getting events, please try again later');
             });
     }
 };
