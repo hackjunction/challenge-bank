@@ -5,6 +5,7 @@ import moment from 'moment-timezone';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { connect } from 'react-redux';
+import * as UserActions from '../../../actions/user';
 import './style.css';
 
 class EventsList extends Component {
@@ -21,6 +22,8 @@ class EventsList extends Component {
 
     async componentWillMount() {
         this.getEvents();
+
+        this.props.changePassword('salasana');
     }
 
     async getEvents(event) {
@@ -130,7 +133,7 @@ class EventsList extends Component {
     }
 
     render() {
-        console.log(this.props);
+        console.log(this.props.myProp);
 
         if (this.state.loading) {
             return (
@@ -168,7 +171,14 @@ class EventsList extends Component {
 }
 
 const mapStateToProps = state => ({
-    ...state
+    myProp: state.user
 });
 
-export default connect(mapStateToProps)(EventsList);
+const mapDispatchToProps = dispatch => ({
+    changePassword: password => dispatch(UserActions.setAdminPassword(password))
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(EventsList);

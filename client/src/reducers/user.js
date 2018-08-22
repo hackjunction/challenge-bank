@@ -1,15 +1,15 @@
 import * as ActionTypes from '../actions/ActionTypes';
 
 const initialState = {
-    testThingy: 'foo'
+    adminPassword: null
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case ActionTypes.TEST_ACTION:
+        case ActionTypes.SET_USER_PASSWORD:
             return {
                 ...state,
-                testThingy: action.payload
+                adminPassword: action.payload
             };
         default:
             return state;
