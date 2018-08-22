@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Spinner from 'react-spinkit';
 import _ from 'lodash';
 import moment from 'moment-timezone';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import './style.css';
 
 class EventsList extends Component {
@@ -12,9 +14,15 @@ class EventsList extends Component {
             loading: false,
             events: []
         };
+
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     async componentWillMount() {
+        this.getEvents();
+    }
+
+    async getEvents(event) {
         this.setState({
             loading: true
         });
@@ -25,7 +33,8 @@ class EventsList extends Component {
         if (body.status === 'success') {
             this.setState({
                 loading: false,
-                events: body.data
+                events: body.data,
+                error: null
             });
         } else {
             this.setState({
@@ -33,6 +42,59 @@ class EventsList extends Component {
                 error: body.data
             });
         }
+    }
+
+    async deleteEvent(event) {
+        this.setState({
+            loading: true
+        });
+
+        const response = await fetch(`/api/events/${event._id}`, {
+            method: 'DELETE'
+        });
+        const body = await response.json();
+
+        if (body.status === 'success') {
+            this.getEvents();
+        } else {
+            this.setState({
+                loading: false,
+                error: body.data
+            });
+        }
+    }
+
+    handleDelete(e, event) {
+        e.preventDefault();
+
+        const options = {
+            title: `Are you sure you want to delete ${event.eventName}?`,
+            message: 'You will not be able to recover the event once deleted',
+            customUI: ({ title, message, onClose }) => (
+                <div className="custom-ui">
+                    <div className="EventsList--delete-wrapper row">
+                        <h1 className="col-xs-12 col-sm-8 col-sm-offset-2">{title}</h1>
+                        <p className="col-xs-12 col-sm-8 col-sm-offset-2 text-danger">{message}</p>
+                        <div className="col-xs-12 col-sm-8 col-sm-offset-2">
+                            <button
+                                className="btn btn-danger pull-right"
+                                onClick={() => {
+                                    this.deleteEvent(event);
+                                    onClose();
+                                }}
+                            >
+                                Yes, Delete it!
+                            </button>
+                            <button className="btn btn-link pull-right" onClick={onClose}>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )
+        };
+
+        confirmAlert(options);
     }
 
     renderEvents() {
@@ -46,6 +108,20 @@ class EventsList extends Component {
                             ' (' +
                             event.timezone +
                             ')'}
+                    </td>
+                    <td>
+                        <div className="EventsList--options-wrapper">
+                            <a className="EventsList--options-button" href={`/admin/events/edit/${event._id}`}>
+                                Edit
+                            </a>
+                            <a
+                                className="EventsList--options-button text-danger"
+                                href=""
+                                onClick={e => this.handleDelete(e, event)}
+                            >
+                                Delete
+                            </a>
+                        </div>
                     </td>
                 </tr>
             );

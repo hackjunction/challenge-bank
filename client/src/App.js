@@ -7,6 +7,7 @@ import Challenge from './components/Challenge';
 import Cities from './components/Cities';
 import AdminEventsList from './components/admin/EventsList/';
 import AdminCreateEvent from './components/admin/CreateEvent/';
+import AdminEditEvent from './components/admin/EditEvent';
 
 const App = () => (
     <Router>
@@ -19,6 +20,7 @@ const App = () => (
                     <Route path="/challenge/:id" component={Challenge} />
                     <Route exact path="/admin/events" component={AdminEventsList} />
                     <Route exact path="/admin/events/create" component={AdminCreateEvent} />
+                    <Route exact path="/admin/events/edit/:id" component={AdminEditEvent} />
                 </Switch>
             </main>
         </div>

@@ -4,9 +4,7 @@ const Joi = require('joi');
 const moment = require('moment-timezone');
 
 const EventController = {
-    createEvent: eventData => {
-        console.log('Event data', eventData);
-
+    validate: eventData => {
         if (!eventData.timezone) {
             return Promise.reject('Timezone is required');
         }
@@ -70,8 +68,11 @@ const EventController = {
                 .required()
         });
 
-        return schema
-            .validate(eventData)
+        return schema.validate(eventData);
+    },
+
+    createEvent: eventData => {
+        return EventController.validate(eventData)
             .then(validatedData => {
                 return mongoose
                     .model('Event')
@@ -90,6 +91,41 @@ const EventController = {
             });
     },
 
+    updateEvent: eventData => {
+        return EventController.validate(eventData)
+            .then(validatedData => {
+                return mongoose
+                    .model('Event')
+                    .findByIdAndUpdate(eventData._id)
+                    .then(event => {
+                        return event;
+                    })
+                    .catch(error => {
+                        console.log('ERROR', error);
+                        throw new Error(
+                            'An unexpected error occurred while updating the event, please try again later'
+                        );
+                    });
+            })
+            .catch(error => {
+                console.log('ERROR', error);
+                throw new Error('Event validation failed');
+            });
+    },
+
+    deleteEvent: id => {
+        return mongoose
+            .model('Event')
+            .findByIdAndRemove(id)
+            .then(event => {
+                return event;
+            })
+            .catch(error => {
+                console.log('ERROR', error);
+                throw new Error('An unexpected error occurred while deleting the event, please try again later');
+            });
+    },
+
     getEvents: () => {
         return mongoose
             .model('Event')
@@ -99,7 +135,23 @@ const EventController = {
             })
             .catch(error => {
                 console.log('ERROR', error);
-                throw new Error('Unexpected error getting events, please try again later');
+                throw new Error('An unexpected error occurred while getting events, please try again later');
+            });
+    },
+
+    getEvent: id => {
+        return mongoose
+            .model('Event')
+            .findById(id)
+            .then(event => {
+                if (!event) {
+                    throw new Error('An event with id ' + id + ' was not found');
+                }
+                return event;
+            })
+            .catch(error => {
+                console.log('ERROR', error);
+                throw new Error('An unexpected error occurred while getting the event, please try again later');
             });
     }
 };
