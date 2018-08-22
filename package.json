@@ -24,8 +24,10 @@
         "chance": "^1.0.16",
         "express": "^4.16.3",
         "http-status": "^1.2.0",
-        "joi": "^13.4.0",
-        "mongoose": "^5.1.7",
+        "joi": "^13.6.0",
+        "moment": "^2.22.2",
+        "moment-timezone": "^0.5.21",
+        "mongoose": "^5.2.9",
         "uuid": "^3.3.0"
     }
 }

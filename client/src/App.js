@@ -5,6 +5,9 @@ import Header from './components/Header/';
 import Challenges from './components/Challenges/';
 import Challenge from './components/Challenge/';
 import Lander from './components/Lander/';
+import AdminEventsList from './components/admin/EventsList/';
+import AdminCreateEvent from './components/admin/CreateEvent/';
+import AdminEditEvent from './components/admin/EditEvent';
 
 const App = () => (
   <Router>
@@ -15,6 +18,17 @@ const App = () => (
           <Route exact path="/" component={Lander} />
           <Route exact path="/challenges" component={Challenges} />
           <Route path="/challenge/:id" component={Challenge} />
+          <Route exact path="/admin/events" component={AdminEventsList} />
+          <Route
+            exact
+            path="/admin/events/create"
+            component={AdminCreateEvent}
+          />
+          <Route
+            exact
+            path="/admin/events/edit/:id"
+            component={AdminEditEvent}
+          />
         </Switch>
       </main>
     </div>
