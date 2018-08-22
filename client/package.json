@@ -7,16 +7,22 @@
         "apollo-cache-inmemory": "^1.2.5",
         "apollo-client": "^2.3.5",
         "apollo-link-http": "^1.5.4",
+        "formsy-react": "^1.1.4",
+        "formsy-react-components": "^1.0.0",
         "graphql": "^0.13.2",
         "graphql-tag": "^2.9.2",
         "lodash": "^4.17.10",
         "npm": "^6.2.0",
         "react": "^16.4.1",
         "react-apollo": "^2.1.9",
+        "react-bootstrap": "^0.32.3",
+        "react-bootstrap-timezone-picker": "^1.0.12",
         "react-dom": "^16.4.1",
         "react-markdown": "^3.3.4",
         "react-router-dom": "^4.3.1",
-        "react-scripts": "1.1.4"
+        "react-scripts": "1.1.4",
+        "react-spinkit": "^3.0.0",
+        "react-timezone": "^2.1.0"
     },
     "scripts": {
         "start": "react-scripts start",

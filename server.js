@@ -14,16 +14,16 @@ app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
 /* Routes */
-//require('./api/routes/EXAMPLE')(app);
+require('./api/routes/events')(app);
+
+/* Models */
+require('./api/models/Event');
 
 app.get('/', function(req, res) {
     res.send({
         message: 'Hello from the API'
     });
 });
-
-/* Models */
-//require('./api/models/EXAMPLE');
 
 // React config for production
 if (process.env.NODE_ENV === 'production') {
