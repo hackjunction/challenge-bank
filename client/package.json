@@ -23,10 +23,13 @@
         "react-dom": "^16.4.1",
         "react-fontawesome": "^1.6.1",
         "react-markdown": "^3.3.4",
+        "react-redux": "^5.0.7",
         "react-router-dom": "^4.3.1",
         "react-scripts": "1.1.4",
         "react-spinkit": "^3.0.0",
-        "react-timezone": "^2.1.0"
+        "react-timezone": "^2.1.0",
+        "redux": "^4.0.0",
+        "redux-thunk": "^2.3.0"
     },
     "scripts": {
         "start": "react-scripts start",

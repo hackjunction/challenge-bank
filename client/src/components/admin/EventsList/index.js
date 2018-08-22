@@ -4,6 +4,7 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { connect } from 'react-redux';
 import './style.css';
 
 class EventsList extends Component {
@@ -129,6 +130,8 @@ class EventsList extends Component {
     }
 
     render() {
+        console.log(this.props);
+
         if (this.state.loading) {
             return (
                 <div className="EventsList--loading container">
@@ -164,4 +167,8 @@ class EventsList extends Component {
     }
 }
 
-export default EventsList;
+const mapStateToProps = state => ({
+    ...state
+});
+
+export default connect(mapStateToProps)(EventsList);
