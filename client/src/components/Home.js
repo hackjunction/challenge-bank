@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import _ from 'lodash';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
+import _ from "lodash";
 
 class Home extends Component {
   constructor(props) {
@@ -38,8 +38,11 @@ class Home extends Component {
   }
 
   renderCategoryfilters() {
-    const allCategories = _.uniq(
-      _.map(this.props.data.allChallenges, 'challengeCategory.name')
+    const allCategories = _.filter(
+      _.uniq(_.map(this.props.data.allChallenges, "challengeCategory.name")),
+      filter => {
+        return filter;
+      }
     );
     return _.map(allCategories, filter => {
       return (
@@ -50,7 +53,7 @@ class Home extends Component {
               checked={this.state.categories.includes(filter)}
               onChange={() => this.checkCategory(filter)}
             />
-            <span class="checkmark" />
+            <span className="checkmark" />
           </div>
           {filter}
         </label>
@@ -60,7 +63,16 @@ class Home extends Component {
 
   renderDifficultyfilters() {
     const allDifficulties = _.uniq(
-      _.map(this.props.data.allChallenges, 'challengeDifficulty.name')
+      _.map(
+        _.sortBy(_.map(this.props.data.allChallenges, "challengeDifficulty"), [
+          function(o) {
+            return o.difficultyvalue;
+          }
+        ]),
+        difficulty => {
+          return difficulty.name;
+        }
+      )
     );
     return _.map(allDifficulties, filter => {
       return (
@@ -71,7 +83,7 @@ class Home extends Component {
               checked={this.state.difficulties.includes(filter)}
               onChange={() => this.checkDifficulty(filter)}
             />
-            <span class="checkmark" />
+            <span className="checkmark" />
           </div>
           {filter}
         </label>
@@ -82,11 +94,18 @@ class Home extends Component {
   renderChallenges() {
     let filtered;
     if (this.state.difficulties.length === 0) {
-      filtered = this.props.data.allChallenges;
+      filtered = _.filter(this.props.data.allChallenges, challenge => {
+        return challenge.challengeCategory && challenge.challengeDifficulty;
+      });
+      console.log(_.difference(this.props.data.allChallenges, filtered));
     } else {
       filtered = _.filter(this.props.data.allChallenges, challenge => {
-        return this.state.difficulties.includes(
-          challenge.challengeDifficulty.name
+        return (
+          this.state.difficulties.includes(
+            challenge.challengeDifficulty.name
+          ) &&
+          challenge.challengeCategory &&
+          challenge.challengeDifficulty
         );
       });
     }
@@ -95,40 +114,48 @@ class Home extends Component {
         return this.state.categories.includes(challenge.challengeCategory.name);
       });
     }
-    return (
-      <div className="row">
-        <div className="grid">
-          {_.map(filtered, challenge => (
-            <div className="grid-item" key={`challenge-${challenge.id}`}>
-              <div className="grid-content">
-                <div className="flexrow">
-                  <p
-                    className="category"
-                    style={{
-                      color: `rgba(${Object.values(
-                        JSON.parse(challenge.challengeCategory.color)
-                      ).join(',')})`
-                    }}
-                  >
-                    <b>{challenge.challengeCategory.name}</b>
-                  </p>
-                  <p className="difficulty">
-                    {challenge.challengeDifficulty.name}
-                  </p>
+    if (filtered.length !== 0) {
+      return (
+        <div className="row">
+          <div className="grid">
+            {_.map(filtered, challenge => (
+              <div className="grid-item" key={`challenge-${challenge.id}`}>
+                <div className="grid-content">
+                  <div className="flexrow">
+                    <p
+                      className="category"
+                      style={{
+                        color: `rgba(${Object.values(
+                          JSON.parse(challenge.challengeCategory.color)
+                        ).join(",")})`
+                      }}
+                    >
+                      <b>{challenge.challengeCategory.name}</b>
+                    </p>
+                    <p className="difficulty">
+                      {challenge.challengeDifficulty.name}
+                    </p>
+                  </div>
+                  <h5>{challenge.name}</h5>
+                  <p>{challenge.shortDescription}</p>
                 </div>
-                <h5>{challenge.name}</h5>
-                <p>{challenge.shortDescription}</p>
+                <div className="flexrow">
+                  <Link to={`/challenge/${challenge.id}`} className="grid-link">
+                    See Details >
+                  </Link>
+                </div>
               </div>
-              <div className="flexrow">
-                <Link to={`/challenge/${challenge.id}`} className="grid-link">
-                  See Details >
-                </Link>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="row">
+          <h5>No challenges found with given parameters!</h5>
+        </div>
+      );
+    }
   }
 
   render() {

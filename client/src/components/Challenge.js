@@ -7,30 +7,34 @@ const Challenge = ({ data: { loading, error, Challenge } }) => {
   if (error) return <h1>Error fetching the challenge!</h1>;
   if (!loading) {
     return (
-      <div className="challenge-cointainer">
-        <div className="challenge-header">
-          <h5
-            style={{
-              color: `rgba(${Object.values(
-                JSON.parse(Challenge.challengeCategory.color)
-              ).join(',')})`
-            }}
-          >
-            {Challenge.name}
-          </h5>
-          <div className="flexrow">
-            <p>{Challenge.challengeCategory.name}</p>
-            <p>{Challenge.challengeDifficulty.name}</p>
+      <div>
+        <div className="challenge-cointainer box">
+          <div className="challenge-header">
+            <h5>{Challenge.name}</h5>
+            <div className="flexrow">
+              <b
+                style={{
+                  color: `rgba(${Object.values(
+                    JSON.parse(Challenge.challengeCategory.color)
+                  ).join(',')})`
+                }}
+              >
+                {Challenge.challengeCategory.name}
+              </b>
+              <p>{Challenge.challengeDifficulty.name}</p>
+            </div>
           </div>
+          <Markdown
+            className="challenge-desc box"
+            source={Challenge.description}
+            escapeHtml={false}
+          />
         </div>
-        <Markdown
-          className="challenge-desc"
-          source={Challenge.description}
-          escapeHtml={false}
-        />
-        <h5>Submit new answer</h5>
-        <textarea className="inputfield" />
-        <button>Submit</button>
+        <div className="submit-container box">
+          <h5>Submit new answer</h5>
+          <textarea className="inputfield" />
+          <button>Submit</button>
+        </div>
       </div>
     );
   }
