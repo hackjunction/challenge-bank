@@ -2,6 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import Markdown from 'react-markdown';
+import './style.css';
 
 const Challenge = ({ data: { loading, error, Challenge } }) => {
   if (error) return <h1>Error fetching the challenge!</h1>;

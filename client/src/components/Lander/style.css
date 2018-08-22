@@ -1,0 +1,18 @@
+.landertitle {
+  font-size: 40px;
+}
+
+.lander-flex {
+  margin: 5% auto 0% auto;
+  width: 80%;
+}
+
+div.griditem > p {
+  margin: 0px;
+}
+
+.underline {
+  height: 2px;
+  background-color: black;
+  margin-bottom: 5%;
+}

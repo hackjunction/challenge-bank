@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import _ from 'lodash';
+import './style.css';
 
 class Home extends Component {
   constructor(props) {
@@ -79,19 +80,21 @@ class Home extends Component {
       )
     );
     return _.map(allDifficulties, filter => {
-      return (
-        <label className="filteritem">
-          <div className="checkboxcontainer">
-            <input
-              type="checkbox"
-              checked={this.state.difficulties.includes(filter)}
-              onChange={() => this.checkDifficulty(filter)}
-            />
-            <span className="checkmark" />
-          </div>
-          {filter}
-        </label>
-      );
+      if (filter) {
+        return (
+          <label className="filteritem">
+            <div className="checkboxcontainer">
+              <input
+                type="checkbox"
+                checked={this.state.difficulties.includes(filter)}
+                onChange={() => this.checkDifficulty(filter)}
+              />
+              <span className="checkmark" />
+            </div>
+            {filter}
+          </label>
+        );
+      }
     });
   }
 

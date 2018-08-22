@@ -595,8 +595,9 @@ there.
 
 .header {
   margin-bottom: 2%;
-  height: 250px;
-  background-image: url(./header.png);
+  height: 20em;
+  background-color: black;
+  /*background-image: url(./header.png);*/
   display: flex;
   align-items: center;
 }
@@ -616,15 +617,13 @@ there.
 }
 
 .header-content a {
-  text-align: center;
-  margin-top: 20%;
-  color: white;
   text-decoration-line: none;
 }
 
 .header-content h2 {
-  margin-bottom: 5px;
-  margin-top: 10%;
+  margin: 5% 0% 5% 0%;
+  text-align: center;
+  color: white;
 }
 .challenge-cointainer {
   margin: 0 auto;
@@ -668,6 +667,8 @@ there.
 
 .filterboxes {
   display: flex;
+  flex-wrap: wrap;
+  line-height: 2;
   flex-direction: row;
   align-items: center;
   margin-bottom: 20px;
@@ -739,4 +740,9 @@ label {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.lander-flex {
+  margin-top: 5%;
+  width: 60%;
 }
