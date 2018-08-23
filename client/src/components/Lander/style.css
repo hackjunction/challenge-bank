@@ -1,10 +1,10 @@
 .landertitle {
-  font-size: 40px;
+  font-size: 35px;
 }
 
 .lander-flex {
   margin: 5% auto 0% auto;
-  width: 80%;
+  width: 100%;
 }
 
 div.griditem > p {
@@ -12,7 +12,20 @@ div.griditem > p {
 }
 
 .underline {
-  height: 2px;
+  height: 3px;
   background-color: black;
   margin-bottom: 5%;
+}
+
+.landeritem {
+  width: 45%;
+}
+
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+.location {
+  padding-top: 2%;
 }
