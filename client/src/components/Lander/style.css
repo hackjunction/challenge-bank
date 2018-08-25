@@ -14,7 +14,7 @@ div.griditem > p {
 .underline {
   height: 3px;
   background-color: black;
-  margin-bottom: 5%;
+  margin-bottom: 7%;
 }
 
 .landeritem {
@@ -26,6 +26,20 @@ ul {
   list-style-type: none;
 }
 
-.location {
-  padding-top: 2%;
+.progress {
+  height: 40px;
+}
+
+.progress-bar {
+  line-height: 40px;
+}
+
+.underline-small {
+  height: 2px;
+  background-color: gray;
+  margin-bottom: 2%;
+}
+
+.date {
+  font-size: 20px;
 }

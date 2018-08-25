@@ -2,6 +2,7 @@ import React from 'react';
 import './style.css';
 import _ from 'lodash';
 import moment from 'moment-timezone';
+import { ProgressBar } from 'react-bootstrap';
 
 class Lander extends React.Component {
   constructor(props) {
@@ -46,14 +47,21 @@ class Lander extends React.Component {
         <li>
           <div className="flexrow">
             <b>{event.eventName}</b>
-            {moment.tz(event.eventStartTime, event.timezone).format('MMM Qo') +
-              ' (' +
-              event.timezone +
-              ')'}
+            <div className="date">
+              {moment.tz(event.eventStartTime, event.timezone).format('Q.M.')}
+            </div>
           </div>
           <p className="location">{event.locationName}</p>
+          <div className="underline-small" />
         </li>
       );
+    });
+  }
+
+  renderBars() {
+    return _.map(this.state.events, event => {
+      // event point amount has to be added, must set max to fit max-points amount. Needs backend changes.
+      return <ProgressBar active now={45} label={event.eventName} />;
     });
   }
 
@@ -70,6 +78,7 @@ class Lander extends React.Component {
           <div className="cities landeritem">
             <h4 className="landertitle">Current standings</h4>
             <div className="underline" />
+            {this.renderBars()}
           </div>
         </div>
       </div>
