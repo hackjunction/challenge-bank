@@ -22,7 +22,7 @@ require('./api/routes/submissions')(app);
 require('./api/models/Event');
 require('./api/models/Submission');
 
-app.get('/', function(req, res) {
+app.get('/api/', function(req, res) {
     res.send({
         message: 'Hello from the API'
     });
@@ -39,4 +39,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(port);
-console.log('Node gavel started at http://localhost:' + port);
+console.log('Node gavel started at port' + port);
