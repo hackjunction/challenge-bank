@@ -1,0 +1,23 @@
+.EventsList--loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 100px;
+}
+
+.EventsList--options-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.EventsList--options-button {
+    margin-right: 15px;
+}
+
+.EventsList--delete-wrapper {
+    background: white;
+    padding: 20px;
+}

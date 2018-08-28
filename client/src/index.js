@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './normalize.css';
 import './index.css';
 import App from './App';
+import { Provider } from 'react-redux';
+import configureStore from './store';
 import registerServiceWorker from './registerServiceWorker';
 
 //GraphCMS imports
@@ -13,14 +16,16 @@ import { ApolloProvider } from 'react-apollo';
 const GRAPHCMS_API = 'https://api.graphcms.com/simple/v1/cjiyie4xo1k0x0149nyl9lqvt';
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: GRAPHCMS_API }),
-  cache: new InMemoryCache(),
+    link: new HttpLink({ uri: GRAPHCMS_API }),
+    cache: new InMemoryCache()
 });
 
 ReactDOM.render(
-	<ApolloProvider client={client}>
-		<App />
-	</ApolloProvider>, 
-	document.getElementById('root')
+    <ApolloProvider client={client}>
+        <Provider store={configureStore()}>
+            <App />
+        </Provider>
+    </ApolloProvider>,
+    document.getElementById('root')
 );
 registerServiceWorker();
