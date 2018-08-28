@@ -1,0 +1,45 @@
+.landertitle {
+  font-size: 35px;
+}
+
+.lander-flex {
+  margin: 5% auto 0% auto;
+  width: 100%;
+}
+
+div.griditem > p {
+  margin: 0px;
+}
+
+.underline {
+  height: 3px;
+  background-color: black;
+  margin-bottom: 7%;
+}
+
+.landeritem {
+  width: 45%;
+}
+
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+.progress {
+  height: 40px;
+}
+
+.progress-bar {
+  line-height: 40px;
+}
+
+.underline-small {
+  height: 2px;
+  background-color: gray;
+  margin-bottom: 2%;
+}
+
+.date {
+  font-size: 20px;
+}
