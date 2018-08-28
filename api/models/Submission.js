@@ -18,6 +18,10 @@ const SubmissionSchema = new Schema({
     timestamp: {
         type: Date,
         default: momentNow
+    },
+    challengeId: {
+        type: String,
+        required: true
     }
 });
 
