@@ -8,16 +8,18 @@ var express = require('express'),
 /* Set mongoose  & global to use Bluebird promises */
 global.Promise = bluebird;
 mongoose.Promise = bluebird;
-mongoose.connect('mongodb://localhost/challengeBank');
+mongoose.connect(process.env.MONGODB_URI ? process.env.MONGODB_URI : 'mongodb://localhost/challengeBank');
 
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
 /* Routes */
 require('./api/routes/events')(app);
+require('./api/routes/submissions')(app);
 
 /* Models */
 require('./api/models/Event');
+require('./api/models/Submission');
 
 app.get('/', function(req, res) {
     res.send({
