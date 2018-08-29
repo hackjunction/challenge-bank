@@ -35,12 +35,12 @@ class Challenge extends Component {
             },
             body: JSON.stringify({
                 submission: {
-                    answer: this.state.answer
+                    answer: this.state.answer,
+                    challengeId: this.props.data.Challenge.id
                 }
             })
         });
 
-        console.log(response);
         const body = await response.json();
 
         if (body.status === 'success') {

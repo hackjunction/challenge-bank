@@ -22,6 +22,14 @@ const SubmissionSchema = new Schema({
     challengeId: {
         type: String,
         required: true
+    },
+    reviewed: {
+        type: Boolean,
+        default: false
+    },
+    accepted: {
+        type: Boolean,
+        default: false
     }
 });
 
