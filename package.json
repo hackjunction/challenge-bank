@@ -4,19 +4,21 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "setup": "npm install && cd client && npm install && npm install -g yarn",
+        "setup": "npm install -g yarn && yarn install && cd client && yarn install",
         "test": "echo \"Error: no test specified\" && exit 1",
         "client": "cd client && yarn start",
         "server": "nodemon server.js",
         "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
         "start": "node server.js",
+        "preinstall": "use-yarn || ( npm install --save-dev --no-scripts --no-save use-yarn && use-yarn )",
         "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
     },
     "author": "",
     "license": "ISC",
     "devDependencies": {
         "concurrently": "^3.6.1",
-        "nodemon": "^1.17.5"
+        "nodemon": "^1.17.5",
+        "use-yarn": "^2.2.0"
     },
     "dependencies": {
         "bluebird": "^3.5.1",

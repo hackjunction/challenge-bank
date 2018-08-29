@@ -3,13 +3,16 @@ var express = require('express'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose'),
   bluebird = require('bluebird'),
+  path = require('path'),
   port = process.env.PORT || 3000;
 
 /* Set mongoose  & global to use Bluebird promises */
 global.Promise = bluebird;
 mongoose.Promise = bluebird;
 mongoose.connect(
-  'mongodb://heroku_kpj537v3:2kb09vf00v7qd9baudppe28l7d@ds227325.mlab.com:27325/heroku_kpj537v3'
+  process.env.MONGODB_URI
+    ? process.env.MONGODB_URI
+    : 'mongodb://heroku_kpj537v3:2kb09vf00v7qd9baudppe28l7d@ds227325.mlab.com:27325/heroku_kpj537v3'
 );
 
 app.use(bodyParser.urlencoded());
@@ -17,11 +20,13 @@ app.use(bodyParser.json());
 
 /* Routes */
 require('./api/routes/events')(app);
+require('./api/routes/submissions')(app);
 
 /* Models */
 require('./api/models/Event');
+require('./api/models/Submission');
 
-app.get('/', function(req, res) {
+app.get('/api/', function(req, res) {
   res.send({
     message: 'Hello from the API'
   });
@@ -38,4 +43,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(port);
-console.log('Node gavel started at http://localhost:' + port);
+console.log('Node gavel started at port' + port);
