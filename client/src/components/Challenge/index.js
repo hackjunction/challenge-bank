@@ -1,18 +1,19 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import gql from "graphql-tag";
-import { graphql } from "react-apollo";
-import Markdown from "react-markdown";
-import "./style.css";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import Markdown from 'react-markdown';
+import './style.css';
+import _ from 'lodash';
 
 class Challenge extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      answer: "",
+      answer: '',
       submitted: false,
-      error: ""
+      error: ''
     };
 
     this.onAnswerChange = this.onAnswerChange.bind(this);
@@ -28,11 +29,11 @@ class Challenge extends Component {
       loading: true
     });
 
-    const response = await fetch("/api/submissions", {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
+    const response = await fetch('/api/submissions', {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         submission: {
@@ -44,7 +45,7 @@ class Challenge extends Component {
 
     const body = await response.json();
 
-    if (body.status === "success") {
+    if (body.status === 'success') {
       this.setState({
         loading: false,
         submitted: true
@@ -60,6 +61,7 @@ class Challenge extends Component {
 
   render() {
     const { error, loading, Challenge } = this.props.data;
+    console.log(this.props.data);
 
     if (error) return <h1>Error fetching the challenge!</h1>;
     if (loading) return <h1>Loading challenge...</h1>;
@@ -67,7 +69,7 @@ class Challenge extends Component {
     const categoryStyle = {
       color: `rgba(${Object.values(
         JSON.parse(Challenge.challengeCategory.color)
-      ).join(",")})`
+      ).join(',')})`
     };
 
     return (
@@ -77,7 +79,7 @@ class Challenge extends Component {
         </Link>
         <div className="Challenge--container">
           <div className="Challenge--header">
-            <span className="Challenge--category" style={{ color: "green" }}>
+            <span className="Challenge--category" style={{ color: 'green' }}>
               {Challenge.challengeCategory.name}
             </span>
             <span className="Challenge--difficulty">
@@ -91,6 +93,15 @@ class Challenge extends Component {
               source={Challenge.description}
               escapeHtml={false}
             />
+            {_.map(Challenge.attachments, attachment => (
+              <a
+                href={attachment.url}
+                download={attachment.fileName}
+                target="_blank"
+              >
+                {attachment.fileName}
+              </a>
+            ))}
           </div>
           {this.state.submitted ? (
             <div className="Challenge--submit">
@@ -104,7 +115,7 @@ class Challenge extends Component {
                 className="Challenge--submit-answer"
                 onChange={this.onAnswerChange}
                 value={this.state.answer}
-                placeholder={"Type your answer here"}
+                placeholder={'Type your answer here'}
               />
               <button
                 className="Challenge--submit-button"
@@ -136,6 +147,11 @@ export const singleChallenge = gql`
       challengeCategory {
         name
         color
+      }
+      attachments {
+        id
+        fileName
+        url
       }
     }
   }
