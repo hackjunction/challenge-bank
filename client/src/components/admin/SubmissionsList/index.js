@@ -83,6 +83,7 @@ export const allChallenges = gql`
       id
       name
       shortDescription
+      description
       challengeCategory {
         color
         name

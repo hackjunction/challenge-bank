@@ -31,6 +31,7 @@
         "mongoose": "^5.2.9",
         "react-bootstrap": "^0.32.3",
         "react-table": "^6.8.6",
+        "react-tippy": "^1.2.2",
         "uuid": "^3.3.0"
     }
 }
