@@ -61,43 +61,49 @@ class Challenge extends Component {
         const { error, loading, Challenge } = this.props.data;
 
         if (error) return <h1>Error fetching the challenge!</h1>;
-        if (!loading) {
-            return (
-                <div>
-                    <div className="challenge-cointainer box">
-                        <div className="challenge-header">
-                            <h5>{Challenge.name}</h5>
-                            <div className="flexrow">
-                                <b
-                                    style={{
-                                        color: `rgba(${Object.values(
-                                            JSON.parse(Challenge.challengeCategory.color)
-                                        ).join(',')})`
-                                    }}
-                                >
-                                    {Challenge.challengeCategory.name}
-                                </b>
-                                <p>{Challenge.challengeDifficulty.name}</p>
-                            </div>
-                        </div>
-                        <Markdown className="challenge-desc box" source={Challenge.description} escapeHtml={false} />
+        if (loading) return <h1>Loading challenge...</h1>;
+
+        const categoryStyle = {
+            color: `rgba(${Object.values(JSON.parse(Challenge.challengeCategory.color)).join(',')})`
+        };
+
+        return (
+            <div className="container">
+                <h1 className="Challenge--name">{Challenge.name}</h1>
+                <div className="Challenge--container">
+                    <div className="Challenge--header">
+                        <span className="Challenge--category" style={{ color: 'green' }}>
+                            {Challenge.challengeCategory.name}
+                        </span>
+                        <span className="Challenge--difficulty">{Challenge.challengeDifficulty.name}</span>
+                    </div>
+                    <div className="Challenge--content">
+                        <Markdown
+                            className="Challenge--description"
+                            source={Challenge.description}
+                            escapeHtml={false}
+                        />
                     </div>
                     {this.state.submitted ? (
-                        <div className="submit-container box">
-                            <h5>Success! Thanks for submitting an answer</h5>
+                        <div className="Challenge--submit">
+                            <h3 className="Challenge--submitted">Thanks for submitting your answer!</h3>
                         </div>
                     ) : (
-                        <div className="submit-container box">
-                            <h5>Submit new answer</h5>
-                            {this.state.error ? <p className="submit-error">Oops, something went wrong</p> : null}
-                            <textarea className="inputfield" onChange={this.onAnswerChange} value={this.state.answer} />
-                            <button onClick={this.onSubmit}>Submit</button>
+                        <div className="Challenge--submit">
+                            <input
+                                className="Challenge--submit-answer"
+                                onChange={this.onAnswerChange}
+                                value={this.state.answer}
+                                placeholder={'Type your answer here'}
+                            />
+                            <button className="Challenge--submit-button" onClick={this.onSubmit}>
+                                Submit
+                            </button>
                         </div>
                     )}
                 </div>
-            );
-        }
-        return <h2>Loading challenge...</h2>;
+            </div>
+        );
     }
 }
 

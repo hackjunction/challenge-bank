@@ -1,0 +1,58 @@
+.Challenge--container {
+    border: 1px solid gray;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+
+.Challenge--header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Challenge--category {
+    font-weight: bold;
+}
+
+.Challenge--difficulty {
+    font-weight: 100;
+}
+
+.Challenge--name {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.Challenge--description {
+    margin-top: 50px;
+}
+
+.Challenge--description h1,
+.Challenge--description h2,
+.Challenge--description h3,
+.Challenge--description h4,
+.Challenge--description h5,
+.Challenge--description h6 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.Challenge--submit {
+    display: flex;
+    flex-direction: row;
+}
+
+.Challenge--submit-answer {
+    flex: 1;
+    height: 40px;
+    padding: 0 1rem;
+}
+
+.Challenge--submit-button {
+    width: 150px;
+    height: 40px;
+    background: black;
+    color: white;
+    margin-left: 1rem;
+}
