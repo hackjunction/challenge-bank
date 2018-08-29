@@ -12,8 +12,11 @@ class SubmissionsList extends Component {
 
     this.state = {
       loading: false,
-      submissions: []
+      submissions: [],
+      difficulties: []
     };
+    this.renderDifficultyfilters = this.renderDifficultyfilters.bind(this);
+    this.checkDifficulty = this.checkDifficulty.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,12 +68,79 @@ class SubmissionsList extends Component {
     return _.filter(mapped, m => typeof m.challenge != 'undefined');
   }
 
+  checkDifficulty(difficulty) {
+    if (this.state.difficulties.includes(difficulty)) {
+      this.setState({
+        difficulties: _.pull(this.state.difficulties, difficulty)
+      });
+    } else {
+      this.setState({
+        difficulties: _.concat(this.state.difficulties, difficulty)
+      });
+    }
+  }
+
+  renderDifficultyfilters() {
+    const allDifficulties = _.uniq(
+      _.map(
+        _.sortBy(_.map(this.props.data.allChallenges, 'challengeDifficulty'), [
+          function(o) {
+            if (o) {
+              return o.difficultyvalue;
+            }
+          }
+        ]),
+        difficulty => {
+          if (difficulty && difficulty.name) {
+            return difficulty.name;
+          }
+        }
+      )
+    );
+    return _.map(allDifficulties, filter => {
+      if (filter) {
+        return (
+          <label className="filteritem">
+            <div className="checkboxcontainer">
+              <input
+                type="checkbox"
+                checked={this.state.difficulties.includes(filter)}
+                onChange={() => this.checkDifficulty(filter)}
+              />
+              <span className="checkmark" />
+            </div>
+            {filter}
+          </label>
+        );
+      }
+    });
+  }
+
   render() {
+    let filtered;
+    const { submissions } = this.state;
+    if (this.state.difficulties.length === 0) {
+      filtered = _.filter(submissions, submission => {
+        return submission.challenge.challengeDifficulty;
+      });
+      console.log(_.difference(submissions, filtered));
+    } else {
+      filtered = _.filter(submissions, submission => {
+        if (submission.challenge.challengeDifficulty) {
+          return (
+            this.state.difficulties.includes(
+              submission.challenge.challengeDifficulty.name
+            ) && submission.challenge.challengeDifficulty
+          );
+        }
+      });
+    }
     return (
       <div className="SubmissionsList--container">
         <div className="SubmissionsTable--wrapper">
           <h1 className="SubmissionsList--title">Submissions</h1>
-          <SubmissionsTable data={this.state.submissions} />
+          <div className="filterboxes">{this.renderDifficultyfilters()}</div>
+          <SubmissionsTable data={filtered} />
         </div>
       </div>
     );
@@ -83,6 +153,7 @@ export const allChallenges = gql`
       id
       name
       shortDescription
+      description
       challengeCategory {
         color
         name

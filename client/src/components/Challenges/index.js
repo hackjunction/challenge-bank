@@ -185,7 +185,7 @@ class Home extends Component {
 
 export const allChallenges = gql`
   query allChallenges {
-    allChallenges {
+    allChallenges(filter: { isPublished: true }) {
       id
       name
       shortDescription
