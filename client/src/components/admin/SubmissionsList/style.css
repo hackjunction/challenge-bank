@@ -1,0 +1,41 @@
+.SubmissionsList--item {
+    border: 1px solid gray;
+    padding: 1rem;
+}
+
+.SubmissionsList--item-row {
+}
+
+.SubmissionsList--item-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.SubmissionsList--item-options button {
+    margin-left: 1rem;
+}
+
+.SubmissionsTable--wrapper {
+    padding: 2rem;
+}
+
+.SubmissionsTable--options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.SubmissionsTable--option {
+    text-decoration: underline;
+    margin: 0 5px;
+}
+
+.SubmissionsTable--option.decline {
+    color: red;
+}
+
+.SubmissionsTable--option.accept {
+    color: green;
+}

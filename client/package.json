@@ -27,6 +27,7 @@
         "react-router-dom": "^4.3.1",
         "react-scripts": "1.1.4",
         "react-spinkit": "^3.0.0",
+        "react-table": "^6.8.6",
         "react-timezone": "^2.1.0",
         "redux": "^4.0.0",
         "redux-thunk": "^2.3.0"

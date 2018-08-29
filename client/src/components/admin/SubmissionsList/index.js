@@ -4,6 +4,8 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import './style.css';
 
+import SubmissionsTable from './SubmissionsTable';
+
 class SubmissionsList extends Component {
     constructor(props) {
         super(props);
@@ -63,24 +65,13 @@ class SubmissionsList extends Component {
         return _.filter(mapped, m => typeof m.challenge != 'undefined');
     }
 
-    renderSubmissions() {
-        return _.map(this.state.submissions, submission => {
-            return (
-                <div key={submission._id} className="SubmissionsList--item-wrapper">
-                    <p className="SubmissionsList--item-challengeName">{submission.challenge.name}</p>
-                    <p className="SubmissionsList--item-timestamp">{submission.timestamp}</p>
-                    <p className="SubmissionsList--item-answer">{submission.answer}</p>
-                </div>
-            );
-        });
-    }
-
     render() {
-        console.log(this.state.submissions);
         return (
-            <div className="SubmissionsList--container container">
-                <h1 className="SubmissionsList--title">Submissions</h1>
-                {this.renderSubmissions()}
+            <div className="SubmissionsList--container">
+                <div className="SubmissionsTable--wrapper">
+                    <h1 className="SubmissionsList--title">Submissions</h1>
+                    <SubmissionsTable data={this.state.submissions} />
+                </div>
             </div>
         );
     }
@@ -100,6 +91,7 @@ export const allChallenges = gql`
                 name
                 difficultyvalue
             }
+            answer
         }
         _allChallengesMeta {
             count
