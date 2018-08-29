@@ -33,14 +33,10 @@
         "redux-thunk": "^2.3.0"
     },
     "scripts": {
-        "preinstall": "use-yarn || ( npm install --save-dev --no-scripts --no-save use-yarn && use-yarn )",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject"
     },
-    "proxy": "http://localhost:3000/",
-    "devDependencies": {
-        "use-yarn": "^2.2.0"
-    }
+    "proxy": "http://localhost:3000/"
 }
