@@ -120,6 +120,10 @@ const API = {
         return GET(`/api/admin/submissions/?user=${username}&pass=${password}`);
     },
 
+    adminGetSubmissionsForEvent: (username, password, eventId) => {
+        return GET(`/api/admin/event/submissions/${eventId}/?user=${username}&pass=${password}`);
+    },
+
     adminGetSubmissionById: (username, password, submissionId) => {
         return GET(`/api/admin/submissions/${submissionId}/?user=${username}&pass=${password}`);
     },

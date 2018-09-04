@@ -23,6 +23,15 @@ const SubmissionSchema = new Schema({
         type: String,
         required: true
     },
+    challengeDifficulty: {
+        type: Number,
+        required: true
+    },
+    event: {
+        type: Schema.Types.ObjectId,
+        ref: 'Event',
+        required: true
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',

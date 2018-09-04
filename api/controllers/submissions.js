@@ -8,6 +8,12 @@ const SubmissionController = {
         return mongoose.model('Submission').find({});
     },
 
+    getSubmissionsForEvent: eventId => {
+        return mongoose.model('Submission').find({
+            event: eventId
+        });
+    },
+
     getSubmissionById: submissionId => {
         return mongoose.model('Submission').findById(submissionId);
     },

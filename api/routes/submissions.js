@@ -6,6 +6,11 @@ const passport = require('passport');
 module.exports = function(app) {
     // Requires admin auth
     app.get('/api/admin/submissions', passport.authenticate('admin', { session: false }), getSubmissions);
+    app.get(
+        '/api/admin/event/submissions/:eventId',
+        passport.authenticate('admin', { session: false }),
+        getSubmissionsForEvent
+    );
     app.get('/api/admin/submissions/:id', passport.authenticate('admin', { session: false }), getSubmissionById);
 
     // Requires token auth
@@ -24,6 +29,21 @@ function getSubmissions(req, res) {
         })
         .catch(error => {
             console.log('ERROR', error);
+            return res.status(status.INTERNAL_SERVER_ERROR).send({
+                status: 'error'
+            });
+        });
+}
+
+function getSubmissionsForEvent(req, res) {
+    return SubmissionController.getSubmissionsForEvent(req.params.eventId)
+        .then(submissions => {
+            return res.status(status.OK).send({
+                status: 'success',
+                data: submissions
+            });
+        })
+        .catch(error => {
             return res.status(status.INTERNAL_SERVER_ERROR).send({
                 status: 'error'
             });
