@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import { compose } from "react-apollo";
 import Markdown from "react-markdown";
 import "./style.css";
+import _ from "lodash";
 
 class Challenge extends Component {
   constructor(props) {
@@ -37,7 +39,7 @@ class Challenge extends Component {
       body: JSON.stringify({
         submission: {
           answer: this.state.answer,
-          challengeId: this.props.data.Challenge.id
+          challengeId: this.props.match.params.id
         }
       })
     });
@@ -57,16 +59,73 @@ class Challenge extends Component {
       });
     }
   }
+  renderChallenges() {
+    const singleChallenge = _.find(this.props.data.allChallenges, challenge => {
+      return challenge.id === this.props.match.params.id;
+    });
+    let filtered;
+    filtered = _.filter(this.props.data.allChallenges, challenge => {
+      return (
+        challenge.challengeCategory.name ===
+        singleChallenge.challengeCategory.name
+      );
+    });
+    if (filtered.length !== 0) {
+      return (
+        <div className="row">
+          <div className="grid">
+            {_.map(filtered, challenge => (
+              <div className="grid-item" key={`challenge-${challenge.id}`}>
+                <div className="grid-content">
+                  <div className="flexrow">
+                    <p
+                      className="category"
+                      style={{
+                        color: `rgba(${Object.values(
+                          JSON.parse(challenge.challengeCategory.color)
+                        ).join(",")})`
+                      }}
+                    >
+                      <b>{challenge.challengeCategory.name}</b>
+                    </p>
+                    <p className="difficulty">
+                      {challenge.challengeDifficulty.name}
+                    </p>
+                  </div>
+                  <h5>{challenge.name}</h5>
+                  <p>{challenge.shortDescription}</p>
+                </div>
+                <div className="flexrow">
+                  <Link to={`/challenge/${challenge.id}`} className="grid-link">
+                    See Details >
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="row">
+          <h5>No more challenges in this category!</h5>
+        </div>
+      );
+    }
+  }
 
   render() {
     const { error, loading, Challenge } = this.props.data;
+    const singleChallenge = _.find(this.props.data.allChallenges, challenge => {
+      return challenge.id === this.props.match.params.id;
+    });
 
     if (error) return <h1>Error fetching the challenge!</h1>;
     if (loading) return <h1>Loading challenge...</h1>;
 
     const categoryStyle = {
       color: `rgba(${Object.values(
-        JSON.parse(Challenge.challengeCategory.color)
+        JSON.parse(singleChallenge.challengeCategory.color)
       ).join(",")})`
     };
 
@@ -77,18 +136,23 @@ class Challenge extends Component {
         </Link>
         <div className="Challenge--container">
           <div className="Challenge--header">
-            <span className="Challenge--category" style={{ color: "green" }}>
-              {Challenge.challengeCategory.name}
+            <span
+              className="Challenge--category"
+              style={{
+                color: categoryStyle.color
+              }}
+            >
+              {singleChallenge.challengeCategory.name}
             </span>
             <span className="Challenge--difficulty">
-              {Challenge.challengeDifficulty.name}
+              {singleChallenge.challengeDifficulty.name}
             </span>
           </div>
           <div className="Challenge--content">
-            <h1 className="Challenge--name">{Challenge.name}</h1>
+            <h1 className="Challenge--name">{singleChallenge.name}</h1>
             <Markdown
               className="Challenge--description"
-              source={Challenge.description}
+              source={singleChallenge.description}
               escapeHtml={false}
             />
           </div>
@@ -116,35 +180,34 @@ class Challenge extends Component {
           )}
         </div>
         <h1 className="Challenge--challenges">
-          See More {Challenge.challengeCategory.name} Challenges:
+          See More {singleChallenge.challengeCategory.name} Challenges:
         </h1>
+        {this.renderChallenges()}
       </div>
     );
   }
 }
 
-export const singleChallenge = gql`
-  query singleChallenge($id: ID!) {
-    Challenge(id: $id) {
+export const allChallenges = gql`
+  query allChallenges {
+    allChallenges(filter: { isPublished: true }) {
       id
       name
       shortDescription
       description
+      challengeCategory {
+        color
+        name
+      }
       challengeDifficulty {
         name
+        difficultyvalue
       }
-      challengeCategory {
-        name
-        color
-      }
+    }
+    _allChallengesMeta {
+      count
     }
   }
 `;
 
-export default graphql(singleChallenge, {
-  options: ({ match }) => ({
-    variables: {
-      id: match.params.id
-    }
-  })
-})(Challenge);
+export default graphql(allChallenges)(Challenge);
