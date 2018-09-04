@@ -3,6 +3,8 @@ import Spinner from 'react-spinkit';
 import TimezonePicker from 'react-bootstrap-timezone-picker';
 import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min.css';
 import { Form, Input } from 'formsy-react-components';
+import { connect } from 'react-redux';
+import API from '../../../services/api';
 import './style.css';
 
 class CreateEvent extends Component {
@@ -21,35 +23,26 @@ class CreateEvent extends Component {
     }
 
     async onSubmit(params) {
-        console.log(params);
         this.setState({
             loading: true
         });
 
-        const response = await fetch('/api/events', {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                event: params
-            })
-        });
-        const body = await response.json();
+        const { username, password } = this.props.admin.credentials;
 
-        if (body.status === 'success') {
-            this.setState({
-                loading: false,
-                submitted: true
+        API.adminCreateEvent(username, password, { event: params })
+            .then(event => {
+                this.setState({
+                    loading: false,
+                    submitted: true
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    loading: false,
+                    submitted: false,
+                    error: 'Oops, something went wrong'
+                });
             });
-        } else {
-            this.setState({
-                loading: false,
-                submitted: false,
-                error: body.data
-            });
-        }
     }
 
     onValidChange(isValid) {
@@ -78,8 +71,6 @@ class CreateEvent extends Component {
                 </div>
             );
         }
-
-        console.log(this.state.eventData);
 
         return (
             <div className="CreateEvent--container container">
@@ -216,4 +207,13 @@ class CreateEvent extends Component {
     }
 }
 
-export default CreateEvent;
+const mapStateToProps = state => ({
+    admin: state.admin
+});
+
+const mapDispatchToProps = dispatch => ({});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CreateEvent);

@@ -1,17 +1,50 @@
 'use strict';
 const status = require('http-status');
 const EventController = require('../controllers/events');
+const passport = require('passport');
 
 module.exports = function(app) {
-    app.route('/api/events')
-        .post(createEvent)
-        .get(getEvents);
+    //Admin routes for getting all event data
+    app.get('/api/admin/events', passport.authenticate('admin', { session: false }), getEvents);
+    app.get('/api/admin/events/:id', passport.authenticate('admin', { session: false }), getEvent);
+    app.post('/api/admin/events', passport.authenticate('admin', { session: false }), createEvent);
+    app.patch('/api/admin/events/:id', passport.authenticate('admin', { session: false }), updateEvent);
+    app.delete('/api/admin/events/:id', passport.authenticate('admin', { session: false }), deleteEvent);
 
-    app.route('/api/events/:id')
-        .get(getEvent)
-        .patch(updateEvent)
-        .delete(deleteEvent);
+    //Public routes with no authentication
+    app.get('/api/events', getEventsPublic);
+    app.get('/api/events', getEventPublic);
 };
+
+function getEventsPublic(req, res) {
+    return EventController.getEventsPublic()
+        .then(events => {
+            return res.status(status.OK).send({
+                status: 'success',
+                data: events
+            });
+        })
+        .catch(error => {
+            return res.status(status.INTERNAL_SERVER_ERROR).send({
+                status: 'error'
+            });
+        });
+}
+
+function getEventPublic(req, res) {
+    return EventController.getEventPublic(req.params.id)
+        .then(event => {
+            return res.status(status.OK).send({
+                status: 'success',
+                data: event
+            });
+        })
+        .catch(error => {
+            return res.status(status.INTERNAL_SERVER_ERROR).send({
+                status: 'error'
+            });
+        });
+}
 
 function getEvent(req, res) {
     return EventController.getEvent(req.params.id)

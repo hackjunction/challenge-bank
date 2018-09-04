@@ -3,10 +3,10 @@ import Spinner from 'react-spinkit';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import { connect } from 'react-redux';
-import * as UserActions from '../../../actions/user';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import './style.css';
+import API from '../../../services/api';
 
 class EventsList extends Component {
     constructor(props) {
@@ -22,8 +22,6 @@ class EventsList extends Component {
 
     async componentWillMount() {
         this.getEvents();
-
-        this.props.changePassword('salasana');
     }
 
     async getEvents(event) {
@@ -31,29 +29,22 @@ class EventsList extends Component {
             loading: true
         });
 
-        try {
-            const response = await fetch('/api/events');
-            const body = await response.json();
+        const { username, password } = this.props.admin.credentials;
 
-            if (body.status === 'success') {
+        API.adminGetEvents(username, password)
+            .then(events => {
                 this.setState({
                     loading: false,
-                    events: body.data,
+                    events,
                     error: null
                 });
-            } else {
+            })
+            .catch(error => {
                 this.setState({
                     loading: false,
-                    error: body.data
+                    error: 'Oops, something went wrong'
                 });
-            }
-        } catch (error) {
-            console.log(error);
-            this.setState({
-                loading: false,
-                error: error
             });
-        }
     }
 
     async deleteEvent(event) {
@@ -61,19 +52,18 @@ class EventsList extends Component {
             loading: true
         });
 
-        const response = await fetch(`/api/events/${event._id}`, {
-            method: 'DELETE'
-        });
-        const body = await response.json();
+        const { username, password } = this.props.admin.credentials;
 
-        if (body.status === 'success') {
-            this.getEvents();
-        } else {
-            this.setState({
-                loading: false,
-                error: body.data
+        API.adminDeleteEvent(username, password, event._id)
+            .then(() => {
+                this.getEvents();
+            })
+            .catch(error => {
+                this.setState({
+                    loading: false,
+                    error: 'Oops, something went wrong'
+                });
             });
-        }
     }
 
     handleDelete(e, event) {
@@ -112,7 +102,7 @@ class EventsList extends Component {
     renderEvents() {
         return _.map(this.state.events, event => {
             return (
-                <tr>
+                <tr key={event._id}>
                     <th scope="row">{event.eventName}</th>
                     <td>{event.locationName}</td>
                     <td>
@@ -141,8 +131,6 @@ class EventsList extends Component {
     }
 
     render() {
-        console.log(this.props.myProp);
-
         if (this.state.loading) {
             return (
                 <div className="EventsList--loading container">
@@ -152,8 +140,6 @@ class EventsList extends Component {
             );
         }
 
-        console.log('EVENTS', this.state.events);
-
         return (
             <div className="EventsList--container container">
                 <h1 className="EventsList--title">All Events</h1>
@@ -162,7 +148,7 @@ class EventsList extends Component {
                         {this.state.error + ' - Refresh the page to try again'}
                     </div>
                 ) : null}
-                <table class="table">
+                <table className="table">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -179,12 +165,10 @@ class EventsList extends Component {
 }
 
 const mapStateToProps = state => ({
-    myProp: state.user
+    admin: state.admin
 });
 
-const mapDispatchToProps = dispatch => ({
-    changePassword: password => dispatch(UserActions.setAdminPassword(password))
-});
+const mapDispatchToProps = dispatch => ({});
 
 export default connect(
     mapStateToProps,

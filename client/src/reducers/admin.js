@@ -1,20 +1,20 @@
 import * as ActionTypes from '../actions/ActionTypes';
 
 const initialState = {
-    user: null
+    credentials: null
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case ActionTypes.UPDATE_USER:
+        case ActionTypes.STORE_ADMIN_CREDENTIALS:
             return {
                 ...state,
-                user: action.payload
+                credentials: action.payload
             };
-        case ActionTypes.CLEAR_USER:
+        case ActionTypes.CLEAR_ADMIN_CREDENTIALS:
             return {
                 ...state,
-                user: null
+                credentials: null
             };
         default:
             return state;

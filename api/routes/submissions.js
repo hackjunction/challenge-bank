@@ -1,9 +1,10 @@
 'use strict';
 const status = require('http-status');
 const SubmissionController = require('../controllers/submissions');
+const passport = require('passport');
 
 module.exports = function(app) {
-    app.route('/api/submissions')
+    app.route('/api/submissions', passport.authenticate('admin', { session: false }))
         .get(getSubmissions)
         .post(createSubmission);
 };

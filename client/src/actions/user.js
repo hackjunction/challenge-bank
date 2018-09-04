@@ -1,8 +1,14 @@
 import * as ActionTypes from './ActionTypes';
 
-export const setAdminPassword = password => dispatch => {
+export const updateUser = user => dispatch => {
     dispatch({
-        type: ActionTypes.SET_USER_PASSWORD,
-        payload: password
+        type: ActionTypes.UPDATE_USER,
+        payload: user
+    });
+};
+
+export const clearUser = () => dispatch => {
+    dispatch({
+        type: ActionTypes.CLEAR_USER
     });
 };

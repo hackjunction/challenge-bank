@@ -4,6 +4,8 @@ import TimezonePicker from 'react-bootstrap-timezone-picker';
 import moment from 'moment';
 import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min.css';
 import { Form, Input } from 'formsy-react-components';
+import { connect } from 'react-redux';
+import API from '../../../services/api';
 import './style.css';
 
 class EditEvent extends Component {
@@ -34,59 +36,51 @@ class EditEvent extends Component {
             eventFetchError: null
         });
 
-        const response = await fetch(`/api/events/${this.props.match.params.id}`);
-        const body = await response.json();
+        const { username, password } = this.props.admin.credentials;
 
-        if (body.status === 'success') {
-            const eventData = {
-                ...body.data,
-                eventStartTime: moment(body.data.eventStartTime).format('YYYY-MM-DDTHH:mm'),
-                eventEndTime: moment(body.data.eventEndTime).format('YYYY-MM-DDTHH:mm'),
-                platformOpens: moment(body.data.platformOpens).format('YYYY-MM-DDTHH:mm'),
-                platformCloses: moment(body.data.platformCloses).format('YYYY-MM-DDTHH:mm')
-            };
-
-            this.setState({
-                loadingEventFetch: false,
-                eventData
+        API.adminGetEvent(username, password, this.props.match.params.id)
+            .then(eventData => {
+                this.setState({
+                    loadingEventFetch: false,
+                    eventData: {
+                        ...eventData,
+                        eventStartTime: moment(eventData.eventStartTime).format('YYYY-MM-DDTHH:mm'),
+                        eventEndTime: moment(eventData.eventEndTime).format('YYYY-MM-DDTHH:mm'),
+                        platformOpens: moment(eventData.platformOpens).format('YYYY-MM-DDTHH:mm'),
+                        platformCloses: moment(eventData.platformCloses).format('YYYY-MM-DDTHH:mm')
+                    }
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    loadingEventFetch: false,
+                    eventFetchError: 'Oops, something went wrong'
+                });
             });
-        } else {
-            this.setState({
-                loadingEventFetch: false,
-                eventFetchError: body.data
-            });
-        }
     }
 
     async onSubmit(params) {
-        TODO: this.setState({
+        this.setState({
             loadingEventSave: true,
             eventSaveError: null
         });
 
-        const response = await fetch(`/api/events/${params._id}`, {
-            method: 'PATCH', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                event: params
+        const { username, password } = this.props.admin.credentials;
+
+        API.adminUpdateEvent(username, password, { event: params })
+            .then(() => {
+                this.setState({
+                    loadingEventSave: false,
+                    submitted: true
+                });
             })
-        });
-        const body = await response.json();
-        if (body.status === 'success') {
-            this.setState({
-                loadingEventSave: false,
-                submitted: true
+            .catch(() => {
+                this.setState({
+                    loadingEventSave: false,
+                    submitted: false,
+                    eventSaveError: 'Oops, something went wrong'
+                });
             });
-        } else {
-            this.setState({
-                loadingEventSave: false,
-                submitted: false,
-                eventSaveError: body.data
-            });
-        }
     }
 
     onValidChange(isValid) {
@@ -266,4 +260,13 @@ class EditEvent extends Component {
     }
 }
 
-export default EditEvent;
+const mapStateToProps = state => ({
+    admin: state.admin
+});
+
+const mapDispatchToProps = dispatch => ({});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(EditEvent);

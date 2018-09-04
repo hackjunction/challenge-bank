@@ -7,6 +7,7 @@
         "apollo-cache-inmemory": "^1.2.5",
         "apollo-client": "^2.3.5",
         "apollo-link-http": "^1.5.4",
+        "bluebird": "^3.5.2",
         "formsy-react": "^1.1.4",
         "formsy-react-components": "^1.0.0",
         "graphql": "^0.13.2",
@@ -29,7 +30,9 @@
         "react-spinkit": "^3.0.0",
         "react-table": "^6.8.6",
         "react-timezone": "^2.1.0",
+        "react-tippy": "^1.2.2",
         "redux": "^4.0.0",
+        "redux-persist": "^5.10.0",
         "redux-thunk": "^2.3.0"
     },
     "scripts": {

@@ -153,6 +153,37 @@ const EventController = {
                 console.log('ERROR', error);
                 throw new Error('An unexpected error occurred while getting the event, please try again later');
             });
+    },
+
+    getEventsPublic: () => {
+        return mongoose
+            .model('Event')
+            .find({})
+            .select('-secretCode')
+            .then(events => {
+                return events;
+            })
+            .catch(error => {
+                console.log('ERROR', error);
+                throw new Error('An unexpected error occurred while getting events, please try again later');
+            });
+    },
+
+    getEventPublic: id => {
+        return mongoose
+            .model('Event')
+            .findById(id)
+            .select('-secretCode')
+            .then(event => {
+                if (!event) {
+                    throw new Error('An event with id ' + id + ' was not found');
+                }
+                return event;
+            })
+            .catch(error => {
+                console.log('ERROR', error);
+                throw new Error('An unexpected error occurred while getting the event, please try again later');
+            });
     }
 };
 
