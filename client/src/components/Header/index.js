@@ -1,10 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './style.css';
 
-export default () => (
+const Header = props => (
   <div className="header">
     <div className="junctionlogo" />
+    <div className="row userdata">
+      {props.user && props.user.username ? (
+        <React.Fragment>
+          <p>Logged in as: {props.user.username}</p>
+          <a href="/logout">Log out</a>
+        </React.Fragment>
+      ) : (
+        <a href="/login">Log in</a>
+      )}
+    </div>
     <div className="container">
       <div className="row">
         <div className="header-content">
@@ -20,3 +31,9 @@ export default () => (
     </div>
   </div>
 );
+
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+
+export default connect(mapStateToProps)(Header);
