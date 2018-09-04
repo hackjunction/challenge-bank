@@ -23,6 +23,11 @@ const SubmissionSchema = new Schema({
         type: String,
         required: true
     },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     reviewed: {
         type: Boolean,
         default: false

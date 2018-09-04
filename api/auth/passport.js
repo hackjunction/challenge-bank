@@ -29,17 +29,22 @@ passport.use(
 // User token authentication
 passport.use(
     'token',
-    new TokenStrategy(function(username, token, done) {
-        UserController.getUserWithToken(token)
-            .then(user => {
-                if (!user) {
-                    return done(null, false);
-                }
-
-                return done(null, user);
-            })
-            .catch(error => {
-                return done(error);
-            });
-    })
+    new LocalStrategy(
+        {
+            usernameField: 'token',
+            passwordField: 'token'
+        },
+        function(username, token, done) {
+            UserController.getUserWithToken(token)
+                .then(user => {
+                    if (!user) {
+                        return done(null, false);
+                    }
+                    return done(null, user);
+                })
+                .catch(error => {
+                    return done(error);
+                });
+        }
+    )
 );
