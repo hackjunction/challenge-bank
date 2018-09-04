@@ -72,7 +72,7 @@ class UserLogin extends Component {
         }
 
         return (
-            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-2 col-lg-4">
+            <div className="col-xs-12 col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-2 col-lg-4">
                 <h3>Log in / Register</h3>
                 <form>
                     <input
@@ -108,7 +108,7 @@ class UserLogin extends Component {
                         </button>
                     </div>
                 </form>
-                {this.state.error ? <p class="text-danger">{this.state.error}</p> : null}
+                {this.state.error ? <p className="text-danger">{this.state.error}</p> : null}
             </div>
         );
     }

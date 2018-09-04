@@ -20,6 +20,7 @@ const SubmissionController = {
 
     createSubmission: (user, data) => {
         data.user = user._id;
+        data.event = user.event;
         return mongoose
             .model('Submission')
             .create(data)

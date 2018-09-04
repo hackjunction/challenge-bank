@@ -26,14 +26,17 @@ class Challenge extends Component {
         this.setState({ answer: event.target.value });
     }
 
-    async onSubmit() {
+    async onSubmit(challenge) {
         this.setState({
             loading: true
         });
 
+        console.log('CHA', challenge);
+
         API.userCreateSubmission(this.props.user.token, {
             answer: this.state.answer,
-            challengeId: this.props.match.params.id
+            challengeId: this.props.match.params.id,
+            challengeDifficulty: challenge.challengeDifficulty.difficultyvalue
         })
             .then(submission => {
                 this.setState({
@@ -155,7 +158,7 @@ class Challenge extends Component {
                                 value={this.state.answer}
                                 placeholder={'Type your answer here'}
                             />
-                            <button className="Challenge--submit-button" onClick={this.onSubmit}>
+                            <button className="Challenge--submit-button" onClick={() => this.onSubmit(singleChallenge)}>
                                 Submit
                             </button>
                         </div>
