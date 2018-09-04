@@ -13,9 +13,7 @@ var express = require('express'),
 global.Promise = bluebird;
 mongoose.Promise = bluebird;
 mongoose.connect(
-  process.env.MONGODB_URI
-    ? process.env.MONGODB_URI
-    : 'mongodb://heroku_kpj537v3:2kb09vf00v7qd9baudppe28l7d@ds227325.mlab.com:27325/heroku_kpj537v3'
+  process.env.MONGODB_URI ? process.env.MONGODB_URI : 'localhost:27017'
 );
 
 app.use(bodyParser.urlencoded());
