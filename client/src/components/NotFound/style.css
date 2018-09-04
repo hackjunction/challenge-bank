@@ -1,0 +1,16 @@
+.NotFound {
+  margin: auto;
+  text-align: center;
+  padding: 10px;
+}
+
+.NotFound-text {
+  font-size: 20px;
+  padding: 30px;
+}
+.NotFound-link {
+  text-decoration: none;
+  color: gray;
+  font-weight: bold;
+  font-size: 22px;
+}

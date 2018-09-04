@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import Markdown from "react-markdown";
@@ -114,13 +115,15 @@ class Challenge extends Component {
   }
 
   render() {
-    const { error, loading, Challenge } = this.props.data;
+    const { error, loading } = this.props.data;
     const singleChallenge = _.find(this.props.data.allChallenges, challenge => {
       return challenge.id === this.props.match.params.id;
     });
 
     if (error) return <h1>Error fetching the challenge!</h1>;
     if (loading) return <h1>Loading challenge...</h1>;
+
+    if (!singleChallenge) return <Redirect to="/404" />;
 
     const categoryStyle = {
       color: `rgba(${Object.values(
