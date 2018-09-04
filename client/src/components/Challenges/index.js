@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import _ from "lodash";
+import { ClipLoader, BarLoader } from "react-spinners";
 import "./style.css";
 
 class Home extends Component {
@@ -167,10 +168,40 @@ class Home extends Component {
     }
   }
 
+  renderLoading() {
+    return (
+      <div className="loader">
+        <ClipLoader sizeUnit={"px"} size={80} color={"black"} />
+        <p>Loading Challenges...</p>
+      </div>
+    );
+  }
+
+  renderError() {
+    return (
+      <div className="error">
+        <h2>Something went wrong while fetching the challenges</h2>
+        <p>
+          <Link
+            to="/challenges"
+            onClick={() => window.location.reload()}
+            className="errorLink"
+          >
+            Try Again
+          </Link>
+          or maybe go back to
+          <Link to="/" className="errorLink">
+            Home Page
+          </Link>
+        </p>
+      </div>
+    );
+  }
+
   render() {
     const { error, loading } = this.props.data;
-    if (error) return <h1>Error fetching challenges!</h1>;
-    if (loading) return <h2>Loading challenges...</h2>;
+    if (error) return this.renderError();
+    if (loading) return this.renderLoading();
     return (
       <div className="container">
         <h5>Filter Challenges by Difficulty</h5>

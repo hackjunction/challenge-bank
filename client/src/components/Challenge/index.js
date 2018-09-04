@@ -6,6 +6,7 @@ import { graphql } from "react-apollo";
 import Markdown from "react-markdown";
 import "./style.css";
 import _ from "lodash";
+import { ClipLoader, BarLoader } from "react-spinners";
 
 class Challenge extends Component {
   constructor(props) {
@@ -114,14 +115,44 @@ class Challenge extends Component {
     }
   }
 
+  renderLoading() {
+    return (
+      <div className="loader">
+        <ClipLoader sizeUnit={"px"} size={80} color={"black"} />
+        <p>Loading Challenge...</p>
+      </div>
+    );
+  }
+
+  renderError() {
+    return (
+      <div className="error">
+        <h2>Something went wrong while fetching the challenge!</h2>
+        <p>
+          <Link
+            to={this.props.location}
+            onClick={() => window.location.reload()}
+            className="errorLink"
+          >
+            Try Again
+          </Link>
+          or maybe go back to
+          <Link to="/challenges" className="errorLink">
+            the Challenge List
+          </Link>
+        </p>
+      </div>
+    );
+  }
+
   render() {
     const { error, loading } = this.props.data;
     const singleChallenge = _.find(this.props.data.allChallenges, challenge => {
       return challenge.id === this.props.match.params.id;
     });
 
-    if (error) return <h1>Error fetching the challenge!</h1>;
-    if (loading) return <h1>Loading challenge...</h1>;
+    if (error) return this.renderError();
+    if (loading) return this.renderLoading();
 
     if (!singleChallenge) return <Redirect to="/404" />;
 
