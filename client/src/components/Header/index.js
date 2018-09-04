@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './style.css';
 
 class Header extends Component {
     render() {
+        const props = this.props;
         return (
             <div className="header">
                 <div className="junctionlogo" />
