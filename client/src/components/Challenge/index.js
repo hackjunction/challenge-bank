@@ -1,27 +1,35 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import gql from "graphql-tag";
-import { graphql } from "react-apollo";
-import Markdown from "react-markdown";
-import "./style.css";
-import _ from "lodash";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import Markdown from 'react-markdown';
+import './style.css';
+import _ from 'lodash';
 
 class Challenge extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      answer: "",
+      answer: '',
       submitted: false,
-      error: ""
+      error: ''
     };
 
     this.onAnswerChange = this.onAnswerChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onSeeDetails = this.onSeeDetails.bind(this);
   }
 
   onAnswerChange(event) {
     this.setState({ answer: event.target.value });
+  }
+
+  onSeeDetails() {
+    window.scrollTo({
+      top: 300,
+      behavior: 'smooth'
+    });
   }
 
   async onSubmit() {
@@ -29,11 +37,11 @@ class Challenge extends Component {
       loading: true
     });
 
-    const response = await fetch("/api/submissions", {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
+    const response = await fetch('/api/submissions', {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         submission: {
@@ -45,7 +53,7 @@ class Challenge extends Component {
 
     const body = await response.json();
 
-    if (body.status === "success") {
+    if (body.status === 'success') {
       this.setState({
         loading: false,
         submitted: true
@@ -70,6 +78,9 @@ class Challenge extends Component {
       );
     });
     if (filtered.length !== 0) {
+      filtered = _.reject(filtered, function(el) {
+        return el.name === singleChallenge.name;
+      }).slice(0, 4);
       return (
         <div className="row">
           <div className="grid">
@@ -82,7 +93,7 @@ class Challenge extends Component {
                       style={{
                         color: `rgba(${Object.values(
                           JSON.parse(challenge.challengeCategory.color)
-                        ).join(",")})`
+                        ).join(',')})`
                       }}
                     >
                       <b>{challenge.challengeCategory.name}</b>
@@ -95,7 +106,11 @@ class Challenge extends Component {
                   <p>{challenge.shortDescription}</p>
                 </div>
                 <div className="flexrow">
-                  <Link to={`/challenge/${challenge.id}`} className="grid-link">
+                  <Link
+                    to={`/challenge/${challenge.id}`}
+                    className="grid-link"
+                    onClick={this.onSeeDetails}
+                  >
                     See Details >
                   </Link>
                 </div>
@@ -125,7 +140,7 @@ class Challenge extends Component {
     const categoryStyle = {
       color: `rgba(${Object.values(
         JSON.parse(singleChallenge.challengeCategory.color)
-      ).join(",")})`
+      ).join(',')})`
     };
 
     return (
@@ -176,7 +191,7 @@ class Challenge extends Component {
                 className="Challenge--submit-answer"
                 onChange={this.onAnswerChange}
                 value={this.state.answer}
-                placeholder={"Type your answer here"}
+                placeholder={'Type your answer here'}
               />
               <button
                 className="Challenge--submit-button"
@@ -188,7 +203,7 @@ class Challenge extends Component {
           )}
         </div>
         <h1 className="Challenge--challenges">
-          See More {singleChallenge.challengeCategory.name} Challenges:
+          More challenges from this category:
         </h1>
         {this.renderChallenges()}
       </div>
