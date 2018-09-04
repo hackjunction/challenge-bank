@@ -13,11 +13,28 @@ module.exports = function(app) {
 
     //Public routes with no authentication
     app.get('/api/events', getEventsPublic);
+    app.get('/api/events/scores', getEventsWithScoresPublic);
     app.get('/api/events/:id', getEventPublic);
 };
 
 function getEventsPublic(req, res) {
     return EventController.getEventsPublic()
+        .then(events => {
+            return res.status(status.OK).send({
+                status: 'success',
+                data: events
+            });
+        })
+        .catch(error => {
+            return res.status(status.INTERNAL_SERVER_ERROR).send({
+                status: 'error'
+            });
+        });
+}
+
+function getEventsWithScoresPublic(req, res) {
+    //TODO!
+    return EventController.getEventsWithScoresPublic()
         .then(events => {
             return res.status(status.OK).send({
                 status: 'success',
