@@ -21,7 +21,7 @@ import AdminRoute from './components/auth/AdminRoute';
 class App extends Component {
     render() {
         const adminAuth = this.props.admin.credentials !== null;
-        const userAuth = this.props.user.user !== null;
+        const userAuth = this.props.user !== null;
 
         return (
             <Router>
@@ -35,8 +35,8 @@ class App extends Component {
                             <Route exact path="/admin/login" component={AdminLogin} />
 
                             {/* Requires participant login */}
-                            <UserRoute exact path="/challenges" component={Challenges} />
-                            <UserRoute path="/challenge/:id" component={Challenge} />
+                            <UserRoute exact path="/challenges" component={Challenges} isAuthenticated={userAuth} />
+                            <UserRoute path="/challenge/:id" component={Challenge} isAuthenticated={userAuth} />
 
                             {/* Requires admin login */}
                             <AdminRoute
@@ -74,7 +74,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
     admin: state.admin,
-    user: state.user
+    user: state.user.user
 });
 
 const mapDispatchToProps = dispatch => ({});

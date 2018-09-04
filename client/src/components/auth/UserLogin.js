@@ -61,6 +61,7 @@ class UserLogin extends Component {
     }
 
     render() {
+        console.log(this.props.user);
         if (this.props.user) {
             if (this.props.location && this.props.location.state) {
                 if (this.props.location.state.hasOwnProperty('onSuccess')) {
