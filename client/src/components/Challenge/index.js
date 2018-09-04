@@ -26,17 +26,21 @@ class Challenge extends Component {
         this.setState({ answer: event.target.value });
     }
 
-    async onSubmit(challenge) {
+    onSeeDetails() {
+        window.scrollTo({
+            top: 300,
+            behavior: 'smooth'
+        });
+    }
+
+    async onSubmit() {
         this.setState({
             loading: true
         });
 
-        console.log('CHA', challenge);
-
         API.userCreateSubmission(this.props.user.token, {
             answer: this.state.answer,
-            challengeId: this.props.match.params.id,
-            challengeDifficulty: challenge.challengeDifficulty.difficultyvalue
+            challengeId: this.props.match.params.id
         })
             .then(submission => {
                 this.setState({
@@ -62,6 +66,9 @@ class Challenge extends Component {
             return challenge.challengeCategory.name === singleChallenge.challengeCategory.name;
         });
         if (filtered.length !== 0) {
+            filtered = _.reject(filtered, function(el) {
+                return el.name === singleChallenge.name;
+            }).slice(0, 4);
             return (
                 <div className="row">
                     <div className="grid">
@@ -85,7 +92,11 @@ class Challenge extends Component {
                                     <p>{challenge.shortDescription}</p>
                                 </div>
                                 <div className="flexrow">
-                                    <Link to={`/challenge/${challenge.id}`} className="grid-link">
+                                    <Link
+                                        to={`/challenge/${challenge.id}`}
+                                        className="grid-link"
+                                        onClick={this.onSeeDetails()}
+                                    >
                                         See Details >
                                     </Link>
                                 </div>
@@ -158,13 +169,13 @@ class Challenge extends Component {
                                 value={this.state.answer}
                                 placeholder={'Type your answer here'}
                             />
-                            <button className="Challenge--submit-button" onClick={() => this.onSubmit(singleChallenge)}>
+                            <button className="Challenge--submit-button" onClick={this.onSubmit}>
                                 Submit
                             </button>
                         </div>
                     )}
                 </div>
-                <h1 className="Challenge--challenges">See More {singleChallenge.challengeCategory.name} Challenges:</h1>
+                <h1 className="Challenge--challenges">More challenges in this category:</h1>
                 {this.renderChallenges()}
             </div>
         );
