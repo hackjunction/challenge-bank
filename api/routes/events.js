@@ -13,7 +13,7 @@ module.exports = function(app) {
 
     //Public routes with no authentication
     app.get('/api/events', getEventsPublic);
-    app.get('/api/events', getEventPublic);
+    app.get('/api/events/:id', getEventPublic);
 };
 
 function getEventsPublic(req, res) {

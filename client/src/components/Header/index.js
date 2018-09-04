@@ -27,9 +27,7 @@ const Header = props => (
             risus lorem, commodo fringilla urna in, venenatis imperdiet mi.
           </p>
         </div>
-      </div>
     </div>
-  </div>
 );
 
 const mapStateToProps = state => ({

@@ -91,6 +91,7 @@ const DELETE = url => {
 };
 
 const API = {
+    /* ROUTES THAT REQUIRE ADMIN CREDENTIALS */
     adminLogin: (username, password) => {
         return GET(`/api/login/admin/?user=${username}&pass=${password}`);
     },
@@ -115,16 +116,50 @@ const API = {
         return DELETE(`/api/admin/events/${eventId}/?user=${username}&pass=${password}`);
     },
 
-    getEvents: () => {
-        return GET('/api/events');
+    adminGetSubmissions: (username, password) => {
+        return GET(`/api/admin/submissions/?user=${username}&pass=${password}`);
     },
 
+    adminGetSubmissionsForEvent: (username, password, eventId) => {
+        return GET(`/api/admin/event/submissions/${eventId}/?user=${username}&pass=${password}`);
+    },
+
+    adminGetSubmissionById: (username, password, submissionId) => {
+        return GET(`/api/admin/submissions/${submissionId}/?user=${username}&pass=${password}`);
+    },
+
+    /* ROUTES THAT REQUIRE USER TOKEN */
     userLogin: (username, password) => {
         return POST('/api/login', { username, password });
     },
 
     userSignup: (username, password, secret) => {
         return POST('/api/signup', { username, password, secret });
+    },
+
+    userGetSubmissions: token => {
+        return GET(`/api/user/submissions/?token=${token}`);
+    },
+
+    userGetSubmissionById: (token, submissionId) => {
+        return GET(`/api/user/submissions/${submissionId}/?token=${token}`);
+    },
+
+    userCreateSubmission: (token, submission) => {
+        const data = {
+            token,
+            submission
+        };
+        return POST(`/api/user/submissions/`, data);
+    },
+
+    /* PUBLIC ROUTES */
+    getEvents: () => {
+        return GET('/api/events');
+    },
+
+    getEvent: eventId => {
+        return GET(`/api/events/${eventId}`);
     }
 };
 
