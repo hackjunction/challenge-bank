@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-import { compose } from "react-apollo";
 import Markdown from "react-markdown";
 import "./style.css";
 import _ from "lodash";
@@ -155,6 +154,15 @@ class Challenge extends Component {
               source={singleChallenge.description}
               escapeHtml={false}
             />
+            {_.map(singleChallenge.attachments, attachment => (
+              <a
+                href={attachment.url}
+                download={attachment.fileName}
+                target="_blank"
+              >
+                {attachment.fileName}
+              </a>
+            ))}
           </div>
           {this.state.submitted ? (
             <div className="Challenge--submit">
@@ -202,6 +210,11 @@ export const allChallenges = gql`
       challengeDifficulty {
         name
         difficultyvalue
+      }
+      attachments {
+        id
+        fileName
+        url
       }
     }
     _allChallengesMeta {
