@@ -13,6 +13,10 @@ passport.use(
             passwordField: 'pass'
         },
         function(username, password, done) {
+            console.log(username);
+            console.log(password);
+            console.log('CORRECT USER', process.env.ADMIN_USERNAME);
+            console.log('CORRECT PASS', process.env.ADMIN_PASSWORD);
             if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
                 return done(null, {
                     user: {
