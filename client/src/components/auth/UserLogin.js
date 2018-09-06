@@ -3,6 +3,7 @@ import * as UserActions from '../../actions/user';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import API from '../../services/api';
+import './style.css';
 
 class UserLogin extends Component {
     constructor(props) {
@@ -12,7 +13,8 @@ class UserLogin extends Component {
             username: '',
             password: '',
             secret: '',
-            error: ''
+            error: '',
+            isLogin: true
         };
 
         this.onLogin = this.onLogin.bind(this);
@@ -61,7 +63,6 @@ class UserLogin extends Component {
     }
 
     render() {
-        console.log(this.props.user);
         if (this.props.user) {
             if (this.props.location && this.props.location.state) {
                 if (this.props.location.state.hasOwnProperty('onSuccess')) {
@@ -73,7 +74,16 @@ class UserLogin extends Component {
 
         return (
             <div className="col-xs-12 col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-2 col-lg-4">
-                <h3>Log in / Register</h3>
+                <h3>{this.state.isLogin ? 'Log in' : 'Sign up'}</h3>
+                {this.state.isLogin ? (
+                    <p className="link-text" onClick={() => this.setState({ isLogin: false })}>
+                        Don't have a user? Click here to sign up
+                    </p>
+                ) : (
+                    <p className="link-text" onClick={() => this.setState({ isLogin: true })}>
+                        Already have a user? Click here to log in
+                    </p>
+                )}
                 <form>
                     <input
                         type="text"
@@ -91,21 +101,26 @@ class UserLogin extends Component {
                         onChange={event => this.setState({ password: event.target.value })}
                         value={this.state.password}
                     />
-                    <input
-                        type="text"
-                        className="form-control"
-                        name="secret"
-                        placeholder="The secret code for your event"
-                        onChange={event => this.setState({ secret: event.target.value })}
-                        value={this.state.secret}
-                    />
+                    {this.state.isLogin ? null : (
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="secret"
+                            placeholder="The secret code for your event"
+                            onChange={event => this.setState({ secret: event.target.value })}
+                            value={this.state.secret}
+                        />
+                    )}
                     <div className="pull-right">
-                        <button type="submit" className="btn btn-default" onClick={this.onLogin}>
-                            Login
-                        </button>
-                        <button type="submit" className="btn btn-info" onClick={this.onSignup}>
-                            Sign up
-                        </button>
+                        {this.state.isLogin ? (
+                            <button type="submit" className="btn btn-default" onClick={this.onLogin}>
+                                Login
+                            </button>
+                        ) : (
+                            <button type="submit" className="btn btn-info" onClick={this.onSignup}>
+                                Sign up
+                            </button>
+                        )}
                     </div>
                 </form>
                 {this.state.error ? <p className="text-danger">{this.state.error}</p> : null}

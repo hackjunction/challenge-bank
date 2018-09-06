@@ -1,6 +1,22 @@
 .userdata {
-  position: absolute;
-  right: 5rem;
-  top: 1rem;
-  color: white;
+    position: absolute;
+    right: 5rem;
+    top: 1rem;
+    color: white;
+}
+
+.header-content {
+    height: 120px;
+    position: relative;
+}
+
+.header-event-name {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.Header--logged-in-as {
+    margin-bottom: 0;
 }

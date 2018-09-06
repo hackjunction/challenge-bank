@@ -13,7 +13,7 @@ class UserBlock extends Component {
             <div className="UserBlock--wrapper">
                 <span className="UserBlock--name">{this.props.username}</span>
                 <div className="UserBlock--logout-wrapper">
-                    <span className="UserBlock--logout-button">Log out</span>
+                    <span className="UserBlock--logout-button">Log outtttt</span>
                 </div>
             </div>
         );
