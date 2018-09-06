@@ -71,7 +71,6 @@ class Header extends Component {
                             <Link to={`/`}>
                                 <h2>CHALLENGE BANK</h2>
                             </Link>
-                            <h5 className="header-event-name">{'TechRace Helsinki'}</h5>
                         </div>
                     </div>
                 </div>
