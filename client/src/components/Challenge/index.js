@@ -38,9 +38,14 @@ class Challenge extends Component {
             loading: true
         });
 
+        const singleChallenge = _.find(this.props.data.allChallenges, challenge => {
+            return challenge.id === this.props.match.params.id;
+        });
+
         API.userCreateSubmission(this.props.user.token, {
             answer: this.state.answer,
-            challengeId: this.props.match.params.id
+            challengeId: this.props.match.params.id,
+            challengeDifficulty: singleChallenge.challengeDifficulty.difficultyvalue
         })
             .then(submission => {
                 this.setState({

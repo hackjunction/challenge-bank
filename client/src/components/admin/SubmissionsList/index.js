@@ -2,143 +2,170 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import { connect } from 'react-redux';
+import Spinner from 'react-spinkit';
+import * as EventActions from '../../../actions/events';
+import * as SubmissionsActions from '../../../actions/submissions';
 import './style.css';
 import API from '../../../services/api';
 
 import SubmissionsTable from './SubmissionsTable';
+import SelectedSubmission from './SelectedSubmission';
 
 class SubmissionsList extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            loading: false,
-            submissions: [],
-            difficulties: []
+            challengeMap: {},
+            difficulties: [],
+            categories: [],
+            selectedSubmission: null
         };
-        this.renderDifficultyfilters = this.renderDifficultyfilters.bind(this);
-        this.checkDifficulty = this.checkDifficulty.bind(this);
+
+        this.setSelected = this.setSelected.bind(this);
+        this.clearSelected = this.clearSelected.bind(this);
+    }
+
+    async componentWillMount() {
+        const { username, password } = this.props.admin.credentials;
+        const { eventId } = this.props.match.params;
+        let event = this.findEvent(eventId, this.props.events);
+
+        if (!event) {
+            const { username, password } = this.props.admin.credentials;
+            this.props.getEvents(username, password);
+        }
+
+        this.props.getSubmissions(username, password, eventId);
+    }
+
+    findEvent(eventId, events = []) {
+        return _.find(events, event => {
+            return event._id === eventId;
+        });
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data && !nextProps.data.loading) {
-            this.getSubmissions();
+        if (nextProps.data.allChallenges !== this.props.data.allChallenges) {
+            this.updateChallengeMap(nextProps.data.allChallenges);
         }
     }
 
-    async getSubmissions() {
+    updateChallengeMap(challenges) {
+        const challengeMap = {};
+        const difficulties = [];
+        const categories = [];
+
+        const c = _.filter(challenges, challenge => {
+            if (!challenge.challengeDifficulty) {
+                console.log('NO DIFFICULTY', challenge);
+                return false;
+            }
+
+            if (!challenge.challengeCategory) {
+                console.log('NO CATEGORY', challenge);
+                return false;
+            }
+
+            return true;
+        });
+
+        _.each(c, challenge => {
+            challengeMap[challenge.id] = challenge;
+            difficulties.push(challenge.challengeDifficulty.name);
+            categories.push(challenge.challengeCategory.name);
+        });
+
         this.setState({
-            loading: true
+            challengeMap,
+            difficulties: _.uniq(difficulties),
+            categories: _.uniq(categories)
+        });
+    }
+
+    mapChallengesToSubmissions(submissions) {
+        return _.map(submissions, submission => {
+            submission.challenge = this.state.challengeMap[submission.challengeId];
+            return submission;
+        });
+    }
+
+    setSelected(submission) {
+        this.setState({
+            selectedSubmission: submission
+        });
+    }
+
+    clearSelected(submission) {
+        this.setState({
+            selectedSubmission: null
         });
 
         const { username, password } = this.props.admin.credentials;
+        const { eventId } = this.props.match.params;
 
-        API.adminGetSubmissions(username, password)
-            .then(submissions => {
-                this.setState({
-                    loading: false,
-                    error: null,
-                    submissions: this.mapSubmissionsToChallenges(submissions)
-                });
-            })
-            .catch(error => {
-                this.setState({
-                    loading: false,
-                    error: 'Oops, something went wrong...'
-                });
-            });
-    }
-
-    mapSubmissionsToChallenges(submissions) {
-        const mapped = _.map(submissions, submission => {
-            const challenge = _.find(this.props.data.allChallenges, challenge => {
-                return challenge.id === submission.challengeId;
-            });
-
-            submission.challenge = challenge;
-            return submission;
-        });
-
-        return _.filter(mapped, m => typeof m.challenge != 'undefined');
-    }
-
-    checkDifficulty(difficulty) {
-        if (this.state.difficulties.includes(difficulty)) {
-            this.setState({
-                difficulties: _.pull(this.state.difficulties, difficulty)
-            });
-        } else {
-            this.setState({
-                difficulties: _.concat(this.state.difficulties, difficulty)
-            });
-        }
-    }
-
-    renderDifficultyfilters() {
-        const allDifficulties = _.uniq(
-            _.map(
-                _.sortBy(_.map(this.props.data.allChallenges, 'challengeDifficulty'), [
-                    function(o) {
-                        if (o) {
-                            return o.difficultyvalue;
-                        }
-                    }
-                ]),
-                difficulty => {
-                    if (difficulty && difficulty.name) {
-                        return difficulty.name;
-                    }
-                }
-            )
-        );
-        return _.map(allDifficulties, filter => {
-            if (filter) {
-                return (
-                    <label className="filteritem">
-                        <div className="checkboxcontainer">
-                            <input
-                                type="checkbox"
-                                checked={this.state.difficulties.includes(filter)}
-                                onChange={() => this.checkDifficulty(filter)}
-                            />
-                            <span className="checkmark" />
-                        </div>
-                        {filter}
-                    </label>
-                );
-            }
-        });
+        this.props.getSubmissions(username, password, eventId);
     }
 
     render() {
-        let filtered;
-        const { submissions } = this.state;
-        if (this.state.difficulties.length === 0) {
-            filtered = _.filter(submissions, submission => {
-                return submission.challenge.challengeDifficulty;
-            });
-            console.log(_.difference(submissions, filtered));
-        } else {
-            filtered = _.filter(submissions, submission => {
-                if (submission.challenge.challengeDifficulty) {
-                    return (
-                        this.state.difficulties.includes(submission.challenge.challengeDifficulty.name) &&
-                        submission.challenge.challengeDifficulty
-                    );
-                }
-            });
+        const { eventId } = this.props.match.params;
+        const event = this.findEvent(eventId, this.props.events);
+
+        if (!this.props.eventsLoading && !event) {
+            return (
+                <div>
+                    <h1>Event not found</h1>
+                </div>
+            );
         }
+
+        const loading = this.props.submissionsLoading || this.props.eventsLoading || this.props.data.loading;
+        const submissions = this.mapChallengesToSubmissions(this.props.submissions[eventId]);
+
         return (
-            <div className="SubmissionsList--container">
-                <div className="SubmissionsTable--wrapper">
-                    <h1 className="SubmissionsList--title">Submissions</h1>
-                    <div className="filterboxes">{this.renderDifficultyfilters()}</div>
-                    <SubmissionsTable data={filtered} />
+            <div>
+                <div className="SubmissionsList--container col-xs-12">
+                    <div className="SubmissionsList--header">
+                        <div className="top">
+                            <h1 className="title">Submissions</h1>
+                            {loading ? <Spinner name="circle" fadeIn="quarter" /> : null}
+                        </div>
+                        <div className="bottom">
+                            <h5>{event.eventName + ' | ' + submissions.length + ' submissions'}</h5>
+                        </div>
+                    </div>
+                    <div className="SubmissionsList--selected">
+                        <SelectedSubmission
+                            submission={this.state.selectedSubmission}
+                            adminUsername={this.props.admin.credentials.username}
+                            adminPassword={this.props.admin.credentials.password}
+                            onClose={this.clearSelected}
+                            onClear={() => this.setState({ selectedSubmission: null })}
+                        />
+                    </div>
+                    {!loading ? <SubmissionsTable data={submissions} onSelect={this.setSelected} /> : null}
                 </div>
             </div>
         );
     }
 }
+
+const mapStateToProps = state => ({
+    admin: state.admin,
+    submissions: state.submissions.submissions,
+    submissionsLoading: state.submissions.loading,
+    submissionsError: state.submissions.error,
+    events: state.events.events,
+    eventsLoading: state.events.loading,
+    eventsError: state.events.error
+});
+
+const mapDispatchToProps = dispatch => ({
+    getEvents: (username, password) => dispatch(EventActions.getEvents(username, password)),
+    getSubmissions: (username, password, eventId) =>
+        dispatch(SubmissionsActions.getSubmissionsForEvent(username, password, eventId))
+});
 
 export const allChallenges = gql`
     query allChallenges {
@@ -163,4 +190,7 @@ export const allChallenges = gql`
     }
 `;
 
-export default graphql(allChallenges)(SubmissionsList);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(graphql(allChallenges)(SubmissionsList));

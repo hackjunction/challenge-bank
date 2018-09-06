@@ -18,6 +18,16 @@ const SubmissionController = {
         return mongoose.model('Submission').findById(submissionId);
     },
 
+    reviewSubmission: (submissionId, decision, feedback) => {
+        if ([0, 1, 2, 3].indexOf(decision) === -1) {
+            throw new Error('Invalid decision');
+        }
+
+        return mongoose
+            .model('Submission')
+            .findByIdAndUpdate(submissionId, { reviewStatus: decision, reviewFeedback: feedback }, { new: true });
+    },
+
     createSubmission: (user, data) => {
         data.user = user._id;
         data.event = user.event;

@@ -29,6 +29,7 @@
         "react-scripts": "1.1.4",
         "react-spinkit": "^3.0.0",
         "react-table": "^6.8.6",
+        "react-timeago": "^4.1.9",
         "react-timezone": "^2.1.0",
         "react-tippy": "^1.2.2",
         "redux": "^4.0.0",

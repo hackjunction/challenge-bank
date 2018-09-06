@@ -12,6 +12,7 @@ module.exports = function(app) {
         getSubmissionsForEvent
     );
     app.get('/api/admin/submissions/:id', passport.authenticate('admin', { session: false }), getSubmissionById);
+    app.post('/api/admin/submissions/:id', passport.authenticate('admin', { session: false }), reviewSubmission);
 
     // Requires token auth
     app.get('/api/user/submissions/', passport.authenticate('token', { session: false }), getUserSubmissions);
@@ -67,6 +68,23 @@ function getSubmissionById(req, res) {
     });
 }
 
+function reviewSubmission(req, res) {
+    console.log(req.body);
+    return SubmissionController.reviewSubmission(req.params.id, req.body.decision, req.body.feedback)
+        .then(submission => {
+            return res.status(status.OK).send({
+                status: 'success',
+                data: submission
+            });
+        })
+        .catch(error => {
+            console.log('ERROR', error);
+            return res.status(status.INTERNAL_SERVER_ERROR).send({
+                status: 'error'
+            });
+        });
+}
+
 function getUserSubmissions(req, res) {
     return SubmissionController.getUserSubmissions(req.user)
         .then(submissions => {
@@ -98,6 +116,7 @@ function getUserSubmissionById(req, res) {
 }
 
 function createSubmission(req, res) {
+    console.log('SUBMISSION', req.body);
     return SubmissionController.createSubmission(req.user, req.body.submission)
         .then(submission => {
             return res.status(status.OK).send({

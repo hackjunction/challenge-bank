@@ -26,11 +26,9 @@ class AdminLogin extends Component {
 
         API.adminLogin(this.state.username, this.state.password)
             .then(data => {
-                console.log('DATA', data);
                 this.props.storeAdminCredentials(this.state.username, this.state.password);
             })
             .catch(error => {
-                console.log('ERROR', error);
                 this.setState({
                     error: 'Something went wrong, please try again'
                 });
@@ -44,7 +42,7 @@ class AdminLogin extends Component {
                     return <Redirect to={{ pathname: this.props.location.state.onSuccess }} />;
                 }
             }
-            return <Redirect to={{ pathname: '/admin/events' }} />;
+            return <Redirect to={{ pathname: '/admin/' }} />;
         }
 
         return (
@@ -53,7 +51,7 @@ class AdminLogin extends Component {
                 <form onSubmit={this.onSubmit}>
                     <input
                         type="text"
-                        class="form-control"
+                        className="form-control"
                         name="username"
                         placeholder="Username"
                         onChange={event => this.setState({ username: event.target.value })}
@@ -61,7 +59,7 @@ class AdminLogin extends Component {
                     />
                     <input
                         type="password"
-                        class="form-control"
+                        className="form-control"
                         name="password"
                         placeholder="Password"
                         onChange={event => this.setState({ password: event.target.value })}

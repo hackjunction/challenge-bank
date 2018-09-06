@@ -7027,6 +7027,10 @@ react-test-renderer@^16.0.0-0:
     prop-types "^15.6.0"
     react-is "^16.4.2"
 
+react-timeago@^4.1.9:
+  version "4.1.9"
+  resolved "https://registry.yarnpkg.com/react-timeago/-/react-timeago-4.1.9.tgz#a5dee4ac072299a9a5ca5a61f56177a80f83c1fb"
+
 react-timezone@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/react-timezone/-/react-timezone-2.1.0.tgz#4e730ad5da4f74d832031effdc4cb75f88a5badd"

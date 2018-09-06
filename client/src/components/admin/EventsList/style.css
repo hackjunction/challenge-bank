@@ -21,3 +21,22 @@
     background: white;
     padding: 20px;
 }
+
+.EventsList--header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.EventsList--header .left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.EventsList--title {
+    margin: 0;
+    margin-right: 20px;
+}

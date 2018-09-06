@@ -1,49 +1,122 @@
+.SubmissionsList--header .top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.SubmissionsList--header .title {
+    margin-right: 20px;
+    margin-bottom: 0;
+}
+
 .SubmissionsList--item {
-  border: 1px solid gray;
-  padding: 1rem;
+    border: 1px solid gray;
+    padding: 1rem;
 }
 
 .SubmissionsList--item-row {
 }
 
 .SubmissionsList--item-options {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .SubmissionsList--item-options button {
-  margin-left: 1rem;
+    margin-left: 1rem;
 }
 
 .SubmissionsTable--wrapper {
-  padding: 2rem;
+    padding: 2rem;
 }
 
 .SubmissionsTable--options {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .SubmissionsTable--option {
-  text-decoration: underline;
-  margin: 0 5px;
+    text-decoration: underline;
+    margin: 0 5px;
 }
 
 .SubmissionsTable--option.decline {
-  color: red;
+    color: red;
 }
 
 .SubmissionsTable--option.accept {
-  color: green;
+    color: green;
+}
+
+.SubmissionsTable--option.review {
+    text-decoration: underline;
+    color: green;
+    cursor: pointer;
 }
 
 .ReactTable {
-  margin-bottom: 5rem;
+    margin-bottom: 5rem;
 }
 
 .tippy-popper {
-  border-radius: 0px !important;
+    border-radius: 0px !important;
+}
+
+.SelectedSubmission--wrapper {
+    border: 1px solid gray;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.SelectedSubmission--row {
+    display: flex;
+    flex-direction: row;
+}
+
+.SelectedSubmission--row-title {
+    min-width: 200px;
+    background: #eeeeee;
+    padding: 20px;
+}
+
+.SelectedSubmission--row-content {
+    flex: 1;
+    padding: 20px;
+    border-top: 1px solid #eeeeee;
+}
+
+.SelectedSubmission--close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.SelectedSubmission--close-button {
+    padding: 5px 20px;
+    margin: 0;
+    background: #eeeeee;
+    transition: background 0.3s ease;
+}
+
+.SelectedSubmission--close-button:hover {
+    background: #cccccc;
+}
+
+.SelectedSubmission--review-feedback {
+    padding: 10px;
+    flex: 1;
+}
+
+.SelectedSubmission--review-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.SelectedSubmission--review-option {
+    margin-left: 10px;
 }

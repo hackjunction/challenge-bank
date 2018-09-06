@@ -4,66 +4,25 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 import { confirmAlert } from 'react-confirm-alert';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import './style.css';
-import API from '../../../services/api';
+import * as EventActions from '../../../actions/events';
 
 class EventsList extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            loading: false,
-            events: []
-        };
-
         this.handleDelete = this.handleDelete.bind(this);
     }
 
-    async componentWillMount() {
-        this.getEvents();
+    componentWillMount() {
+        const { username, password } = this.props.admin.credentials;
+        this.props.getEvents(username, password);
     }
 
-    async getEvents(event) {
-        this.setState({
-            loading: true
-        });
-
+    deleteEvent(event) {
         const { username, password } = this.props.admin.credentials;
-
-        API.adminGetEvents(username, password)
-            .then(events => {
-                this.setState({
-                    loading: false,
-                    events,
-                    error: null
-                });
-            })
-            .catch(error => {
-                this.setState({
-                    loading: false,
-                    error: 'Oops, something went wrong'
-                });
-            });
-    }
-
-    async deleteEvent(event) {
-        this.setState({
-            loading: true
-        });
-
-        const { username, password } = this.props.admin.credentials;
-
-        API.adminDeleteEvent(username, password, event._id)
-            .then(() => {
-                this.getEvents();
-            })
-            .catch(error => {
-                this.setState({
-                    loading: false,
-                    error: 'Oops, something went wrong'
-                });
-            });
+        this.props.deleteEvent(username, password, event._id);
     }
 
     handleDelete(e, event) {
@@ -100,7 +59,7 @@ class EventsList extends Component {
     }
 
     renderEvents() {
-        return _.map(this.state.events, event => {
+        return _.map(this.props.events, event => {
             return (
                 <tr key={event._id}>
                     <th scope="row">{event.eventName}</th>
@@ -113,9 +72,9 @@ class EventsList extends Component {
                     </td>
                     <td>
                         <div className="EventsList--options-wrapper">
-                            <a className="EventsList--options-button" href={`/admin/events/edit/${event._id}`}>
+                            <Link className="EventsList--options-button" to={`/admin/events/edit/${event._id}`}>
                                 Edit
-                            </a>
+                            </Link>
                             <a
                                 className="EventsList--options-button text-danger"
                                 href=""
@@ -125,27 +84,33 @@ class EventsList extends Component {
                             </a>
                         </div>
                     </td>
+                    <td>
+                        <div className="EventsList--options-wrapper">
+                            <Link className="EventsList--options-button" to={`/admin/submissions/${event._id}`}>
+                                View submissions
+                            </Link>
+                        </div>
+                    </td>
                 </tr>
             );
         });
     }
 
     render() {
-        if (this.state.loading) {
-            return (
-                <div className="EventsList--loading container">
-                    <h3>Loading events</h3>
-                    <Spinner name="circle" />
-                </div>
-            );
-        }
-
         return (
             <div className="EventsList--container container">
-                <h1 className="EventsList--title">All Events</h1>
-                {this.state.error ? (
+                <div className="EventsList--header">
+                    <div className="left">
+                        <h1 className="EventsList--title">All Events</h1>
+                        {this.props.eventsLoading ? <Spinner name="circle" fadeIn="quarter" /> : null}
+                    </div>
+                    <Link className="btn btn-default" to="/admin/events/create">
+                        Create new event
+                    </Link>
+                </div>
+                {this.props.eventsError ? (
                     <div className="alert alert-danger" role="alert">
-                        {this.state.error + ' - Refresh the page to try again'}
+                        {'Something went wrong while getting events - refresh the page to try again'}
                     </div>
                 ) : null}
                 <table className="table">
@@ -155,6 +120,7 @@ class EventsList extends Component {
                             <th scope="col">Location</th>
                             <th scope="col">Start Time</th>
                             <th scope="col">Options</th>
+                            <th scope="col">Submissions</th>
                         </tr>
                     </thead>
                     <tbody>{this.renderEvents()}</tbody>
@@ -165,10 +131,16 @@ class EventsList extends Component {
 }
 
 const mapStateToProps = state => ({
-    admin: state.admin
+    admin: state.admin,
+    events: state.events.events,
+    eventsLoading: state.events.loading,
+    eventsError: state.events.error
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+    getEvents: (username, password) => dispatch(EventActions.getEvents(username, password)),
+    deleteEvent: (username, password, eventId) => dispatch(EventActions.deleteEvent(username, password, eventId))
+});
 
 export default connect(
     mapStateToProps,

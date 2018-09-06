@@ -7,6 +7,7 @@ import Header from './components/Header/';
 import Challenges from './components/Challenges/';
 import Challenge from './components/Challenge/';
 import Lander from './components/Lander/';
+import NotFound from './components/NotFound/';
 
 import UserLogin from './components/auth/UserLogin';
 import UserRoute from './components/auth/UserRoute';
@@ -41,12 +42,6 @@ class App extends Component {
                             {/* Requires admin login */}
                             <AdminRoute
                                 exact
-                                path="/admin/events"
-                                component={AdminEventsList}
-                                isAuthenticated={adminAuth}
-                            />
-                            <AdminRoute
-                                exact
                                 path="/admin/events/create"
                                 component={AdminCreateEvent}
                                 isAuthenticated={adminAuth}
@@ -58,12 +53,13 @@ class App extends Component {
                                 isAuthenticated={adminAuth}
                             />
                             <AdminRoute
-                                exact
-                                path="/admin/submissions"
+                                path="/admin/submissions/:eventId"
                                 component={AdminSubmissionsList}
                                 isAuthenticated={adminAuth}
                             />
+                            <AdminRoute exact path="/admin/" component={AdminEventsList} isAuthenticated={adminAuth} />
                             {/* Other routes (404, etc...) */}
+                            <Route component={NotFound} isAdmin={adminAuth} isUser={userAuth} />
                         </Switch>
                     </main>
                 </div>

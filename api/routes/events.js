@@ -128,6 +128,7 @@ function updateEvent(req, res) {
 }
 
 function deleteEvent(req, res) {
+    console.log('DELETING EVENT', req.params.id);
     return EventController.deleteEvent(req.params.id)
         .then(event => {
             return res.status(status.OK).send({

@@ -37,13 +37,13 @@ const SubmissionSchema = new Schema({
         ref: 'User',
         required: true
     },
-    reviewed: {
-        type: Boolean,
-        default: false
+    reviewStatus: {
+        type: Number,
+        default: 0
     },
-    accepted: {
-        type: Boolean,
-        default: false
+    reviewFeedback: {
+        type: String,
+        default: ''
     }
 });
 

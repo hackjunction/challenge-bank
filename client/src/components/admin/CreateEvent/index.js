@@ -5,6 +5,7 @@ import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min
 import { Form, Input } from 'formsy-react-components';
 import { connect } from 'react-redux';
 import API from '../../../services/api';
+import { Link } from 'react-router-dom';
 import './style.css';
 
 class CreateEvent extends Component {
@@ -68,6 +69,7 @@ class CreateEvent extends Component {
                     <div className="alert alert-success" role="alert">
                         Event created!
                     </div>
+                    <Link to="/admin">Back to events list</Link>
                 </div>
             );
         }

@@ -8,12 +8,18 @@ import { Link } from 'react-router-dom';
 import 'react-tippy/dist/tippy.css';
 import { Tooltip } from 'react-tippy';
 import Markdown from 'react-markdown';
+import TimeAgo from 'react-timeago';
+import ReviewConstants from '../../../constants/review';
 
 class SubmissionsTable extends React.Component {
     constructor(props) {
         super(props);
         this.renderDesc = this.renderDesc.bind(this);
         this.renderTooltip = this.renderTooltip.bind(this);
+    }
+
+    onSelect(props) {
+        this.props.onSelect(props);
     }
 
     renderTooltip(title, desc) {
@@ -73,7 +79,11 @@ class SubmissionsTable extends React.Component {
                     },
                     {
                         Header: 'Time',
-                        accessor: 'timestamp'
+                        id: 'timestamp',
+                        accessor: 'timestamp',
+                        Cell: props => {
+                            return <TimeAgo date={props.row.timestamp} />;
+                        }
                     }
                 ]
             },
@@ -81,10 +91,18 @@ class SubmissionsTable extends React.Component {
                 Header: 'Review',
                 columns: [
                     {
-                        Header: 'Correct answer',
-                        id: 'correctAnswer',
+                        Header: 'Status',
+                        id: 'reviewStatus',
                         accessor: d => {
-                            return this.renderTooltip(d.challenge.answer, d.challenge.answer);
+                            if (ReviewConstants.Status.hasOwnProperty(d.reviewStatus)) {
+                                return (
+                                    <div className="SubmissionsTable--options">
+                                        <span className="SubmissionsTable--review-status">
+                                            {ReviewConstants.Status[d.reviewStatus].name}
+                                        </span>
+                                    </div>
+                                );
+                            }
                         }
                     },
                     {
@@ -93,8 +111,12 @@ class SubmissionsTable extends React.Component {
                         Cell: props => {
                             return (
                                 <div className="SubmissionsTable--options">
-                                    <a className="SubmissionsTable--option decline">Decline</a>
-                                    <a className="SubmissionsTable--option accept">Accept</a>
+                                    <span
+                                        className="SubmissionsTable--option review"
+                                        onClick={() => this.onSelect(props.row._original)}
+                                    >
+                                        Review
+                                    </span>
                                 </div>
                             );
                         }
@@ -104,13 +126,15 @@ class SubmissionsTable extends React.Component {
         ];
 
         return (
-            <div className="col-xs-12">
-                <ReactTable
-                    data={this.props.data}
-                    columns={COLUMNS}
-                    defaultPageSize={10}
-                    className="-striped -highlight"
-                />
+            <div className="row">
+                <div className="col-xs-12">
+                    <ReactTable
+                        data={this.props.data}
+                        columns={COLUMNS}
+                        defaultPageSize={10}
+                        className="-striped -highlight"
+                    />
+                </div>
             </div>
         );
     }
