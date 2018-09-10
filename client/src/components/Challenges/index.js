@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import { ClipLoader, BarLoader } from 'react-spinners';
 import _ from 'lodash';
 import './style.css';
+import { connect } from 'react-redux';
 
 class Home extends Component {
   constructor(props) {
@@ -105,7 +106,6 @@ class Home extends Component {
       filtered = _.filter(this.props.data.allChallenges, challenge => {
         return challenge.challengeCategory && challenge.challengeDifficulty;
       });
-      console.log(_.difference(this.props.data.allChallenges, filtered));
     } else {
       filtered = _.filter(this.props.data.allChallenges, challenge => {
         if (challenge.challengeDifficulty) {
@@ -201,10 +201,15 @@ class Home extends Component {
 
   render() {
     const { error, loading } = this.props.data;
+    const { submissions } = this.props;
     if (error) return this.renderError();
     if (loading) return this.renderLoading();
     return (
       <div className="container">
+        <h5>Your own submissions</h5>
+        {_.map(submissions, submission => (
+          <p>{submission[0].answer}</p>
+        ))}
         <h5>Filter Challenges by Difficulty</h5>
         <div className="filterboxes">{this.renderDifficultyfilters()}</div>
         <h5>Filter Challenges by Category</h5>
@@ -214,6 +219,11 @@ class Home extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user.user,
+  submissions: state.submissions.submissions
+});
 
 export const allChallenges = gql`
   query allChallenges {
@@ -237,4 +247,4 @@ export const allChallenges = gql`
   }
 `;
 
-export default graphql(allChallenges)(Home);
+export default connect(mapStateToProps)(graphql(allChallenges)(Home));
