@@ -13,12 +13,18 @@ class Home extends Component {
     super(props);
     this.state = {
       difficulties: [],
-      categories: []
+      categories: [],
+      showOwn: false
     };
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
     this.props.userGetSubmissions(this.props.user.token);
+  }
+
+  handleClick(boolean) {
+    this.setState({ showOwn: boolean });
   }
 
   checkDifficulty(difficulty) {
@@ -211,40 +217,47 @@ class Home extends Component {
     if (loading) return this.renderLoading();
     return (
       <div className="container">
-        {submissions.length !== 0
-          ? (console.log(submissions),
-            (
-              <React.Fragment>
-                <h5>Your own submissions</h5>
-                <div className="row">
-                  <div className="grid">
-                    {_.map(submissions.undefined, submission => (
-                      <div className="grid-item">
-                        <div className="grid-content">
-                          <React.Fragment>
-                            <h5>
-                              {_.result(
-                                _.find(this.props.data.allChallenges, function(
-                                  obj
-                                ) {
-                                  return obj.id === submission.challengeId;
-                                }),
-                                'name'
-                              )}
-                            </h5>
-                            {console.log(submission)}
-                            <p>Your answer: {submission.answer}</p>
-                            <p>Feedback: {submission.reviewFeedback}</p>
-                            <p>Status: {submission.reviewStatus}</p>
-                          </React.Fragment>
-                        </div>
-                      </div>
-                    ))}
+        {this.state.showOwn ? (
+          <h5 onClick={() => this.handleClick(false)}>Hide own submissions</h5>
+        ) : (
+          <h5 onClick={() => this.handleClick(true)}>Show own submissions</h5>
+        )}
+        {submissions.length !== 0 && this.state.showOwn ? (
+          <React.Fragment>
+            <div className="row">
+              <div className="grid">
+                {_.map(submissions.undefined, submission => (
+                  <div className="grid-item">
+                    <div className="grid-content">
+                      <React.Fragment>
+                        <h5>
+                          {_.result(
+                            _.find(this.props.data.allChallenges, function(
+                              obj
+                            ) {
+                              return obj.id === submission.challengeId;
+                            }),
+                            'name'
+                          )}
+                        </h5>
+                        {console.log(submission)}
+                        <p>Your answer: {submission.answer}</p>
+                        <p>Feedback: {submission.reviewFeedback}</p>
+                        <p>Status: {submission.reviewStatus}</p>
+                        <Link
+                          to={`/challenge/${submission.challengeId}`}
+                          className="grid-link"
+                        >
+                          See challenge >
+                        </Link>
+                      </React.Fragment>
+                    </div>
                   </div>
-                </div>
-              </React.Fragment>
-            ))
-          : null}
+                ))}
+              </div>
+            </div>
+          </React.Fragment>
+        ) : null}
         <h5>Filter Challenges by Difficulty</h5>
         <div className="filterboxes">{this.renderDifficultyfilters()}</div>
         <h5>Filter Challenges by Category</h5>
