@@ -6,6 +6,7 @@ import { ClipLoader, BarLoader } from 'react-spinners';
 import _ from 'lodash';
 import './style.css';
 import { connect } from 'react-redux';
+import * as SubmissionsActions from '../../actions/submissions';
 
 class Home extends Component {
   constructor(props) {
@@ -14,6 +15,10 @@ class Home extends Component {
       difficulties: [],
       categories: []
     };
+  }
+
+  componentDidMount() {
+    this.props.userGetSubmissions(this.props.user.token);
   }
 
   checkDifficulty(difficulty) {
@@ -227,6 +232,7 @@ class Home extends Component {
                                 'name'
                               )}
                             </h5>
+                            {console.log(submission)}
                             <p>Answer: {submission[0].answer}</p>
                             <p>Feedback: {submission[0].reviewFeedback}</p>
                             <p>Status: {submission[0].reviewStatus}</p>
@@ -254,6 +260,11 @@ const mapStateToProps = state => ({
   submissions: state.submissions.submissions
 });
 
+const mapDispatchToProps = dispatch => ({
+  userGetSubmissions: token =>
+    dispatch(SubmissionsActions.userGetSubmissions(token))
+});
+
 export const allChallenges = gql`
   query allChallenges {
     allChallenges(filter: { isPublished: true }) {
@@ -276,4 +287,7 @@ export const allChallenges = gql`
   }
 `;
 
-export default connect(mapStateToProps)(graphql(allChallenges)(Home));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(graphql(allChallenges)(Home));

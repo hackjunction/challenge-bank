@@ -25,3 +25,25 @@ export const getSubmissionsForEvent = (username, password, eventId) => {
       });
   };
 };
+
+export const userGetSubmissions = token => {
+  return async function(dispatch) {
+    dispatch({ type: ActionTypes.UPDATE_SUBMISSIONS_LOADING });
+    return API.userGetSubmissions(token)
+      .then(submissions => {
+        dispatch({
+          type: ActionTypes.UPDATE_SUBMISSIONS,
+          payload: {
+            submissions
+          }
+        });
+        return submissions;
+      })
+      .catch(error => {
+        dispatch({
+          type: ActionTypes.UPDATE_SUBMISSIONS_ERROR
+        });
+        return null;
+      });
+  };
+};
