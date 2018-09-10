@@ -218,7 +218,7 @@ class Home extends Component {
                 <h5>Your own submissions</h5>
                 <div className="row">
                   <div className="grid">
-                    {_.map(submissions, submission => (
+                    {_.map(submissions.undefined, submission => (
                       <div className="grid-item">
                         <div className="grid-content">
                           <React.Fragment>
@@ -227,15 +227,15 @@ class Home extends Component {
                                 _.find(this.props.data.allChallenges, function(
                                   obj
                                 ) {
-                                  return obj.id === submission[0].challengeId;
+                                  return obj.id === submission.challengeId;
                                 }),
                                 'name'
                               )}
                             </h5>
                             {console.log(submission)}
-                            <p>Answer: {submission[0].answer}</p>
-                            <p>Feedback: {submission[0].reviewFeedback}</p>
-                            <p>Status: {submission[0].reviewStatus}</p>
+                            <p>Your answer: {submission.answer}</p>
+                            <p>Feedback: {submission.reviewFeedback}</p>
+                            <p>Status: {submission.reviewStatus}</p>
                           </React.Fragment>
                         </div>
                       </div>
