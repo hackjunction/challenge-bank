@@ -206,10 +206,39 @@ class Home extends Component {
     if (loading) return this.renderLoading();
     return (
       <div className="container">
-        <h5>Your own submissions</h5>
-        {_.map(submissions, submission => (
-          <p>{submission[0].answer}</p>
-        ))}
+        {submissions.length !== 0
+          ? (console.log(submissions),
+            (
+              <React.Fragment>
+                <h5>Your own submissions</h5>
+                <div className="row">
+                  <div className="grid">
+                    {_.map(submissions, submission => (
+                      <div className="grid-item">
+                        <div className="grid-content">
+                          <React.Fragment>
+                            <h5>
+                              {_.result(
+                                _.find(this.props.data.allChallenges, function(
+                                  obj
+                                ) {
+                                  return obj.id === submission[0].challengeId;
+                                }),
+                                'name'
+                              )}
+                            </h5>
+                            <p>Answer: {submission[0].answer}</p>
+                            <p>Feedback: {submission[0].reviewFeedback}</p>
+                            <p>Status: {submission[0].reviewStatus}</p>
+                          </React.Fragment>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </React.Fragment>
+            ))
+          : null}
         <h5>Filter Challenges by Difficulty</h5>
         <div className="filterboxes">{this.renderDifficultyfilters()}</div>
         <h5>Filter Challenges by Category</h5>
