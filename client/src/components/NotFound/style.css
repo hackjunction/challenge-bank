@@ -1,9 +1,9 @@
 .NotFound--wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .text-centered {
-    text-align: center;
+  text-align: center;
 }

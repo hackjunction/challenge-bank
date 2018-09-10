@@ -20,62 +20,80 @@ import AdminSubmissionsList from './components/admin/SubmissionsList/';
 import AdminRoute from './components/auth/AdminRoute';
 
 class App extends Component {
-    render() {
-        const adminAuth = this.props.admin.credentials !== null;
-        const userAuth = this.props.user !== null;
+  render() {
+    const adminAuth = this.props.admin.credentials !== null;
+    const userAuth = this.props.user !== null;
 
-        return (
-            <Router>
-                <div>
-                    <Header />
-                    <main>
-                        <Switch>
-                            {/* Public routes */}
-                            <Route exact path="/" component={Lander} />
-                            <Route exact path="/login" component={UserLogin} />
-                            <Route exact path="/admin/login" component={AdminLogin} />
+    return (
+      <Router>
+        <div>
+          <Header />
+          <main>
+            <Switch>
+              {/* Public routes */}
+              <Route exact path="/" component={Lander} />
+              <Route exact path="/login" component={UserLogin} />
+              <Route exact path="/admin/login" component={AdminLogin} />
 
-                            {/* Requires participant login */}
-                            <UserRoute exact path="/challenges" component={Challenges} isAuthenticated={userAuth} />
-                            <UserRoute path="/challenge/:id" component={Challenge} isAuthenticated={userAuth} />
+              {/* Requires participant login */}
+              <UserRoute
+                exact
+                path="/challenges"
+                component={Challenges}
+                isAuthenticated={userAuth}
+              />
+              <UserRoute
+                path="/challenge/:id"
+                component={Challenge}
+                isAuthenticated={userAuth}
+              />
 
-                            {/* Requires admin login */}
-                            <AdminRoute
-                                exact
-                                path="/admin/events/create"
-                                component={AdminCreateEvent}
-                                isAuthenticated={adminAuth}
-                            />
-                            <AdminRoute
-                                exact
-                                path="/admin/events/edit/:id"
-                                component={AdminEditEvent}
-                                isAuthenticated={adminAuth}
-                            />
-                            <AdminRoute
-                                path="/admin/submissions/:eventId"
-                                component={AdminSubmissionsList}
-                                isAuthenticated={adminAuth}
-                            />
-                            <AdminRoute exact path="/admin/" component={AdminEventsList} isAuthenticated={adminAuth} />
-                            {/* Other routes (404, etc...) */}
-                            <Route component={NotFound} isAdmin={adminAuth} isUser={userAuth} />
-                        </Switch>
-                    </main>
-                </div>
-            </Router>
-        );
-    }
+              {/* Requires admin login */}
+              <AdminRoute
+                exact
+                path="/admin/events/create"
+                component={AdminCreateEvent}
+                isAuthenticated={adminAuth}
+              />
+              <AdminRoute
+                exact
+                path="/admin/events/edit/:id"
+                component={AdminEditEvent}
+                isAuthenticated={adminAuth}
+              />
+              <AdminRoute
+                path="/admin/submissions/:eventId"
+                component={AdminSubmissionsList}
+                isAuthenticated={adminAuth}
+              />
+              <AdminRoute
+                exact
+                path="/admin/"
+                component={AdminEventsList}
+                isAuthenticated={adminAuth}
+              />
+              {/* Other routes (404, etc...) */}
+              <Route
+                component={NotFound}
+                isAdmin={adminAuth}
+                isUser={userAuth}
+              />
+            </Switch>
+          </main>
+        </div>
+      </Router>
+    );
+  }
 }
 
 const mapStateToProps = state => ({
-    admin: state.admin,
-    user: state.user.user
+  admin: state.admin,
+  user: state.user.user
 });
 
 const mapDispatchToProps = dispatch => ({});
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(App);
