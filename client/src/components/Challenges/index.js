@@ -7,6 +7,7 @@ import _ from 'lodash';
 import './style.css';
 import { connect } from 'react-redux';
 import * as SubmissionsActions from '../../actions/submissions';
+import * as Review from '../../constants/review';
 
 class Home extends Component {
   constructor(props) {
@@ -229,6 +230,18 @@ class Home extends Component {
                 {_.map(submissions.undefined, submission => (
                   <div className="grid-item">
                     <div className="grid-content">
+                      <div className="flexrow">
+                        <p
+                          className="category"
+                          style={{
+                            color: `${
+                              Review.Status[submission.reviewStatus].color
+                            }`
+                          }}
+                        >
+                          <b>{Review.Status[submission.reviewStatus].name}</b>
+                        </p>
+                      </div>
                       <React.Fragment>
                         <h5>
                           {_.result(
@@ -241,9 +254,12 @@ class Home extends Component {
                           )}
                         </h5>
                         {console.log(submission)}
-                        <p>Your answer: {submission.answer}</p>
-                        <p>Feedback: {submission.reviewFeedback}</p>
-                        <p>Status: {submission.reviewStatus}</p>
+                        <p>
+                          Your answer: <i>{submission.answer}</i>
+                        </p>
+                        {submission.reviewFeedback.length !== 0 ? (
+                          <p>Feedback: {submission.reviewFeedback}</p>
+                        ) : null}
                         <Link
                           to={`/challenge/${submission.challengeId}`}
                           className="grid-link"
