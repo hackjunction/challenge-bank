@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@material-ui/core": "^3.0.3",
         "ajv": "^6.5.2",
         "apollo-cache-inmemory": "^1.2.5",
         "apollo-client": "^2.3.5",
@@ -28,6 +29,7 @@
         "react-router-dom": "^4.3.1",
         "react-scripts": "1.1.4",
         "react-spinkit": "^3.0.0",
+        "react-spinners": "^0.4.5",
         "react-table": "^6.8.6",
         "react-timeago": "^4.1.9",
         "react-timezone": "^2.1.0",

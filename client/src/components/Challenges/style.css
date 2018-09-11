@@ -1,18 +1,35 @@
 .loader {
-  text-align: center;
-  font-size: 35px;
-  padding: 30px;
+    text-align: center;
+    font-size: 35px;
+    padding: 30px;
 }
 
 .error {
-  text-align: center;
-  padding: 30px;
+    text-align: center;
+    padding: 30px;
 }
 .errorLink {
-  text-decoration: none;
-  color: black;
-  font-weight: bold;
-  font-size: 18px;
-  margin: 9px;
-  border: 0px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 9px;
+    border: 0px;
+}
+
+.Challenges--filters-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.Challenges--challenges-wrapper {
+    margin-top: 50px;
+    min-height: 800px;
+}
+
+.Challenges--no-challenges-text {
+    width: 100%;
+    text-align: center;
 }

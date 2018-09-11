@@ -1,0 +1,86 @@
+.DifficultyFilters {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+}
+
+@media screen and (max-width: 700px) {
+    .DifficultyFilters {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
+.DifficultyFilters--header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 3px solid black;
+    transition: all 0.2s ease;
+}
+
+.DifficultyFilters--header span {
+    font-weight: bold;
+}
+
+.DifficultyFilters--header:hover {
+    cursor: pointer;
+    border-bottom-color: lightblue;
+}
+
+.DifficultyFilters--filters {
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    width: 100%;
+    align-items: stretch;
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    background: white;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.DifficultyFilters--filters.visible {
+    max-height: 1000px;
+}
+
+.DifficultyFilters--filters-wrapper {
+    position: relative;
+    margin-top: 5px;
+    padding-bottom: 20px;
+}
+
+.DifficultyFilters--filter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-top: 0.5px solid #eeeeee;
+}
+
+.DifficultyFilters--select-all-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+}
+
+.DifficultyFilters--select-all-btn {
+    padding: 5px 20px;
+    background: #eeeeee;
+    color: black;
+    border-radius: 15px;
+    margin-right: 10px;
+    transition: all 0.2s ease;
+}
+
+.DifficultyFilters--select-all-btn:hover {
+    background: #cccccc;
+    cursor: pointer;
+}
