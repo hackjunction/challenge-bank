@@ -22,6 +22,7 @@
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
+    margin-top: 50px;
 }
 
 .Challenges--challenges-wrapper {

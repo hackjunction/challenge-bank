@@ -1,0 +1,212 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import * as SubmissionsActions from '../../actions/submissions';
+import { connect } from 'react-redux';
+import TimeAgo from 'react-timeago';
+import Points from '../../constants/points';
+import _ from 'lodash';
+import './style.css';
+
+class SubmissionsBlock extends Component {
+    static propTypes = {
+        user: PropTypes.object,
+        submissions: PropTypes.object,
+        challenges: PropTypes.array
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            expanded: false
+        };
+    }
+
+    componentDidMount() {
+        this.props.userGetSubmissions(this.props.user.token);
+    }
+
+    renderPendingSubmission(submission) {
+        const challenge = _.find(this.props.challenges, c => c.id === submission.challengeId);
+
+        return (
+            <div className="SubmissionsBlock--submission pending">
+                <div className="SubmissionsBlock--submission-top">
+                    <span className="SubmissionsBlock--submission-challenge">{challenge.name} </span>
+                    <TimeAgo className="SubmissionsBlock--submission-timeago" date={submission.timestamp} />
+                </div>
+                <p className="SubmissionsBlock--submission-answer">
+                    <strong>Your answer: </strong>
+                    <br />
+                    {submission.answer}
+                </p>
+            </div>
+        );
+    }
+
+    renderRejectedSubmission(submission) {
+        const challenge = _.find(this.props.challenges, c => c.id === submission.challengeId);
+
+        return (
+            <div className="SubmissionsBlock--submission rejected">
+                <div className="SubmissionsBlock--submission-top">
+                    <span className="SubmissionsBlock--submission-challenge">{challenge.name} </span>
+                    <TimeAgo className="SubmissionsBlock--submission-timeago" date={submission.timestamp} />
+                </div>
+                <p className="SubmissionsBlock--submission-answer">
+                    <strong>Your answer: </strong>
+                    <br />
+                    {submission.answer}
+                </p>
+                <p className="SubmissionsBlock--submission-answer">
+                    <strong>Reviewer feedback: </strong>
+                    <br />
+                    {submission.reviewFeedback}
+                </p>
+            </div>
+        );
+    }
+
+    renderHalfpointsSubmission(submission) {
+        const challenge = _.find(this.props.challenges, c => c.id === submission.challengeId);
+
+        return (
+            <div className="SubmissionsBlock--submission half-points">
+                <div className="SubmissionsBlock--submission-top">
+                    <span className="SubmissionsBlock--submission-challenge">{challenge.name} </span>
+                    <span className="SubmissionsBlock--points-earned">
+                        Earned points: {Points[submission.challengeDifficulty] / 2}
+                    </span>
+                </div>
+                <p className="SubmissionsBlock--submission-answer">
+                    <strong>Your answer: </strong>
+                    <br />
+                    {submission.answer}
+                </p>
+                <p className="SubmissionsBlock--submission-answer">
+                    <strong>Reviewer feedback: </strong>
+                    <br />
+                    {submission.reviewFeedback}
+                </p>
+            </div>
+        );
+    }
+
+    renderAcceptedSubmission(submission) {
+        const challenge = _.find(this.props.challenges, c => c.id === submission.challengeId);
+
+        return (
+            <div className="SubmissionsBlock--submission accepted">
+                <div className="SubmissionsBlock--submission-top">
+                    <span className="SubmissionsBlock--submission-challenge">{challenge.name} </span>
+                    <span className="SubmissionsBlock--points-earned">
+                        Earned points: {Points[submission.challengeDifficulty]}
+                    </span>
+                </div>
+                <p className="SubmissionsBlock--submission-answer">
+                    <strong>Your answer: </strong>
+                    <br />
+                    {submission.answer}
+                </p>
+            </div>
+        );
+    }
+
+    getSubmissions(status) {
+        if (!this.props.submissions || !this.props.submissions.data) {
+            return [];
+        }
+
+        return _.filter(this.props.submissions.data, submission => {
+            return submission.reviewStatus === status;
+        });
+    }
+
+    renderSubmissions(status, submissions) {
+        return _.map(submissions, submission => {
+            if (status === 0) {
+                return this.renderPendingSubmission(submission);
+            }
+            if (status === 1) {
+                return this.renderRejectedSubmission(submission);
+            }
+            if (status === 2) {
+                return this.renderHalfpointsSubmission(submission);
+            }
+            if (status === 3) {
+                return this.renderAcceptedSubmission(submission);
+            }
+            return this.renderPendingSubmission(submission);
+        });
+    }
+
+    render() {
+        const iconClass = this.state.expanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+        const contentClass = this.state.expanded ? 'SubmissionsBlock--content visible' : 'SubmissionsBlock--content';
+
+        const pending = this.getSubmissions(0);
+        const rejected = this.getSubmissions(1);
+        const halfPoints = this.getSubmissions(2);
+        const accepted = this.getSubmissions(3);
+
+        return (
+            <div className="SubmissionsBlock">
+                <div
+                    className="SubmissionsBlock--header"
+                    onClick={() => this.setState({ expanded: !this.state.expanded })}
+                >
+                    <div className="SubmissionsBlock--header-left">
+                        <span className="SubmissionsBlock--header-text">
+                            Your submissions
+                            <span className="SubmissionsBlock--header-count pending">{pending.length}</span>
+                            <span className="SubmissionsBlock--header-count rejected">{rejected.length}</span>
+                            <span className="SubmissionsBlock--header-count half-points">{halfPoints.length}</span>
+                            <span className="SubmissionsBlock--header-count accepted">{accepted.length}</span>
+                        </span>
+                    </div>
+                    <i className={iconClass} />
+                </div>
+                <div className={contentClass}>
+                    <div className="SubmissionsBlock--section">
+                        <div className="SubmissionsBlock--section-header pending">
+                            <span className="SubmissionsBlock--section-header-text">Pending review</span>
+                        </div>
+                        <div className="SubmissionsBlock--section-content">{this.renderSubmissions(0, pending)}</div>
+                    </div>
+                    <div className="SubmissionsBlock--section">
+                        <div className="SubmissionsBlock--section-header rejected">
+                            <span className="SubmissionsBlock--section-header-text">Rejected</span>
+                        </div>
+                        <div className="SubmissionsBlock--section-content">{this.renderSubmissions(1, rejected)}</div>
+                    </div>
+                    <div className="SubmissionsBlock--section">
+                        <div className="SubmissionsBlock--section-header half-points">
+                            <span className="SubmissionsBlock--section-header-text">Half points</span>
+                        </div>
+                        <div className="SubmissionsBlock--section-content">{this.renderSubmissions(2, halfPoints)}</div>
+                    </div>
+                    <div className="SubmissionsBlock--section">
+                        <div className="SubmissionsBlock--section-header accepted">
+                            <span className="SubmissionsBlock--section-header-text">Accepted</span>
+                        </div>
+                        <div className="SubmissionsBlock--section-content">{this.renderSubmissions(3, accepted)}</div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+const mapStateToProps = state => ({
+    user: state.user.user,
+    submissions: state.user.userSubmissions
+});
+
+const mapDispatchToProps = dispatch => ({
+    userGetSubmissions: token => dispatch(SubmissionsActions.userGetSubmissions(token))
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SubmissionsBlock);

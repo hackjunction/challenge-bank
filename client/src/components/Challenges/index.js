@@ -11,6 +11,8 @@ import * as Review from '../../constants/review';
 
 import DifficultyFilters from '../DifficultyFilters/';
 import CategoryFilters from '../CategoryFilters/';
+import ChallengeGrid from '../ChallengeGrid/';
+import SubmissionsBlock from '../SubmissionsBlock/';
 
 class Home extends Component {
     constructor(props) {
@@ -19,14 +21,8 @@ class Home extends Component {
             difficulties: [],
             categories: [],
             selectedDifficulties: [],
-            selectedCategories: [],
-            showOwn: false
+            selectedCategories: []
         };
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    componentDidMount() {
-        this.props.userGetSubmissions(this.props.user.token);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -42,10 +38,6 @@ class Home extends Component {
 
             this.setState(newState);
         }
-    }
-
-    handleClick(boolean) {
-        this.setState({ showOwn: boolean });
     }
 
     getDifficultiesAndCategories(challenges) {
@@ -91,50 +83,6 @@ class Home extends Component {
         });
     }
 
-    renderChallenges() {
-        const filtered = this.filterChallenges();
-        if (filtered.length !== 0) {
-            return (
-                <div className="row">
-                    <div className="grid">
-                        {_.map(filtered, challenge => (
-                            <div className="grid-item" key={`challenge-${challenge.id}`}>
-                                <div className="grid-content">
-                                    <div className="flexrow">
-                                        <p
-                                            className="category"
-                                            style={{
-                                                color: `rgba(${Object.values(
-                                                    JSON.parse(challenge.challengeCategory.color)
-                                                ).join(',')})`
-                                            }}
-                                        >
-                                            <b>{challenge.challengeCategory.name}</b>
-                                        </p>
-                                        <p className="difficulty">{challenge.challengeDifficulty.name}</p>
-                                    </div>
-                                    <h5>{challenge.name}</h5>
-                                    <p>{challenge.shortDescription}</p>
-                                </div>
-                                <div className="flexrow">
-                                    <Link to={`/challenge/${challenge.id}`} className="grid-link">
-                                        See Details >
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            );
-        } else {
-            return (
-                <div className="row">
-                    <h5 className="Challenges--no-challenges-text">No challenges found with those filters...</h5>
-                </div>
-            );
-        }
-    }
-
     renderLoading() {
         return (
             <div className="loader">
@@ -163,61 +111,14 @@ class Home extends Component {
 
     render() {
         const { error, loading } = this.props.data;
-        const { submissions } = this.props;
         if (error) return this.renderError();
         if (loading) return this.renderLoading();
 
         return (
             <div className="container">
-                {this.state.showOwn ? (
-                    <h5 onClick={() => this.handleClick(false)}>Hide own submissions</h5>
-                ) : (
-                    <h5 onClick={() => this.handleClick(true)}>Show own submissions</h5>
-                )}
-                {submissions.length !== 0 && this.state.showOwn ? (
-                    <React.Fragment>
-                        <div className="row">
-                            <div className="grid">
-                                {_.map(submissions.undefined, submission => (
-                                    <div className="grid-item">
-                                        <div className="grid-content">
-                                            <div className="flexrow">
-                                                <p
-                                                    className="category"
-                                                    style={{
-                                                        color: `${Review.Status[submission.reviewStatus].color}`
-                                                    }}
-                                                >
-                                                    <b>{Review.Status[submission.reviewStatus].name}</b>
-                                                </p>
-                                            </div>
-                                            <React.Fragment>
-                                                <h5>
-                                                    {_.result(
-                                                        _.find(this.props.data.allChallenges, function(obj) {
-                                                            return obj.id === submission.challengeId;
-                                                        }),
-                                                        'name'
-                                                    )}
-                                                </h5>
-                                                {console.log(submission)}
-                                                <p>
-                                                    Your answer: <i>{submission.answer}</i>
-                                                </p>
-                                                {submission.reviewFeedback.length !== 0 ? (
-                                                    <p>Feedback: {submission.reviewFeedback}</p>
-                                                ) : null}
-                                                <Link to={`/challenge/${submission.challengeId}`} className="grid-link">
-                                                    See challenge >
-                                                </Link>
-                                            </React.Fragment>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </React.Fragment>
-                ) : null}
+                <div className="Challenges--submissions-wrapper">
+                    <SubmissionsBlock challenges={this.props.data.allChallenges} />
+                </div>
                 <div className="Challenges--filters-wrapper">
                     <DifficultyFilters
                         difficulties={this.state.difficulties}
@@ -230,20 +131,13 @@ class Home extends Component {
                         onChange={selectedCategories => this.setState({ selectedCategories })}
                     />
                 </div>
-                <div className="Challenges--challenges-wrapper">{this.renderChallenges()}</div>
+                <div className="Challenges--challenges-wrapper col-xs-12">
+                    <ChallengeGrid challenges={this.filterChallenges()} showEmptyText={true} />
+                </div>
             </div>
         );
     }
 }
-
-const mapStateToProps = state => ({
-    user: state.user.user,
-    submissions: state.submissions.submissions
-});
-
-const mapDispatchToProps = dispatch => ({
-    userGetSubmissions: token => dispatch(SubmissionsActions.userGetSubmissions(token))
-});
 
 export const allChallenges = gql`
     query allChallenges {
@@ -267,7 +161,4 @@ export const allChallenges = gql`
     }
 `;
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(graphql(allChallenges)(Home));
+export default graphql(allChallenges)(Home);

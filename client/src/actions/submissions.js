@@ -2,48 +2,44 @@ import * as ActionTypes from './ActionTypes';
 import API from '../services/api';
 
 export const getSubmissionsForEvent = (username, password, eventId) => {
-  return async function(dispatch) {
-    dispatch({
-      type: ActionTypes.UPDATE_SUBMISSIONS_LOADING
-    });
-    return API.adminGetSubmissionsForEvent(username, password, eventId)
-      .then(submissions => {
+    return async function(dispatch) {
         dispatch({
-          type: ActionTypes.UPDATE_SUBMISSIONS,
-          payload: {
-            submissions,
-            eventId
-          }
+            type: ActionTypes.UPDATE_SUBMISSIONS_LOADING
         });
-        return submissions;
-      })
-      .catch(error => {
-        dispatch({
-          type: ActionTypes.UPDATE_SUBMISSIONS_ERROR
-        });
-        return null;
-      });
-  };
+        return API.adminGetSubmissionsForEvent(username, password, eventId)
+            .then(submissions => {
+                dispatch({
+                    type: ActionTypes.UPDATE_SUBMISSIONS,
+                    payload: {
+                        submissions,
+                        eventId
+                    }
+                });
+                return submissions;
+            })
+            .catch(error => {
+                dispatch({
+                    type: ActionTypes.UPDATE_SUBMISSIONS_ERROR
+                });
+                return null;
+            });
+    };
 };
 
 export const userGetSubmissions = token => {
-  return async function(dispatch) {
-    dispatch({ type: ActionTypes.UPDATE_SUBMISSIONS_LOADING });
-    return API.userGetSubmissions(token)
-      .then(submissions => {
-        dispatch({
-          type: ActionTypes.UPDATE_SUBMISSIONS,
-          payload: {
-            submissions
-          }
-        });
-        return submissions;
-      })
-      .catch(error => {
-        dispatch({
-          type: ActionTypes.UPDATE_SUBMISSIONS_ERROR
-        });
-        return null;
-      });
-  };
+    return async function(dispatch) {
+        dispatch({ type: ActionTypes.UPDATE_USER_SUBMISSIONS_LOADING });
+        return API.userGetSubmissions(token)
+            .then(submissions => {
+                dispatch({
+                    type: ActionTypes.UPDATE_USER_SUBMISSIONS,
+                    payload: submissions
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: ActionTypes.UPDATE_USER_SUBMISSIONS_ERROR
+                });
+            });
+    };
 };

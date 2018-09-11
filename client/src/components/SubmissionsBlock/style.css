@@ -1,0 +1,133 @@
+.SubmissionsBlock {
+    width: 100%;
+}
+
+.SubmissionsBlock--header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 3px solid black;
+}
+
+.SubmissionsBlock--header:hover {
+    border-bottom-color: lightblue;
+    cursor: pointer;
+}
+
+.SubmissionsBlock--header-left {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.SubmissionsBlock--header-text {
+    font-weight: bold;
+}
+
+.SubmissionsBlock--header-count {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background: black;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+.SubmissionsBlock--header-count.pending {
+    background: gray;
+}
+
+.SubmissionsBlock--header-count.rejected {
+    background: red;
+}
+
+.SubmissionsBlock--header-count.half-points {
+    background: orange;
+}
+
+.SubmissionsBlock--header-count.accepted {
+    background: green;
+}
+
+.SubmissionsBlock--content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    max-height: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    border: 0.5px solid #eeeeee;
+}
+
+.SubmissionsBlock--content.visible {
+    opacity: 1;
+    display: flex;
+    max-height: none;
+}
+
+.SubmissionsBlock--section {
+}
+
+.SubmissionsBlock--section-header {
+    border-top: 0.5px solid #eeeeee;
+    padding: 10px;
+}
+
+.SubmissionsBlock--section-header span {
+    font-weight: bold;
+}
+
+.SubmissionsBlock--section-header {
+    border-left: 10px solid black;
+}
+
+.SubmissionsBlock--section-header.pending {
+    border-left-color: gray;
+}
+
+.SubmissionsBlock--section-header.rejected {
+    border-left-color: red;
+}
+
+.SubmissionsBlock--section-header.half-points {
+    border-left-color: orange;
+}
+
+.SubmissionsBlock--section-header.accepted {
+    border-left-color: green;
+}
+
+.SubmissionsBlock--section-content {
+    background: #eeeeee;
+}
+
+.SubmissionsBlock--submission {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 10px;
+}
+
+.SubmissionsBlock--submission-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.SubmissionsBlock--submission-challenge {
+    font-weight: bold;
+}
+
+.SubmissionsBlock--submission-answer {
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.SubmissionsBlock--submission-timeago {
+    font-style: italic;
+}
