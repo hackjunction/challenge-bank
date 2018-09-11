@@ -148,6 +148,7 @@ class SubmissionsBlock extends Component {
         const rejected = this.getSubmissions(1);
         const halfPoints = this.getSubmissions(2);
         const accepted = this.getSubmissions(3);
+        const submissions = this.props.submissions && this.props.submissions.data ? this.props.submissions.data : [];
 
         return (
             <div className="SubmissionsBlock">
@@ -157,11 +158,7 @@ class SubmissionsBlock extends Component {
                 >
                     <div className="SubmissionsBlock--header-left">
                         <span className="SubmissionsBlock--header-text">
-                            Your submissions
-                            <span className="SubmissionsBlock--header-count pending">{pending.length}</span>
-                            <span className="SubmissionsBlock--header-count rejected">{rejected.length}</span>
-                            <span className="SubmissionsBlock--header-count half-points">{halfPoints.length}</span>
-                            <span className="SubmissionsBlock--header-count accepted">{accepted.length}</span>
+                            Your submissions {'(' + submissions.length + ')'}
                         </span>
                     </div>
                     <i className={iconClass} />
@@ -169,25 +166,33 @@ class SubmissionsBlock extends Component {
                 <div className={contentClass}>
                     <div className="SubmissionsBlock--section">
                         <div className="SubmissionsBlock--section-header pending">
-                            <span className="SubmissionsBlock--section-header-text">Pending review</span>
+                            <span className="SubmissionsBlock--section-header-text">
+                                Pending review {'(' + pending.length + ')'}
+                            </span>
                         </div>
                         <div className="SubmissionsBlock--section-content">{this.renderSubmissions(0, pending)}</div>
                     </div>
                     <div className="SubmissionsBlock--section">
                         <div className="SubmissionsBlock--section-header rejected">
-                            <span className="SubmissionsBlock--section-header-text">Rejected</span>
+                            <span className="SubmissionsBlock--section-header-text">
+                                Rejected {'(' + rejected.length + ')'}
+                            </span>
                         </div>
                         <div className="SubmissionsBlock--section-content">{this.renderSubmissions(1, rejected)}</div>
                     </div>
                     <div className="SubmissionsBlock--section">
                         <div className="SubmissionsBlock--section-header half-points">
-                            <span className="SubmissionsBlock--section-header-text">Half points</span>
+                            <span className="SubmissionsBlock--section-header-text">
+                                Half points {'(' + halfPoints.length + ')'}
+                            </span>
                         </div>
                         <div className="SubmissionsBlock--section-content">{this.renderSubmissions(2, halfPoints)}</div>
                     </div>
                     <div className="SubmissionsBlock--section">
                         <div className="SubmissionsBlock--section-header accepted">
-                            <span className="SubmissionsBlock--section-header-text">Accepted</span>
+                            <span className="SubmissionsBlock--section-header-text">
+                                Accepted {'(' + accepted.length + ')'}
+                            </span>
                         </div>
                         <div className="SubmissionsBlock--section-content">{this.renderSubmissions(3, accepted)}</div>
                     </div>
