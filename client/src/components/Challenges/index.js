@@ -6,37 +6,27 @@ import { ClipLoader, BarLoader } from 'react-spinners';
 import _ from 'lodash';
 import './style.css';
 import { connect } from 'react-redux';
-import * as SubmissionsActions from '../../actions/submissions';
-import * as Review from '../../constants/review';
+
+import * as UserActions from '../../actions/user';
 
 import DifficultyFilters from '../DifficultyFilters/';
 import CategoryFilters from '../CategoryFilters/';
 import ChallengeGrid from '../ChallengeGrid/';
 import SubmissionsBlock from '../SubmissionsBlock/';
+import EventTimer from '../EventTimer/';
 
 class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            difficulties: [],
-            categories: [],
-            selectedDifficulties: [],
-            selectedCategories: []
-        };
-    }
-
     componentWillReceiveProps(nextProps) {
         if (nextProps.data.allChallenges !== this.props.data.allChallenges) {
-            const newState = {};
             const { categories, difficulties } = this.getDifficultiesAndCategories(nextProps.data.allChallenges);
-            newState.categories = categories;
-            newState.difficulties = difficulties;
-            if (!this.props.data.allChallenges && nextProps.data.allChallenges) {
-                newState.selectedDifficulties = difficulties;
-                newState.selectedCategories = categories;
-            }
 
-            this.setState(newState);
+            this.props.setAvailableCategoryFilters(categories);
+            this.props.setAvailableDifficultyFilters(difficulties);
+
+            if (!this.props.data.allChallenges && nextProps.data.allChallenges) {
+                this.props.setSelectedCategoryFilters(categories);
+                this.props.setSelectedDifficultyFilters(difficulties);
+            }
         }
     }
 
@@ -73,8 +63,8 @@ class Home extends Component {
             const catName = challenge.challengeCategory.name;
             const diffName = challenge.challengeDifficulty.name;
 
-            if (_.findIndex(this.state.selectedCategories, c => c.name === catName) !== -1) {
-                if (_.findIndex(this.state.selectedDifficulties, d => d.name === diffName) !== -1) {
+            if (_.findIndex(this.props.categoryFilters.selected, c => c.name === catName) !== -1) {
+                if (_.findIndex(this.props.difficultyFilters.selected, d => d.name === diffName) !== -1) {
                     return true;
                 }
             }
@@ -116,19 +106,20 @@ class Home extends Component {
 
         return (
             <div className="container">
+                <EventTimer event={this.props.user.event} />
                 <div className="Challenges--submissions-wrapper">
                     <SubmissionsBlock challenges={this.props.data.allChallenges} />
                 </div>
                 <div className="Challenges--filters-wrapper">
                     <DifficultyFilters
-                        difficulties={this.state.difficulties}
-                        selectedDifficulties={this.state.selectedDifficulties}
-                        onChange={selectedDifficulties => this.setState({ selectedDifficulties })}
+                        difficulties={this.props.difficultyFilters.available}
+                        selectedDifficulties={this.props.difficultyFilters.selected}
+                        onChange={data => this.props.setSelectedDifficultyFilters(data)}
                     />
                     <CategoryFilters
-                        categories={this.state.categories}
-                        selectedCategories={this.state.selectedCategories}
-                        onChange={selectedCategories => this.setState({ selectedCategories })}
+                        categories={this.props.categoryFilters.available}
+                        selectedCategories={this.props.categoryFilters.selected}
+                        onChange={data => this.props.setSelectedCategoryFilters(data)}
                     />
                 </div>
                 <div className="Challenges--challenges-wrapper col-xs-12">
@@ -161,4 +152,20 @@ export const allChallenges = gql`
     }
 `;
 
-export default graphql(allChallenges)(Home);
+const mapStateToProps = state => ({
+    categoryFilters: state.user.categoryFilters,
+    difficultyFilters: state.user.difficultyFilters,
+    user: state.user.user
+});
+
+const mapDispatchToProps = dispatch => ({
+    setAvailableCategoryFilters: categories => dispatch(UserActions.setAvailableCategoryFilters(categories)),
+    setSelectedCategoryFilters: categories => dispatch(UserActions.setSelectedCategoryFilters(categories)),
+    setAvailableDifficultyFilters: difficulties => dispatch(UserActions.setAvailableDifficultyFilters(difficulties)),
+    setSelectedDifficultyFilters: difficulties => dispatch(UserActions.setSelectedDifficultyFilters(difficulties))
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(graphql(allChallenges)(Home));

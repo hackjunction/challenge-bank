@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as SubmissionsActions from '../../actions/submissions';
 import { connect } from 'react-redux';
 import TimeAgo from 'react-timeago';
 import Points from '../../constants/points';
 import _ from 'lodash';
 import './style.css';
+
+import * as UserActions from '../../actions/user';
 
 class SubmissionsBlock extends Component {
     static propTypes = {
@@ -140,6 +141,21 @@ class SubmissionsBlock extends Component {
         });
     }
 
+    getUserPoints() {
+        let points = 0;
+
+        _.each(this.props.submissions, submission => {
+            if (submission.reviewStatus === 2) {
+                points += 0.5 * Points[submission.challengeDifficulty];
+            }
+            if (submission.reviewStatus === 3) {
+                points += Points[submission.challengeDifficulty];
+            }
+        });
+
+        return points;
+    }
+
     render() {
         const iconClass = this.state.expanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
         const contentClass = this.state.expanded ? 'SubmissionsBlock--content visible' : 'SubmissionsBlock--content';
@@ -149,6 +165,9 @@ class SubmissionsBlock extends Component {
         const halfPoints = this.getSubmissions(2);
         const accepted = this.getSubmissions(3);
         const submissions = this.props.submissions && this.props.submissions.data ? this.props.submissions.data : [];
+
+        const userPoints = this.getUserPoints();
+        const barWidth = (100 * userPoints) / 300 + '%';
 
         return (
             <div className="SubmissionsBlock">
@@ -164,6 +183,13 @@ class SubmissionsBlock extends Component {
                     <i className={iconClass} />
                 </div>
                 <div className={contentClass}>
+                    <div className="SubmissionsBlock--points">
+                        <span className="SubmissionsBlock--points-label">Your points</span>
+                        <div className="SubmissionsBlock--points-bar-wrapper">
+                            <div className="SubmissionsBlock--points-bar" style={{ width: barWidth }} />
+                            <span className="SubmissionsBlock--points-value">{userPoints}</span>
+                        </div>
+                    </div>
                     <div className="SubmissionsBlock--section">
                         <div className="SubmissionsBlock--section-header pending">
                             <span className="SubmissionsBlock--section-header-text">
@@ -204,11 +230,11 @@ class SubmissionsBlock extends Component {
 
 const mapStateToProps = state => ({
     user: state.user.user,
-    submissions: state.user.userSubmissions
+    submissions: state.user.submissions
 });
 
 const mapDispatchToProps = dispatch => ({
-    userGetSubmissions: token => dispatch(SubmissionsActions.userGetSubmissions(token))
+    userGetSubmissions: token => dispatch(UserActions.userGetSubmissions(token))
 });
 
 export default connect(

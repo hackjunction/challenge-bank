@@ -15,8 +15,8 @@ const POST = (url, data) => {
             });
 
             if (response.status !== SUCCESS) {
-                console.log('POST ERROR', response);
-                reject(new Error('Response status was not 200'));
+                console.log('ERROR1', response.status);
+                reject(new Error(response.status));
             } else {
                 let body = await response.json();
                 resolve(body.data);
@@ -41,8 +41,7 @@ const PATCH = (url, data) => {
             });
 
             if (response.status !== SUCCESS) {
-                console.log('PATCH ERROR', response);
-                reject(new Error('Response status was not 200'));
+                reject(new Error(response.status));
             } else {
                 let body = await response.json();
                 resolve(body.data);
@@ -58,9 +57,9 @@ const GET = url => {
     return new Promise(async function(resolve, reject) {
         try {
             let response = await fetch(url);
+
             if (response.status !== SUCCESS) {
-                console.log('GET ERROR', response);
-                reject(new Error('Response status was not 200'));
+                reject(new Error(response.status));
             } else {
                 let body = await response.json();
                 resolve(body.data);
@@ -76,9 +75,9 @@ const DELETE = url => {
     return new Promise(async function(resolve, reject) {
         try {
             let response = await fetch(url, { method: 'DELETE' });
+
             if (response.status !== SUCCESS) {
-                console.log('DELETE ERROR', response);
-                reject(new Error('Response status was not 200'));
+                reject(new Error(response.status));
             } else {
                 let body = await response.json();
                 resolve(body.data);

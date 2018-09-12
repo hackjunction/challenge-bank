@@ -8,6 +8,9 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import API from '../../services/api';
 import { ClipLoader, BarLoader } from 'react-spinners';
+import Countdown from 'react-countdown-now';
+import moment from 'moment-timezone';
+import Points from '../../constants/points';
 
 class Challenge extends Component {
     constructor(props) {
@@ -146,6 +149,56 @@ class Challenge extends Component {
         );
     }
 
+    renderForm() {
+        const { event } = this.props.user;
+
+        const now = moment().tz(event.timezone);
+        const startTime = moment(event.platformOpens).tz(event.timezone);
+        const endTime = moment(event.platformCloses).tz(event.timezone);
+
+        if (now.isAfter(startTime) && now.isBefore(endTime)) {
+            console.log('IS OPEN');
+            if (this.state.submitted) {
+                return (
+                    <div className="Challenge--submit">
+                        <h3 className="Challenge--submitted">Thanks for submitting your answer!</h3>
+                    </div>
+                );
+            } else {
+                return (
+                    <div className="Challenge--submit">
+                        <input
+                            className="Challenge--submit-answer"
+                            onChange={this.onAnswerChange}
+                            value={this.state.answer}
+                            placeholder={'Type your answer here'}
+                        />
+                        <button className="Challenge--submit-button" onClick={this.onSubmit}>
+                            Submit
+                        </button>
+                    </div>
+                );
+            }
+        } else {
+            console.log('IS CLOSED');
+            if (now.isBefore(startTime)) {
+                return (
+                    <div className="Challenge--submit">
+                        <h3 className="Challenge--submitted">
+                            Submissions open in <Countdown date={startTime.toDate()} />
+                        </h3>
+                    </div>
+                );
+            } else {
+                return (
+                    <div className="Challenge--submit">
+                        <h3 className="Challenge--submitted">Submissions closed!</h3>
+                    </div>
+                );
+            }
+        }
+    }
+
     render() {
         const { error, loading } = this.props.data;
         const singleChallenge = _.find(this.props.data.allChallenges, challenge => {
@@ -166,7 +219,7 @@ class Challenge extends Component {
                 <Link to={`/challenges/`} className="Challenge--challenges">
                     Back to Challenge list
                 </Link>
-                <div className="Challenge--container">
+                <div className="Challenge--container row">
                     <div className="Challenge--header">
                         <span
                             className="Challenge--category"
@@ -178,6 +231,11 @@ class Challenge extends Component {
                         </span>
                         <span className="Challenge--difficulty">{singleChallenge.challengeDifficulty.name}</span>
                     </div>
+                    <p>
+                        <strong>
+                            Points earned for completion: {Points[singleChallenge.challengeDifficulty.difficultyvalue]}
+                        </strong>
+                    </p>
                     <div className="Challenge--content">
                         <h1 className="Challenge--name">{singleChallenge.name}</h1>
                         <Markdown
@@ -191,23 +249,7 @@ class Challenge extends Component {
                             </a>
                         ))}
                     </div>
-                    {this.state.submitted ? (
-                        <div className="Challenge--submit">
-                            <h3 className="Challenge--submitted">Thanks for submitting your answer!</h3>
-                        </div>
-                    ) : (
-                        <div className="Challenge--submit">
-                            <input
-                                className="Challenge--submit-answer"
-                                onChange={this.onAnswerChange}
-                                value={this.state.answer}
-                                placeholder={'Type your answer here'}
-                            />
-                            <button className="Challenge--submit-button" onClick={this.onSubmit}>
-                                Submit
-                            </button>
-                        </div>
-                    )}
+                    {this.renderForm()}
                 </div>
                 <h1 className="Challenge--challenges">More challenges in this category:</h1>
                 {this.renderChallenges()}

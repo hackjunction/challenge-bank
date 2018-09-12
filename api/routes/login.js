@@ -26,7 +26,22 @@ function createUser(req, res) {
             });
         })
         .catch(error => {
-            return res.status(status.INTERNAL_SERVER_ERROR).send({
+            let statusCode = null;
+            switch (error.message) {
+                case 'INVALID_CODE':
+                    statusCode = status.BAD_REQUEST;
+                    break;
+                case 'USERNAME_TAKEN':
+                    statusCode = status.FORBIDDEN;
+                    break;
+                case 'INTERNAL_ERROR':
+                    statusCode = status.INTERNAL_SERVER_ERROR;
+                    break;
+                default:
+                    statusCode = status.INTERNAL_SERVER_ERROR;
+                    break;
+            }
+            return res.status(statusCode).send({
                 status: 'error',
                 message: error.message
             });
@@ -44,6 +59,13 @@ function getUser(req, res) {
             });
         })
         .catch(error => {
+            if (error.message === 'INVALID_USERNAME_PASSWORD') {
+                return res.status(status.UNAUTHORIZED).send({
+                    status: 'error',
+                    message: error.message
+                });
+            }
+
             return res.status(status.INTERNAL_SERVER_ERROR).send({
                 status: 'error',
                 message: error.message

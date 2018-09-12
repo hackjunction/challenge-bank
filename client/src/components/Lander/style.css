@@ -1,45 +1,77 @@
+.Lander--wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 5em 0;
+}
+
+.Lander--title {
+    text-align: center;
+    font-size: 30px;
+}
+
+.Lander--text {
+    text-align: center;
+    font-size: 16px;
+}
+
+.Lander--Buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.Lander--Buttons button,
+.Lander--buttons .btn {
+    margin: 0 5px;
+}
+
 .landertitle {
-  font-size: 35px;
+    font-size: 35px;
 }
 
 .lander-flex {
-  margin: 5% auto 0% auto;
-  width: 100%;
+    margin: 5% auto 0% auto;
+    width: 100%;
 }
 
 div.griditem > p {
-  margin: 0px;
+    margin: 0px;
 }
 
 .underline {
-  height: 3px;
-  background-color: black;
-  margin-bottom: 7%;
+    height: 3px;
+    background-color: black;
+    margin-bottom: 7%;
 }
 
 .landeritem {
-  width: 45%;
+    width: 45%;
 }
 
 ul {
-  padding: 0;
-  list-style-type: none;
+    padding: 0;
+    list-style-type: none;
 }
 
 .progress {
-  height: 40px;
+    height: 40px;
 }
 
 .progress-bar {
-  line-height: 40px;
+    line-height: 40px;
 }
 
 .underline-small {
-  height: 2px;
-  background-color: gray;
-  margin-bottom: 2%;
+    height: 2px;
+    background-color: gray;
+    margin-bottom: 2%;
 }
 
 .date {
-  font-size: 20px;
+    font-size: 20px;
 }

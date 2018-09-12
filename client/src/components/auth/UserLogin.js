@@ -34,11 +34,18 @@ class UserLogin extends Component {
                 this.props.updateUser(user);
             })
             .catch(error => {
+                let errorMessage = '';
+
+                if (error.message == 401) {
+                    errorMessage = 'Invalid username or password';
+                } else {
+                    errorMessage = 'Oops, something went wrong... Please try again.';
+                }
+
                 this.setState({
                     loading: false,
-                    error: 'Invalid username or password'
+                    error: errorMessage
                 });
-                console.log('ERROR', error);
             });
     }
 
@@ -55,9 +62,18 @@ class UserLogin extends Component {
                 this.props.updateUser(user);
             })
             .catch(error => {
+                let errorMessage = '';
+
+                if (error.message == 400) {
+                    errorMessage = 'Invalid secret code - are you sure you typed it correctly?';
+                } else if (error.message == 403) {
+                    errorMessage = 'That username is already taken - please choose another one';
+                } else {
+                    errorMessage = 'Oops, something went wrong... Please try again.';
+                }
                 this.setState({
                     loading: false,
-                    error: 'Invalid secret code - are you sure you typed it correctly?'
+                    error: errorMessage
                 });
             });
     }

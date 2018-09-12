@@ -7,7 +7,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import './style.css';
-import * as EventActions from '../../../actions/events';
+
+import * as AdminActions from '../../../actions/admin';
 
 class EventsList extends Component {
     constructor(props) {
@@ -132,14 +133,14 @@ class EventsList extends Component {
 
 const mapStateToProps = state => ({
     admin: state.admin,
-    events: state.events.events,
-    eventsLoading: state.events.loading,
-    eventsError: state.events.error
+    events: state.admin.events.data,
+    eventsLoading: state.admin.events.loading,
+    eventsError: state.admin.events.error
 });
 
 const mapDispatchToProps = dispatch => ({
-    getEvents: (username, password) => dispatch(EventActions.getEvents(username, password)),
-    deleteEvent: (username, password, eventId) => dispatch(EventActions.deleteEvent(username, password, eventId))
+    getEvents: (username, password) => dispatch(AdminActions.getEvents(username, password)),
+    deleteEvent: (username, password, eventId) => dispatch(AdminActions.deleteEvent(username, password, eventId))
 });
 
 export default connect(

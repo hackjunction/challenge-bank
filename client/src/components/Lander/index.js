@@ -1,9 +1,8 @@
 import React from 'react';
 import './style.css';
 import _ from 'lodash';
-import moment from 'moment-timezone';
-import { ProgressBar } from 'react-bootstrap';
-import API from '../../services/api';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Lander extends React.Component {
     constructor(props) {
@@ -14,73 +13,51 @@ class Lander extends React.Component {
             events: []
         };
     }
-
-    componentDidMount() {
-        this.getEvents();
-    }
-
-    async getEvents(event) {
-        this.setState({
-            loading: true
-        });
-
-        API.getEvents()
-            .then(events => {
-                this.setState({
-                    loading: false,
-                    events,
-                    error: null
-                });
-            })
-            .catch(error => {
-                this.setState({
-                    loading: false,
-                    error: 'Oops, something'
-                });
-            });
-    }
-
-    renderEvents() {
-        return _.map(this.state.events, event => {
-            return (
-                <li>
-                    <div className="flexrow">
-                        <b>{event.eventName}</b>
-                        <div className="date">{moment.tz(event.eventStartTime, event.timezone).format('Q.M.')}</div>
-                    </div>
-                    <p className="location">{event.locationName}</p>
-                    <div className="underline-small" />
-                </li>
-            );
-        });
-    }
-
-    renderBars() {
-        return _.map(this.state.events, event => {
-            // event point amount has to be added, must set max to fit max-points amount. Needs backend changes.
-            return <ProgressBar active now={45} label={event.eventName} />;
-        });
-    }
-
     render() {
-        return (
-            <div className="container">
-                <div className="flexrow lander-flex">
-                    <div className="events landeritem">
-                        <h4 className="landertitle">Upcoming events</h4>
-                        <div className="underline" />
-                        <ul>{this.renderEvents()}</ul>
-                    </div>
-
-                    <div className="cities landeritem">
-                        <h4 className="landertitle">Current standings</h4>
-                        <div className="underline" />
-                        {this.renderBars()}
+        console.log(this.props.user);
+        if (!this.props.user) {
+            return (
+                <div className="container">
+                    <div className="Lander--wrapper">
+                        <h1 className="Lander--title">WELCOME TO THE CHALLENGE BANK!</h1>
+                        <p className="Lander--text">
+                            If you are at a TechRace or HackTour event, click below to register or log in and start
+                            solving challenges. To register for an event, you'll need a <strong>secret code</strong>{' '}
+                            which will be provided for you at the event. Happy hacking!
+                        </p>
+                        <div className="Lander--buttons">
+                            <Link className="btn btn-default" to="/login">
+                                Log in or Register
+                            </Link>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        } else {
+            return (
+                <div className="container">
+                    <div className="Lander--wrapper">
+                        <h1 className="Lander--title">Welcome to {this.props.user.event.eventName}</h1>
+                        <p className="Lander--text">
+                            You're logged in as <strong>{this.props.user.username}</strong>
+                        </p>
+                        <div className="Lander--buttons">
+                            <Link className="btn btn-default" to="/challenges">
+                                View challenges
+                            </Link>
+                            <Link className="btn btn-default" to="/login">
+                                Log out
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
     }
 }
 
-export default Lander;
+const mapStateToProps = state => ({
+    user: state.user.user
+});
+
+export default connect(mapStateToProps)(Lander);

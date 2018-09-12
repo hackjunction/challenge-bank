@@ -4,10 +4,8 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { connect } from 'react-redux';
 import Spinner from 'react-spinkit';
-import * as EventActions from '../../../actions/events';
-import * as SubmissionsActions from '../../../actions/submissions';
+import * as AdminActions from '../../../actions/admin';
 import './style.css';
-import API from '../../../services/api';
 
 import SubmissionsTable from './SubmissionsTable';
 import SelectedSubmission from './SelectedSubmission';
@@ -153,18 +151,18 @@ class SubmissionsList extends Component {
 
 const mapStateToProps = state => ({
     admin: state.admin,
-    submissions: state.submissions.submissions,
-    submissionsLoading: state.submissions.loading,
-    submissionsError: state.submissions.error,
-    events: state.events.events,
-    eventsLoading: state.events.loading,
-    eventsError: state.events.error
+    submissions: state.admin.submissions.events,
+    submissionsLoading: state.submissions.events.loading,
+    submissionsError: state.submissions.events.error,
+    events: state.admin.events.data,
+    eventsLoading: state.admin.events.loading,
+    eventsError: state.admin.events.error
 });
 
 const mapDispatchToProps = dispatch => ({
-    getEvents: (username, password) => dispatch(EventActions.getEvents(username, password)),
+    getEvents: (username, password) => dispatch(AdminActions.getEvents(username, password)),
     getSubmissions: (username, password, eventId) =>
-        dispatch(SubmissionsActions.getSubmissionsForEvent(username, password, eventId))
+        dispatch(AdminActions.getSubmissionsForEvent(username, password, eventId))
 });
 
 export const allChallenges = gql`

@@ -14,21 +14,32 @@ const UserController = {
             })
             .then(event => {
                 if (!event) {
-                    throw new Error('Code ' + secretCode + ' does not match any events');
+                    throw new Error('INVALID_CODE');
                 }
 
-                const doc = {
-                    username: username,
-                    hash: md5(password + process.env.PASSWORD_SALT),
-                    token: uuid(),
-                    event: event._id
-                };
+                return mongoose
+                    .model('User')
+                    .findOne({ username })
+                    .then(user => {
+                        if (user) {
+                            throw new Error('USERNAME_TAKEN');
+                        }
 
-                return mongoose.model('User').create(doc);
+                        const doc = {
+                            username: username,
+                            hash: md5(password + process.env.PASSWORD_SALT),
+                            token: uuid(),
+                            event: event._id
+                        };
+
+                        return mongoose.model('User').create(doc);
+                    });
             })
-            .catch(error => {
-                console.log('ERROR', error);
-                throw new Error('Oops, something went wrong... Please try again later.');
+            .then(user => {
+                return mongoose
+                    .model('User')
+                    .findById(user._id)
+                    .populate('event');
             });
     },
 
@@ -39,16 +50,13 @@ const UserController = {
                 username: username,
                 hash: md5(password + process.env.PASSWORD_SALT)
             })
+            .populate('event')
             .then(user => {
                 if (!user) {
-                    throw new Error('Invalid username or password');
+                    throw new Error('INVALID_USERNAME_PASSWORD');
                 }
 
                 return user;
-            })
-            .catch(error => {
-                console.log('ERROR', error);
-                throw new Error('Oops, something went wrong... Please try again later');
             });
     },
 
