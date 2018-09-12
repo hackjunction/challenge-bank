@@ -152,6 +152,17 @@ class Challenge extends Component {
     renderForm() {
         const { event } = this.props.user;
 
+        const submitted = _.findIndex(this.props.submissions.data, submission => {
+            return submission.challengeId === this.props.match.params.id && submission.reviewStatus === 0;
+        });
+
+        const accepted = _.findIndex(this.props.submissions.data, submission => {
+            return submission.challengeId === this.props.match.params.id && submission.reviewStatus === 3;
+        });
+
+        const isPending = submitted !== -1;
+        const isAccepted = accepted !== -1;
+
         const now = moment().tz(event.timezone);
         const startTime = moment(event.platformOpens).tz(event.timezone);
         const endTime = moment(event.platformCloses).tz(event.timezone);
@@ -161,6 +172,20 @@ class Challenge extends Component {
                 return (
                     <div className="Challenge--submit">
                         <h3 className="Challenge--submitted">Thanks for submitting your answer!</h3>
+                    </div>
+                );
+            } else if (isPending) {
+                return (
+                    <div className="Challenge--submit">
+                        <h3 className="Challenge--submitted">Your previous submission is still under review</h3>
+                    </div>
+                );
+            } else if (isAccepted) {
+                return (
+                    <div className="Challenge--submit">
+                        <h3 className="Challenge--submitted">
+                            You've already submitted an accepted solution. Congrats!
+                        </h3>
                     </div>
                 );
             } else {
@@ -284,7 +309,8 @@ export const allChallenges = gql`
 `;
 
 const mapStateToProps = state => ({
-    user: state.user.user
+    user: state.user.user,
+    submissions: state.user.submissions
 });
 
 const mapDispatchToProps = dispatch => ({});
