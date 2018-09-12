@@ -69,7 +69,6 @@ function getSubmissionById(req, res) {
 }
 
 function reviewSubmission(req, res) {
-    console.log(req.body);
     return SubmissionController.reviewSubmission(req.params.id, req.body.decision, req.body.feedback)
         .then(submission => {
             return res.status(status.OK).send({
@@ -116,7 +115,6 @@ function getUserSubmissionById(req, res) {
 }
 
 function createSubmission(req, res) {
-    console.log('SUBMISSION', req.body);
     return SubmissionController.createSubmission(req.user, req.body.submission)
         .then(submission => {
             return res.status(status.OK).send({

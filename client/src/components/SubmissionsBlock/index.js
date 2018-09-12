@@ -5,6 +5,7 @@ import TimeAgo from 'react-timeago';
 import Points from '../../constants/points';
 import _ from 'lodash';
 import './style.css';
+import { Link } from 'react-router-dom';
 
 import * as UserActions from '../../actions/user';
 
@@ -64,6 +65,7 @@ class SubmissionsBlock extends Component {
                     <br />
                     {submission.reviewFeedback}
                 </p>
+                <Link to={'/challenge/' + submission.challengeId}>Click to submit this challenge again</Link>
             </div>
         );
     }
@@ -89,6 +91,7 @@ class SubmissionsBlock extends Component {
                     <br />
                     {submission.reviewFeedback}
                 </p>
+                <Link to={'/challenge/' + submission.challengeId}>Want full points? Submit this challenge again</Link>
             </div>
         );
     }
@@ -144,12 +147,34 @@ class SubmissionsBlock extends Component {
     getUserPoints() {
         let points = 0;
 
-        _.each(this.props.submissions, submission => {
-            if (submission.reviewStatus === 2) {
-                points += 0.5 * Points[submission.challengeDifficulty];
+        if (!this.props.submissions || !this.props.submissions.data) {
+            return 0;
+        }
+
+        const unique = {};
+
+        _.each(this.props.submissions.data, submission => {
+            if (unique.hasOwnProperty(submission.challengeId)) {
+                if (unique[submission.challengeId].status < submission.reviewStatus) {
+                    unique[submission.challengeId] = {
+                        status: submission.reviewStatus,
+                        points: Points[submission.challengeDifficulty]
+                    };
+                }
+            } else {
+                unique[submission.challengeId] = {
+                    status: submission.reviewStatus,
+                    points: Points[submission.challengeDifficulty]
+                };
             }
-            if (submission.reviewStatus === 3) {
-                points += Points[submission.challengeDifficulty];
+        });
+
+        _.forOwn(unique, (value, key) => {
+            if (value.status === 3) {
+                points += value.points;
+            }
+            if (value.status === 2) {
+                points += 0.5 * value.points;
             }
         });
 

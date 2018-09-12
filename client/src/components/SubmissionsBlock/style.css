@@ -111,6 +111,7 @@
     flex-direction: column;
     justify-content: flex-start;
     padding: 10px;
+    border-top: 0.5px solid rgba(0, 0, 0, 0.3);
 }
 
 .SubmissionsBlock--submission-top {

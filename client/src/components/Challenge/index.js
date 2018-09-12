@@ -157,7 +157,6 @@ class Challenge extends Component {
         const endTime = moment(event.platformCloses).tz(event.timezone);
 
         if (now.isAfter(startTime) && now.isBefore(endTime)) {
-            console.log('IS OPEN');
             if (this.state.submitted) {
                 return (
                     <div className="Challenge--submit">
@@ -180,7 +179,6 @@ class Challenge extends Component {
                 );
             }
         } else {
-            console.log('IS CLOSED');
             if (now.isBefore(startTime)) {
                 return (
                     <div className="Challenge--submit">

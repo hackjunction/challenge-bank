@@ -9,9 +9,12 @@ const SubmissionController = {
     },
 
     getSubmissionsForEvent: eventId => {
-        return mongoose.model('Submission').find({
-            event: eventId
-        });
+        return mongoose
+            .model('Submission')
+            .find({
+                event: eventId
+            })
+            .populate('user');
     },
 
     getSubmissionById: submissionId => {

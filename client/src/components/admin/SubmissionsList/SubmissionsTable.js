@@ -1,10 +1,8 @@
 import React from 'react';
-import { render } from 'react-dom';
 import './style.css';
 // Import React Table
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { Link } from 'react-router-dom';
 import 'react-tippy/dist/tippy.css';
 import { Tooltip } from 'react-tippy';
 import Markdown from 'react-markdown';
@@ -84,6 +82,11 @@ class SubmissionsTable extends React.Component {
                         Cell: props => {
                             return <TimeAgo date={props.row.timestamp} />;
                         }
+                    },
+                    {
+                        Header: 'User',
+                        id: 'user',
+                        accessor: 'user.username'
                     }
                 ]
             },

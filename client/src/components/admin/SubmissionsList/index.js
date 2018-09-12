@@ -110,6 +110,8 @@ class SubmissionsList extends Component {
         const { eventId } = this.props.match.params;
         const event = this.findEvent(eventId, this.props.events);
 
+        console.log(this.props.submissions);
+
         if (!this.props.eventsLoading && !event) {
             return (
                 <div>
@@ -152,8 +154,8 @@ class SubmissionsList extends Component {
 const mapStateToProps = state => ({
     admin: state.admin,
     submissions: state.admin.submissions.events,
-    submissionsLoading: state.submissions.events.loading,
-    submissionsError: state.submissions.events.error,
+    submissionsLoading: state.admin.submissions.loading,
+    submissionsError: state.admin.submissions.error,
     events: state.admin.events.data,
     eventsLoading: state.admin.events.loading,
     eventsError: state.admin.events.error

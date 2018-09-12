@@ -127,8 +127,11 @@ const API = {
         return GET(`/api/admin/submissions/${submissionId}/?user=${username}&pass=${password}`);
     },
 
-    adminReviewSubmission: (username, password, submissionId, decision) => {
-        return POST(`/api/admin/submissions/${submissionId}/?user=${username}&pass=${password}`, { decision });
+    adminReviewSubmission: (username, password, submissionId, decision, feedback) => {
+        return POST(`/api/admin/submissions/${submissionId}/?user=${username}&pass=${password}`, {
+            decision,
+            feedback
+        });
     },
 
     /* ROUTES THAT REQUIRE USER TOKEN */
