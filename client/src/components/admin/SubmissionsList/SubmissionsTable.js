@@ -4,7 +4,6 @@ import './style.css';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import 'react-tippy/dist/tippy.css';
-import { Tooltip } from 'react-tippy';
 import Markdown from 'react-markdown';
 import TimeAgo from 'react-timeago';
 import ReviewConstants from '../../../constants/review';
@@ -13,28 +12,10 @@ class SubmissionsTable extends React.Component {
     constructor(props) {
         super(props);
         this.renderDesc = this.renderDesc.bind(this);
-        this.renderTooltip = this.renderTooltip.bind(this);
     }
 
     onSelect(props) {
         this.props.onSelect(props);
-    }
-
-    renderTooltip(title, desc) {
-        return (
-            <Tooltip
-                position="right"
-                trigger="click"
-                arrow
-                size="big"
-                theme="transparent"
-                duration={100}
-                interactive
-                html={this.renderDesc(desc)}
-            >
-                {title}
-            </Tooltip>
-        );
     }
 
     renderDesc(props) {
@@ -49,21 +30,21 @@ class SubmissionsTable extends React.Component {
                         Header: 'Name',
                         id: 'challengeName',
                         accessor: d => {
-                            return this.renderTooltip(d.challenge.name, d.challenge.description);
+                            return d.challenge ? `${d.challenge.name}` : 'deleted';
                         }
                     },
                     {
                         Header: 'Difficulty',
                         id: 'challengeDifficulty',
                         accessor: d => {
-                            return `${d.challenge.challengeDifficulty.name}`;
+                            return d.challenge ? `${d.challenge.challengeDifficulty.name}` : 'deleted';
                         }
                     },
                     {
                         Header: 'Category',
                         id: 'challengeCategory',
                         accessor: d => {
-                            return d.challenge.challengeCategory.name;
+                            return d.challenge ? d.challenge.challengeCategory.name : 'deleted';
                         }
                     }
                 ]
