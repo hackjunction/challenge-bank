@@ -112,13 +112,13 @@ class SubmissionsBlock extends Component {
                     <br />
                     {submission.answer}
                 </p>
-                <p className="SubmissionsBlock--submission-answer">
-                    {submission.reviewFeedback ? (
+                {submission.reviewFeedback ? (
+                    <p className="SubmissionsBlock--submission-answer">
                         <strong>Reviewer feedback: </strong>
                         <br />
                         {submission.reviewFeedback}
-                    ) : null}
-                </p>
+                    </p>
+                ) : null}
             </div>
         );
     }
