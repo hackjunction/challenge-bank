@@ -11,6 +11,9 @@ const initialState = {
         events: {},
         error: false,
         loading: false
+    },
+    preferences: {
+        hideReviewedSubmissions: false
     }
 };
 

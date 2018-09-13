@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import { connect } from 'react-redux';
 import Spinner from 'react-spinkit';
 import * as AdminActions from '../../../actions/admin';
+import Switch from '@material-ui/core/Switch';
 import './style.css';
 
 import SubmissionsTable from './SubmissionsTable';
@@ -18,7 +19,8 @@ class SubmissionsList extends Component {
             challengeMap: {},
             difficulties: [],
             categories: [],
-            selectedSubmission: null
+            selectedSubmission: null,
+            showOnlyUnreviewed: true
         };
 
         this.setSelected = this.setSelected.bind(this);
@@ -110,8 +112,6 @@ class SubmissionsList extends Component {
         const { eventId } = this.props.match.params;
         const event = this.findEvent(eventId, this.props.events);
 
-        console.log(this.props.submissions);
-
         if (!this.props.eventsLoading && !event) {
             return (
                 <div>
@@ -120,19 +120,42 @@ class SubmissionsList extends Component {
             );
         }
 
+        let filtered;
+        const submissionCount = this.props.submissions[eventId].length;
+        if (this.state.showOnlyUnreviewed) {
+            filtered = _.filter(this.props.submissions[eventId], submission => {
+                return submission.reviewStatus === 0;
+            });
+        } else {
+            filtered = this.props.submissions[eventId];
+        }
+
         const loading = this.props.submissionsLoading || this.props.eventsLoading || this.props.data.loading;
-        const submissions = this.mapChallengesToSubmissions(this.props.submissions[eventId]);
+        const submissions = this.mapChallengesToSubmissions(filtered);
 
         return (
             <div>
                 <div className="SubmissionsList--container col-xs-12">
                     <div className="SubmissionsList--header">
-                        <div className="top">
+                        <div className="SubmissionsList--header-left">
                             <h1 className="title">Submissions</h1>
                             {loading ? <Spinner name="circle" fadeIn="quarter" /> : null}
                         </div>
-                        <div className="bottom">
-                            <h5>{event.eventName + ' | ' + submissions.length + ' submissions'}</h5>
+                        <div className="SubmissionsList--header-right">
+                            <p>{event.eventName}</p>
+                            <span>{submissionCount} Submissions</span>
+                        </div>
+                    </div>
+                    <div className="SubmissionsList--options">
+                        <div className="SubmissionsList--option">
+                            <span className="DifficultyFilters--filter-name">Show only unreviewed submissions</span>
+                            <Switch
+                                onChange={event =>
+                                    this.setState({ showOnlyUnreviewed: !this.state.showOnlyUnreviewed })
+                                }
+                                checked={this.state.showOnlyUnreviewed}
+                                color="primary"
+                            />
                         </div>
                     </div>
                     <div className="SubmissionsList--selected">

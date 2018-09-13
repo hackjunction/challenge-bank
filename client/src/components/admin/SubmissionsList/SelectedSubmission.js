@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Markdown from 'react-markdown';
 import TimeAgo from 'react-timeago';
+import _ from 'lodash';
 import API from '../../../services/api';
 
 class SelectedSubmission extends Component {
@@ -24,6 +25,14 @@ class SelectedSubmission extends Component {
 
     close() {
         this.props.onClose();
+    }
+
+    componentWillReceiveProps(nextprops) {
+        if (nextprops.submission !== this.props.submission) {
+            this.setState({
+                feedback: ''
+            });
+        }
     }
 
     submitReview(decision) {
@@ -107,6 +116,16 @@ class SelectedSubmission extends Component {
                                 source={this.props.submission.challenge.answer}
                                 escapeHtml={false}
                             />
+                        </div>
+                    </div>
+                    <div className="SelectedSubmission--row">
+                        <span className="SelectedSubmission--row-title">Attachments</span>
+                        <div className="SelectedSubmission--row-content">
+                            {_.map(this.props.submission.challenge.attachments, attachment => (
+                                <a href={attachment.url} download={attachment.fileName} target="_blank">
+                                    {attachment.fileName}
+                                </a>
+                            ))}
                         </div>
                     </div>
                     <div className="SelectedSubmission--row">

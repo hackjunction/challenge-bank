@@ -134,7 +134,7 @@ class SubmissionsTable extends React.Component {
                     <ReactTable
                         data={this.props.data}
                         columns={COLUMNS}
-                        defaultPageSize={10}
+                        defaultPageSize={100}
                         className="-striped -highlight"
                     />
                 </div>
