@@ -91,12 +91,12 @@ const EventController = {
             });
     },
 
-    updateEvent: eventData => {
+    updateEvent: (eventData, eventId) => {
         return EventController.validate(eventData)
             .then(validatedData => {
                 return mongoose
                     .model('Event')
-                    .findByIdAndUpdate(eventData._id)
+                    .findByIdAndUpdate(eventId, { $set: { validatedData } })
                     .then(event => {
                         return event;
                     })

@@ -67,7 +67,7 @@ class EditEvent extends Component {
 
         const { username, password } = this.props.admin.credentials;
 
-        API.adminUpdateEvent(username, password, { event: params })
+        API.adminUpdateEvent(username, password, { event: params }, this.props.match.params.id)
             .then(() => {
                 this.setState({
                     loadingEventSave: false,

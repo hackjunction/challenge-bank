@@ -112,7 +112,7 @@ function createEvent(req, res) {
 }
 
 function updateEvent(req, res) {
-    return EventController.updateEvent(req.body.event)
+    return EventController.updateEvent(req.body.event, req.params.id)
         .then(event => {
             return res.status(status.OK).send({
                 status: 'success',

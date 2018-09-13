@@ -107,8 +107,8 @@ const API = {
         return POST(`/api/admin/events/?user=${username}&pass=${password}`, event);
     },
 
-    adminUpdateEvent: (username, password, event) => {
-        return PATCH(`/api/admin/events/${event._id}/?user=${username}&pass=${password}`, event);
+    adminUpdateEvent: (username, password, event, eventId) => {
+        return PATCH(`/api/admin/events/${eventId}/?user=${username}&pass=${password}`, event);
     },
 
     adminDeleteEvent: (username, password, eventId) => {
