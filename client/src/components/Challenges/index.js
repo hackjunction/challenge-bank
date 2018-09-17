@@ -127,7 +127,7 @@ class Home extends Component {
                         onChange={data => this.props.setSelectedCategoryFilters(data)}
                     />
                 </div>
-                <div className="Challenges--filters-wrapper">
+                {/* <div className="Challenges--filters-wrapper">
                     <div>
                         <span>Hide submitted challenges</span>
                         <Switch
@@ -137,7 +137,7 @@ class Home extends Component {
                             color="primary"
                         />
                     </div>
-                </div>
+                </div> */}
                 <div className="Challenges--challenges-wrapper col-xs-12">
                     <ChallengeGrid challenges={this.filterChallenges()} showEmptyText={true} />
                 </div>
