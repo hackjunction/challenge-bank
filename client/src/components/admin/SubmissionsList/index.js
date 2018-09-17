@@ -120,17 +120,22 @@ class SubmissionsList extends Component {
             );
         }
 
-        let filtered;
-        const submissionCount = this.props.submissions[eventId].length;
-        if (this.state.showOnlyUnreviewed) {
-            filtered = _.filter(this.props.submissions[eventId], submission => {
-                return submission.reviewStatus === 0;
-            });
-        } else {
-            filtered = this.props.submissions[eventId];
+        const loading = this.props.submissionsLoading || this.props.eventsLoading || this.props.data.loading;
+
+        let filtered = [];
+        let submissionCount = 0;
+
+        if (!loading) {
+            submissionCount = this.props.submissions[eventId].length;
+            if (this.state.showOnlyUnreviewed) {
+                filtered = _.filter(this.props.submissions[eventId], submission => {
+                    return submission.reviewStatus === 0;
+                });
+            } else {
+                filtered = this.props.submissions[eventId];
+            }
         }
 
-        const loading = this.props.submissionsLoading || this.props.eventsLoading || this.props.data.loading;
         const submissions = this.mapChallengesToSubmissions(filtered);
 
         return (

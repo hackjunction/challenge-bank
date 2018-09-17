@@ -156,6 +156,7 @@ export const allChallenges = gql`
                 name
                 difficultyvalue
             }
+            techRaceOnly
             isPublished
         }
         _allChallengesMeta {

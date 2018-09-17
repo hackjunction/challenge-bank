@@ -30,21 +30,21 @@ class SubmissionsTable extends React.Component {
                         Header: 'Name',
                         id: 'challengeName',
                         accessor: d => {
-                            return d.challenge ? `${d.challenge.name}` : 'deleted';
+                            return d.challenge ? `${d.challenge.name}` : '???';
                         }
                     },
                     {
                         Header: 'Difficulty',
                         id: 'challengeDifficulty',
                         accessor: d => {
-                            return d.challenge ? `${d.challenge.challengeDifficulty.name}` : 'deleted';
+                            return d.challenge ? `${d.challenge.challengeDifficulty.name}` : '???';
                         }
                     },
                     {
                         Header: 'Category',
                         id: 'challengeCategory',
                         accessor: d => {
-                            return d.challenge ? d.challenge.challengeCategory.name : 'deleted';
+                            return d.challenge ? d.challenge.challengeCategory.name : '???';
                         }
                     }
                 ]
@@ -77,16 +77,16 @@ class SubmissionsTable extends React.Component {
                     {
                         Header: 'Status',
                         id: 'reviewStatus',
-                        accessor: d => {
-                            if (ReviewConstants.Status.hasOwnProperty(d.reviewStatus)) {
-                                return (
-                                    <div className="SubmissionsTable--options">
-                                        <span className="SubmissionsTable--review-status">
-                                            {ReviewConstants.Status[d.reviewStatus].name}
-                                        </span>
-                                    </div>
-                                );
-                            }
+                        accessor: d =>
+                            ReviewConstants.Status[d.reviewStatus] ? ReviewConstants.Status[d.reviewStatus].name : 0,
+                        Cell: props => {
+                            return (
+                                <div className="SubmissionsTable--options">
+                                    <span className={'SubmissionsTable--review-status ' + props.value}>
+                                        {props.value}
+                                    </span>
+                                </div>
+                            );
                         }
                     },
                     {

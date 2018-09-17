@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Spinner from 'react-spinkit';
 import TimezonePicker from 'react-bootstrap-timezone-picker';
 import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min.css';
-import { Form, Input } from 'formsy-react-components';
+import { Form, Input, Checkbox } from 'formsy-react-components';
 import { connect } from 'react-redux';
 import API from '../../../services/api';
 import { Link } from 'react-router-dom';
