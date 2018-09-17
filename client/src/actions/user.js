@@ -14,6 +14,19 @@ export const clearUser = () => dispatch => {
     });
 };
 
+export const updateUserWithToken = token => {
+    return async function(dispatch) {
+        return API.updateUserWithToken(token)
+            .then(user => {
+                dispatch({
+                    type: ActionTypes.UPDATE_USER,
+                    payload: user
+                });
+            })
+            .catch(error => {});
+    };
+};
+
 export const userGetSubmissions = token => {
     return async function(dispatch) {
         dispatch({ type: ActionTypes.UPDATE_USER_SUBMISSIONS_LOADING });

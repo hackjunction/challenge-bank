@@ -139,6 +139,10 @@ const API = {
         return POST('/api/login', { username, password });
     },
 
+    updateUserWithToken: token => {
+        return POST('/api/user', { token });
+    },
+
     userSignup: (username, password, secret) => {
         return POST('/api/signup', { username, password, secret });
     },

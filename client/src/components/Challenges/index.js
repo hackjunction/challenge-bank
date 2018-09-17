@@ -17,6 +17,10 @@ import SubmissionsBlock from '../SubmissionsBlock/';
 import EventTimer from '../EventTimer/';
 
 class Home extends Component {
+    componentWillMount() {
+        this.props.updateUserWithToken(this.props.user.token);
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.data.allChallenges !== this.props.data.allChallenges) {
             const { categories, difficulties } = this.getDifficultiesAndCategories(nextProps.data.allChallenges);
@@ -175,7 +179,8 @@ const mapDispatchToProps = dispatch => ({
     setAvailableCategoryFilters: categories => dispatch(UserActions.setAvailableCategoryFilters(categories)),
     setSelectedCategoryFilters: categories => dispatch(UserActions.setSelectedCategoryFilters(categories)),
     setAvailableDifficultyFilters: difficulties => dispatch(UserActions.setAvailableDifficultyFilters(difficulties)),
-    setSelectedDifficultyFilters: difficulties => dispatch(UserActions.setSelectedDifficultyFilters(difficulties))
+    setSelectedDifficultyFilters: difficulties => dispatch(UserActions.setSelectedDifficultyFilters(difficulties)),
+    updateUserWithToken: token => dispatch(UserActions.updateUserWithToken(token))
 });
 
 export default connect(

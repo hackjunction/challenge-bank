@@ -7,6 +7,7 @@ module.exports = function(app) {
     app.get('/api/login/admin', passport.authenticate('admin', { session: false }), success);
     app.post('/api/login/', getUser);
     app.post('/api/signup', createUser);
+    app.post('/api/user', getUserWithToken);
 };
 
 function success(req, res) {
@@ -69,6 +70,31 @@ function getUser(req, res) {
             return res.status(status.INTERNAL_SERVER_ERROR).send({
                 status: 'error',
                 message: error.message
+            });
+        });
+}
+
+function getUserWithToken(req, res) {
+    const { token } = req.body;
+
+    UserController.getUserWithToken(token)
+        .then(user => {
+            if (!user) {
+                return res.status(status.UNAUTHORIZED).send({
+                    status: 'error',
+                    message: 'No user found with that token'
+                });
+            }
+
+            return res.status(status.OK).send({
+                status: 'success',
+                data: user
+            });
+        })
+        .catch(error => {
+            return res.status(status.INTERNAL_SERVER_ERROR).send({
+                status: 'error',
+                message: 'Something went wrong...'
             });
         });
 }
