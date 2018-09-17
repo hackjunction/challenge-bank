@@ -32,7 +32,7 @@ class SubmissionsBlock extends Component {
         const challenge = _.find(this.props.challenges, c => c.id === submission.challengeId);
 
         return (
-            <div className="SubmissionsBlock--submission pending">
+            <div key={submission._id} className="SubmissionsBlock--submission pending">
                 <div className="SubmissionsBlock--submission-top">
                     <span className="SubmissionsBlock--submission-challenge">{challenge.name} </span>
                     <TimeAgo className="SubmissionsBlock--submission-timeago" date={submission.timestamp} />
@@ -50,7 +50,7 @@ class SubmissionsBlock extends Component {
         const challenge = _.find(this.props.challenges, c => c.id === submission.challengeId);
 
         return (
-            <div className="SubmissionsBlock--submission rejected">
+            <div key={submission._id} className="SubmissionsBlock--submission rejected">
                 <div className="SubmissionsBlock--submission-top">
                     <span className="SubmissionsBlock--submission-challenge">{challenge.name} </span>
                     <TimeAgo className="SubmissionsBlock--submission-timeago" date={submission.timestamp} />
@@ -74,7 +74,7 @@ class SubmissionsBlock extends Component {
         const challenge = _.find(this.props.challenges, c => c.id === submission.challengeId);
 
         return (
-            <div className="SubmissionsBlock--submission half-points">
+            <div key={submission._id} className="SubmissionsBlock--submission half-points">
                 <div className="SubmissionsBlock--submission-top">
                     <span className="SubmissionsBlock--submission-challenge">{challenge.name} </span>
                     <span className="SubmissionsBlock--points-earned">
@@ -100,7 +100,7 @@ class SubmissionsBlock extends Component {
         const challenge = _.find(this.props.challenges, c => c.id === submission.challengeId);
 
         return (
-            <div className="SubmissionsBlock--submission accepted">
+            <div key={submission._id} className="SubmissionsBlock--submission accepted">
                 <div className="SubmissionsBlock--submission-top">
                     <span className="SubmissionsBlock--submission-challenge">{challenge.name} </span>
                     <span className="SubmissionsBlock--points-earned">

@@ -60,9 +60,16 @@ class Home extends Component {
     }
 
     filterChallenges() {
+        const submittedIds = _.map(this.props.submissions, 'challengeId');
         return _.filter(this.props.data.allChallenges, challenge => {
             if (!challenge.challengeDifficulty || !challenge.challengeCategory) {
                 return false;
+            }
+
+            if (this.props.hideSubmitted) {
+                if (submittedIds.indexOf(challenge.id) !== -1) {
+                    return false;
+                }
             }
 
             const catName = challenge.challengeCategory.name;
@@ -109,6 +116,8 @@ class Home extends Component {
         if (error) return this.renderError();
         if (loading) return this.renderLoading();
 
+        const challenges = this.filterChallenges();
+
         return (
             <div className="container">
                 <EventTimer event={this.props.user.event} />
@@ -127,19 +136,21 @@ class Home extends Component {
                         onChange={data => this.props.setSelectedCategoryFilters(data)}
                     />
                 </div>
-                {/* <div className="Challenges--filters-wrapper">
+                <div className="Challenges--filters-wrapper">
                     <div>
-                        <span>Hide submitted challenges</span>
+                        <span>Hide challenges you've already submitted</span>
                         <Switch
-                            onChange={() => {}}
-                            checked={true}
-                            value={'Hide submitted challenges'}
+                            onChange={e => {
+                                this.props.toggleHideSubmitted(e.target.checked);
+                            }}
+                            checked={this.props.hideSubmitted ? this.props.hideSubmitted : false}
+                            value={"Hide challenges you've already submitted"}
                             color="primary"
                         />
                     </div>
-                </div> */}
+                </div>
                 <div className="Challenges--challenges-wrapper col-xs-12">
-                    <ChallengeGrid challenges={this.filterChallenges()} showEmptyText={true} />
+                    <ChallengeGrid challenges={challenges} showEmptyText={true} />
                 </div>
             </div>
         );
@@ -172,7 +183,9 @@ export const allChallenges = gql`
 const mapStateToProps = state => ({
     categoryFilters: state.user.categoryFilters,
     difficultyFilters: state.user.difficultyFilters,
-    user: state.user.user
+    hideSubmitted: state.user.hideSubmitted,
+    user: state.user.user,
+    submissions: state.user.submissions.data
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -180,7 +193,8 @@ const mapDispatchToProps = dispatch => ({
     setSelectedCategoryFilters: categories => dispatch(UserActions.setSelectedCategoryFilters(categories)),
     setAvailableDifficultyFilters: difficulties => dispatch(UserActions.setAvailableDifficultyFilters(difficulties)),
     setSelectedDifficultyFilters: difficulties => dispatch(UserActions.setSelectedDifficultyFilters(difficulties)),
-    updateUserWithToken: token => dispatch(UserActions.updateUserWithToken(token))
+    updateUserWithToken: token => dispatch(UserActions.updateUserWithToken(token)),
+    toggleHideSubmitted: value => dispatch(UserActions.setUserHideSubmitted(value))
 });
 
 export default connect(

@@ -14,7 +14,8 @@ const initialState = {
     difficultyFilters: {
         selected: [],
         available: []
-    }
+    },
+    hideSubmitted: false
 };
 
 export default (state = initialState, action) => {
@@ -85,6 +86,11 @@ export default (state = initialState, action) => {
                     ...state.categoryFilters,
                     selected: action.payload
                 }
+            };
+        case ActionTypes.UPDATE_USER_HIDE_SUBMITTED:
+            return {
+                ...state,
+                hideSubmitted: action.payload
             };
         default:
             return state;

@@ -27,6 +27,7 @@ class ChallengeGrid extends Component {
 
         return (
             <div className="row">
+                <p>Showing {this.props.challenges.length} challenges</p>
                 <div className="grid">
                     {_.map(this.props.challenges, challenge => (
                         <div className="grid-item" key={`challenge-${challenge.id}`}>

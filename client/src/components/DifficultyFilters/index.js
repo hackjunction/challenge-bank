@@ -58,7 +58,7 @@ class DifficultyFilters extends Component {
             const isChecked = _.findIndex(this.props.selectedDifficulties, d => d.name === difficulty.name) !== -1;
 
             return (
-                <div className="DifficultyFilters--filter">
+                <div key={difficulty.name} className="DifficultyFilters--filter">
                     <span className="DifficultyFilters--filter-name">
                         {difficulty.name + ' (' + Points[difficulty.difficultyvalue] + 'p)'}{' '}
                     </span>

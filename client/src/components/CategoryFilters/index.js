@@ -55,7 +55,7 @@ class CategoryFilters extends Component {
             const isChecked = _.findIndex(this.props.selectedCategories, c => c.name === category.name) !== -1;
 
             return (
-                <div className="DifficultyFilters--filter">
+                <div key={category.name} className="DifficultyFilters--filter">
                     <span className="DifficultyFilters--filter-name">{category.name}</span>
                     <Switch
                         onChange={event => this.handleChange(category, event)}

@@ -72,3 +72,10 @@ export const setSelectedDifficultyFilters = difficulties => dispatch => {
         payload: difficulties
     });
 };
+
+export const setUserHideSubmitted = hideSubmitted => dispatch => {
+    dispatch({
+        type: ActionTypes.UPDATE_USER_HIDE_SUBMITTED,
+        payload: hideSubmitted
+    });
+};
