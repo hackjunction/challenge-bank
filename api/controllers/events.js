@@ -96,7 +96,7 @@ const EventController = {
             .then(validatedData => {
                 return mongoose
                     .model('Event')
-                    .findByIdAndUpdate(eventId, { $set: { validatedData } })
+                    .findByIdAndUpdate(eventId, { $set: validatedData }, { new: true })
                     .then(event => {
                         return event;
                     })
