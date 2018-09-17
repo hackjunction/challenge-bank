@@ -54,20 +54,31 @@ class Results extends Component {
         const byUser = _.groupBy(submissions, 'user.username');
 
         let rows = [];
+        let totalPoints = 0;
+        let totalSubmissions = 0;
 
         _.forOwn(byUser, (submissions, username) => {
+            const points = this.getUserPoints(submissions);
+            totalPoints += points;
+            totalSubmissions += submissions.length;
             rows.push({
-                username: username,
-                points: this.getUserPoints(submissions),
+                username,
+                points,
                 submissions: submissions.length
             });
         });
 
-        return _.sortBy(rows, 'points');
+        return {
+            totalSubmissions,
+            totalPoints,
+            rows: _.reverse(_.sortBy(rows, 'points'))
+        };
     }
 
     render() {
-        const rows = this.buildRows(this.props.submissions[this.props.match.params.eventId]);
+        const { rows, totalPoints, totalSubmissions } = this.buildRows(
+            this.props.submissions[this.props.match.params.eventId]
+        );
 
         const blocks = _.map(rows, row => {
             return (
@@ -77,7 +88,13 @@ class Results extends Component {
             );
         });
 
-        return <div className="container">{blocks}</div>;
+        return (
+            <div className="container">
+                <p>Total points: {totalPoints}</p>
+                <p>Amount of submissions: {totalSubmissions}</p>
+                {blocks}
+            </div>
+        );
     }
 }
 
