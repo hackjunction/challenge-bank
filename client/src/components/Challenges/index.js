@@ -6,6 +6,7 @@ import { ClipLoader, BarLoader } from 'react-spinners';
 import _ from 'lodash';
 import './style.css';
 import { connect } from 'react-redux';
+import Switch from '@material-ui/core/Switch';
 
 import * as UserActions from '../../actions/user';
 
@@ -121,6 +122,17 @@ class Home extends Component {
                         selectedCategories={this.props.categoryFilters.selected}
                         onChange={data => this.props.setSelectedCategoryFilters(data)}
                     />
+                </div>
+                <div className="Challenges--filters-wrapper">
+                    <div>
+                        <span>Hide submitted challenges</span>
+                        <Switch
+                            onChange={() => {}}
+                            checked={true}
+                            value={'Hide submitted challenges'}
+                            color="primary"
+                        />
+                    </div>
                 </div>
                 <div className="Challenges--challenges-wrapper col-xs-12">
                     <ChallengeGrid challenges={this.filterChallenges()} showEmptyText={true} />

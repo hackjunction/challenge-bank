@@ -34,6 +34,15 @@ const SubmissionController = {
     createSubmission: (user, data) => {
         data.user = user._id;
         data.event = user.event;
+
+        const now = moment().tz(user.event.timezone);
+        const startTime = moment(event.platformOpens).tz(event.timezone);
+        const endTime = moment(event.platformCloses).tz(event.timezone);
+
+        if (now.isBefore(startTime) || now.isAfter(endTime)) {
+            return Promise.reject('Submissions not open');
+        }
+
         return mongoose
             .model('Submission')
             .create(data)

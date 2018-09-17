@@ -61,7 +61,10 @@ const UserController = {
     },
 
     getUserWithToken: token => {
-        return mongoose.model('User').findOne({ token });
+        return mongoose
+            .model('User')
+            .findOne({ token })
+            .populate('event');
     }
 };
 
