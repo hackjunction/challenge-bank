@@ -28,6 +28,10 @@
     align-items: center;
 }
 
+.LeaderboardBlock--list-item.self {
+    background: gold;
+}
+
 .LeaderboardBlock--list-item-rank {
     width: 50px;
 }

@@ -65,6 +65,7 @@ class Lander extends React.Component {
                             getItemKey={item => item.eventId}
                             getItemName={item => item.eventName}
                             getItemScore={item => item.points + ' points'}
+                            isSelf={item => item.eventId === this.props.user.event._id}
                         />
                         <LeaderboardBlock
                             title={'Top users'}
@@ -72,6 +73,7 @@ class Lander extends React.Component {
                             getItemKey={item => item.userId}
                             getItemName={item => item.username + ' (' + item.eventName + ')'}
                             getItemScore={item => item.points + ' points'}
+                            isSelf={item => item.userId === this.props.user._id}
                         />
                     </div>
                 </div>

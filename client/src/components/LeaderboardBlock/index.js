@@ -10,17 +10,23 @@ class LeaderboardBlock extends Component {
         getItemKey: PropTypes.func,
         getItemName: PropTypes.func,
         getItemScore: PropTypes.func,
+        isSelf: PropTypes.func,
         limit: PropTypes.number
     };
 
     static defaultProps = {
-        limit: 10
+        limit: 10,
+        isSelf: () => false
     };
 
     renderList() {
         return _.map(this.props.items.slice(0, this.props.limit), (item, index) => {
+            const className = this.props.isSelf(item)
+                ? 'LeaderboardBlock--list-item self'
+                : 'LeaderboardBlock--list-item';
+
             return (
-                <div key={this.props.getItemKey(item)} className="LeaderboardBlock--list-item">
+                <div key={this.props.getItemKey(item)} className={className}>
                     <span className="LeaderboardBlock--list-item-rank">{index + 1}</span>
                     <span className="LeaderboardBlock--list-item-name">{this.props.getItemName(item)}</span>
                     <span className="LeaderboardBlock--list-item-score">{this.props.getItemScore(item)}</span>
