@@ -30,6 +30,7 @@ require('./api/routes/login')(app);
 require('./api/routes/events')(app);
 require('./api/routes/submissions')(app);
 require('./api/routes/puzzle')(app);
+require('./api/routes/scores')(app);
 
 /* Models */
 require('./api/models/Event');

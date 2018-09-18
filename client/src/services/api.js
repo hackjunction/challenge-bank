@@ -170,6 +170,14 @@ const API = {
 
     getEvent: eventId => {
         return GET(`/api/events/${eventId}`);
+    },
+
+    getEventScores: () => {
+        return GET('/api/event-scores');
+    },
+
+    getUserScores: () => {
+        return GET('/api/user-scores');
     }
 };
 

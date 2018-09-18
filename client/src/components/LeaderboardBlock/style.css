@@ -1,0 +1,40 @@
+.LeaderboardBlock {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.LeaderboardBlock--title {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    color: black;
+    margin: 0;
+    border-bottom: 5px solid black;
+}
+
+.LeaderboardBlock--list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.LeaderboardBlock--list-item {
+    padding: 10px;
+    border-top: 0.5px solid rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.LeaderboardBlock--list-item-rank {
+    width: 50px;
+}
+
+.LeaderboardBlock--list-item-name {
+    flex: 1;
+}
+
+.LeaderboardBlock--list-item-score {
+}

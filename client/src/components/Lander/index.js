@@ -3,6 +3,9 @@ import './style.css';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import LeaderboardBlock from '../LeaderboardBlock';
+
+import * as ScoresActions from '../../actions/scores';
 
 class Lander extends React.Component {
     constructor(props) {
@@ -13,8 +16,13 @@ class Lander extends React.Component {
             events: []
         };
     }
+
+    componentWillMount() {
+        this.props.updateEventScores();
+        this.props.updateUserScores();
+    }
+
     render() {
-        console.log(this.props.user);
         if (!this.props.user) {
             return (
                 <div className="container">
@@ -50,6 +58,22 @@ class Lander extends React.Component {
                             </Link>
                         </div>
                     </div>
+                    <div>
+                        <LeaderboardBlock
+                            title={'Top events'}
+                            items={this.props.eventScores.data}
+                            getItemKey={item => item.eventId}
+                            getItemName={item => item.eventName}
+                            getItemScore={item => item.points + ' points'}
+                        />
+                        <LeaderboardBlock
+                            title={'Top users'}
+                            items={this.props.userScores.data}
+                            getItemKey={item => item.userId}
+                            getItemName={item => item.username + ' (' + item.eventName + ')'}
+                            getItemScore={item => item.points + ' points'}
+                        />
+                    </div>
                 </div>
             );
         }
@@ -57,7 +81,17 @@ class Lander extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    user: state.user.user
+    user: state.user.user,
+    eventScores: state.scores.events,
+    userScores: state.scores.users
 });
 
-export default connect(mapStateToProps)(Lander);
+const mapDispatchToProps = dispatch => ({
+    updateEventScores: () => dispatch(ScoresActions.getEventScores()),
+    updateUserScores: () => dispatch(ScoresActions.getUserScores())
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Lander);
