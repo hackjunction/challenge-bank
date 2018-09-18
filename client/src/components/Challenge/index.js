@@ -19,7 +19,8 @@ class Challenge extends Component {
         this.state = {
             answer: '',
             submitted: false,
-            error: ''
+            error: '',
+            loading: false
         };
 
         this.onAnswerChange = this.onAnswerChange.bind(this);
@@ -197,7 +198,11 @@ class Challenge extends Component {
                             value={this.state.answer}
                             placeholder={'Type your answer here'}
                         />
-                        <button className="Challenge--submit-button" onClick={this.onSubmit}>
+                        <button
+                            className="Challenge--submit-button"
+                            disabled={this.state.loading}
+                            onClick={this.onSubmit}
+                        >
                             Submit
                         </button>
                     </div>

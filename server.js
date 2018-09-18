@@ -1,21 +1,21 @@
 require('dotenv').config();
 
 var express = require('express'),
-  app = express(),
-  bodyParser = require('body-parser'),
-  mongoose = require('mongoose'),
-  bluebird = require('bluebird'),
-  path = require('path'),
-  passport = require('passport'),
-  port = process.env.PORT || 3000;
+    app = express(),
+    bodyParser = require('body-parser'),
+    mongoose = require('mongoose'),
+    bluebird = require('bluebird'),
+    path = require('path'),
+    passport = require('passport'),
+    port = process.env.PORT || 3000;
 
 /* Set mongoose  & global to use Bluebird promises */
 global.Promise = bluebird;
 mongoose.Promise = bluebird;
 mongoose.connect(
-  process.env.MONGODB_URI
-    ? process.env.MONGODB_URI
-    : 'mongodb://test_user:kymis123@ds227325.mlab.com:27325/heroku_kpj537v3'
+    process.env.MONGODB_URI
+        ? process.env.MONGODB_URI
+        : 'mongodb://test_user:kymis123@ds227325.mlab.com:27325/heroku_kpj537v3'
 );
 
 app.use(bodyParser.urlencoded());
@@ -29,6 +29,7 @@ require('./api/auth/passport');
 require('./api/routes/login')(app);
 require('./api/routes/events')(app);
 require('./api/routes/submissions')(app);
+require('./api/routes/puzzle')(app);
 
 /* Models */
 require('./api/models/Event');
@@ -36,19 +37,19 @@ require('./api/models/Submission');
 require('./api/models/User');
 
 app.get('/api/', function(req, res) {
-  res.send({
-    message: 'Hello from the API'
-  });
+    res.send({
+        message: 'Hello from the API'
+    });
 });
 
 // React config for production
 if (process.env.NODE_ENV === 'production') {
-  // Serve any static files
-  app.use(express.static(path.join(__dirname, 'client/build')));
-  // Handle React routing, return all requests to React app
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
+    // Serve any static files
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    // Handle React routing, return all requests to React app
+    app.get('*', function(req, res) {
+        res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    });
 }
 
 app.listen(port);
