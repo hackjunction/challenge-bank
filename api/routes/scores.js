@@ -25,6 +25,9 @@ function getScoresForEvents(req, res) {
             _.forOwn(groupedByEvent, (submissions, eventId) => {
                 const submissionCount = submissions.length;
 
+                const userCount = Object.keys(_.groupBy(submissions, 'user._id')).length;
+                console.log(submissions[0].event.eventName, userCount + ' users');
+
                 const points = _.reduce(
                     submissions,
                     (sum, submission) => {
@@ -37,7 +40,8 @@ function getScoresForEvents(req, res) {
                     eventId,
                     eventName: submissions[0].event.eventName,
                     submissionCount,
-                    points
+                    points,
+                    weightedPoints: points
                 });
             });
 

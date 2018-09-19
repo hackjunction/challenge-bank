@@ -88,7 +88,10 @@ class EventsList extends Component {
                     <td>
                         <div className="EventsList--options-wrapper">
                             <Link className="EventsList--options-button" to={`/admin/submissions/${event._id}`}>
-                                View submissions
+                                Submissions
+                            </Link>
+                            <Link className="EventsList--options-button" to={`/admin/results/${event._id}`}>
+                                Results
                             </Link>
                         </div>
                     </td>

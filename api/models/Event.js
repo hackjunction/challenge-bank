@@ -38,6 +38,14 @@ const EventSchema = new Schema({
     secretCode: {
         type: String,
         required: true
+    },
+    isTechRace: {
+        type: Boolean,
+        required: true
+    },
+    participantCount: {
+        type: Number,
+        required: true
     }
 });
 

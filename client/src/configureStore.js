@@ -10,7 +10,7 @@ const persistConfig = {
 };
 
 // Uncomment to clear stored state
-// purgeStoredState(persistConfig);
+//purgeStoredState(persistConfig);
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

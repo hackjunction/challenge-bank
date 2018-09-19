@@ -62,17 +62,55 @@ class Lander extends React.Component {
                         <LeaderboardBlock
                             title={'Top events'}
                             items={this.props.eventScores.data}
-                            getItemKey={item => item.eventId}
-                            getItemName={item => item.eventName}
-                            getItemScore={item => item.points + ' points'}
+                            columns={[
+                                {
+                                    key: 'rank',
+                                    name: 'Rank',
+                                    getValue: (item, index) => index + 1
+                                },
+                                {
+                                    key: 'event',
+                                    name: 'Event',
+                                    getValue: (item, index) => item.eventName
+                                },
+                                {
+                                    key: 'score',
+                                    name: 'Score',
+                                    getValue: (item, index) => item.points
+                                },
+                                {
+                                    key: 'weightedScore',
+                                    name: 'Weighted Score',
+                                    getValue: (item, index) => item.weightedPoints
+                                }
+                            ]}
                             isSelf={item => item.eventId === this.props.user.event._id}
                         />
                         <LeaderboardBlock
                             title={'Top users'}
                             items={this.props.userScores.data}
-                            getItemKey={item => item.userId}
-                            getItemName={item => item.username + ' (' + item.eventName + ')'}
-                            getItemScore={item => item.points + ' points'}
+                            columns={[
+                                {
+                                    key: 'rank',
+                                    name: 'Rank',
+                                    getValue: (item, index) => index + 1
+                                },
+                                {
+                                    key: 'user',
+                                    name: 'Username',
+                                    getValue: (item, index) => item.username
+                                },
+                                {
+                                    key: 'score',
+                                    name: 'Score',
+                                    getValue: (item, index) => item.points
+                                },
+                                {
+                                    key: 'event',
+                                    name: 'Event',
+                                    getValue: (item, index) => item.eventName
+                                }
+                            ]}
                             isSelf={item => item.userId === this.props.user._id}
                         />
                     </div>

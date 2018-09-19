@@ -45,6 +45,14 @@
     margin-bottom: 20px;
 }
 
+.DifficultyFilters--filters.behind-1 {
+    z-index: 9;
+}
+
+.DifficultyFilters--filters.behind-2 {
+    z-index: 8;
+}
+
 .DifficultyFilters--filters.visible {
     max-height: 1000px;
 }

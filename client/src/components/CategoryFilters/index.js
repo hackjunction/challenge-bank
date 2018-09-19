@@ -68,7 +68,9 @@ class CategoryFilters extends Component {
     }
 
     render() {
-        const className = this.state.expanded ? 'DifficultyFilters--filters visible' : 'DifficultyFilters--filters';
+        const className = this.state.expanded
+            ? 'DifficultyFilters--filters behind-1 visible'
+            : 'DifficultyFilters--filters behind-1';
         const iconClass = this.state.expanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
         const headerText =
             'Filter by category (' + this.props.selectedCategories.length + '/' + this.props.categories.length + ')';

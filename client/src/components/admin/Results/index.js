@@ -3,6 +3,8 @@ import * as AdminActions from '../../../actions/admin';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import Points from '../../../constants/points';
+import LeaderboardBlock from '../../LeaderboardBlock/';
+import './style.css';
 
 class Results extends Component {
     async componentWillMount() {
@@ -80,19 +82,38 @@ class Results extends Component {
             this.props.submissions[this.props.match.params.eventId]
         );
 
-        const blocks = _.map(rows, row => {
-            return (
-                <p>
-                    USER: {row.username}, POINTS: {row.points}, SUBMISSIONS: {row.submissions}
-                </p>
-            );
-        });
+        console.log(this.props.events);
+
+        const event = _.find(this.props.events, e => e._id === this.props.match.params.eventId);
+
+        const eventName = event ? event.eventName : 'Unknown event';
 
         return (
             <div className="container">
-                <p>Total points: {totalPoints}</p>
-                <p>Amount of submissions: {totalSubmissions}</p>
-                {blocks}
+                <LeaderboardBlock
+                    title={'Results for ' + eventName}
+                    items={rows}
+                    limit={Infinity}
+                    columns={[
+                        {
+                            key: 'rank',
+                            name: 'Rank',
+                            getValue: (item, index) => index + 1
+                        },
+                        {
+                            key: 'username',
+                            name: 'Username',
+                            getValue: (item, index) => item.username
+                        },
+                        {
+                            key: 'points',
+                            name: 'Points',
+                            getValue: (item, index) => item.points
+                        }
+                    ]}
+                />
+                <p className="Results--stat-row">Total points: {totalPoints}</p>
+                <p className="Results--stat-row">Amount of submissions: {totalSubmissions}</p>
             </div>
         );
     }

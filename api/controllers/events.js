@@ -35,6 +35,8 @@ const EventController = {
         eventData.platformOpens = platformOpens.toISOString();
         eventData.platformCloses = platformCloses.toISOString();
 
+        console.log('EVENT DATA', eventData);
+
         const schema = Joi.object().keys({
             eventName: Joi.string()
                 .min(3)
@@ -42,11 +44,11 @@ const EventController = {
                 .required(),
             locationName: Joi.string()
                 .min(3)
-                .max(50)
+                .max(100)
                 .required(),
             locationAddress: Joi.string()
                 .min(3)
-                .max(100)
+                .max(200)
                 .required(),
             eventStartTime: Joi.date()
                 .iso()
@@ -65,7 +67,9 @@ const EventController = {
                 .alphanum()
                 .min(8)
                 .max(20)
-                .required()
+                .required(),
+            participantCount: Joi.number().required(),
+            isTechRace: Joi.boolean().required()
         });
 
         return schema.validate(eventData);
@@ -76,7 +80,7 @@ const EventController = {
             .then(validatedData => {
                 return mongoose
                     .model('Event')
-                    .create(eventData)
+                    .create(validatedData)
                     .then(event => {
                         return event;
                     })

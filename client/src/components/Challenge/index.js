@@ -76,9 +76,12 @@ class Challenge extends Component {
             return challenge.challengeCategory.name === singleChallenge.challengeCategory.name;
         });
         if (filtered.length !== 0) {
-            filtered = _.reject(filtered, function(el) {
-                return el.name === singleChallenge.name;
-            }).slice(0, 4);
+            filtered = _.sampleSize(
+                _.reject(filtered, function(el) {
+                    return el.name === singleChallenge.name;
+                }),
+                4
+            );
             return (
                 <div className="row">
                     <div className="grid">

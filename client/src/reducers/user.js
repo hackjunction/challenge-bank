@@ -15,6 +15,7 @@ const initialState = {
         selected: [],
         available: []
     },
+    sortOption: null,
     hideSubmitted: false
 };
 
@@ -86,6 +87,11 @@ export default (state = initialState, action) => {
                     ...state.categoryFilters,
                     selected: action.payload
                 }
+            };
+        case ActionTypes.UPDATE_USER_SORT_OPTION:
+            return {
+                ...state,
+                sortOption: action.payload
             };
         case ActionTypes.UPDATE_USER_HIDE_SUBMITTED:
             return {

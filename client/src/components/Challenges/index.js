@@ -12,6 +12,7 @@ import * as UserActions from '../../actions/user';
 
 import DifficultyFilters from '../DifficultyFilters/';
 import CategoryFilters from '../CategoryFilters/';
+import SortOptions from '../SortOptions/';
 import ChallengeGrid from '../ChallengeGrid/';
 import SubmissionsBlock from '../SubmissionsBlock/';
 import EventTimer from '../EventTimer/';
@@ -72,6 +73,10 @@ class Home extends Component {
                 }
             }
 
+            if (challenge.techRaceOnly && !this.props.user.event.isTechRace) {
+                return false;
+            }
+
             const catName = challenge.challengeCategory.name;
             const diffName = challenge.challengeDifficulty.name;
 
@@ -116,7 +121,13 @@ class Home extends Component {
         if (error) return this.renderError();
         if (loading) return this.renderLoading();
 
-        const challenges = this.filterChallenges();
+        let challenges = this.filterChallenges();
+
+        if (this.props.sortOption) {
+            if (typeof this.props.sortOption.sort === 'function') {
+                challenges = this.props.sortOption.sort(challenges);
+            }
+        }
 
         return (
             <div className="container">
@@ -136,7 +147,13 @@ class Home extends Component {
                         onChange={data => this.props.setSelectedCategoryFilters(data)}
                     />
                 </div>
-                <div className="Challenges--filters-wrapper">
+                <div>
+                    <SortOptions
+                        selectedSort={this.props.sortOption ? this.props.sortOption : undefined}
+                        onChange={sortOption => this.props.setSelectedSort(sortOption)}
+                    />
+                </div>
+                <div className="Challnges--filters-wrapper">
                     <div>
                         <span>Hide challenges you've already submitted</span>
                         <Switch
@@ -184,6 +201,7 @@ const mapStateToProps = state => ({
     categoryFilters: state.user.categoryFilters,
     difficultyFilters: state.user.difficultyFilters,
     hideSubmitted: state.user.hideSubmitted,
+    sortOption: state.user.sortOption,
     user: state.user.user,
     submissions: state.user.submissions.data
 });
@@ -193,6 +211,7 @@ const mapDispatchToProps = dispatch => ({
     setSelectedCategoryFilters: categories => dispatch(UserActions.setSelectedCategoryFilters(categories)),
     setAvailableDifficultyFilters: difficulties => dispatch(UserActions.setAvailableDifficultyFilters(difficulties)),
     setSelectedDifficultyFilters: difficulties => dispatch(UserActions.setSelectedDifficultyFilters(difficulties)),
+    setSelectedSort: sortOption => dispatch(UserActions.setSelectedSort(sortOption)),
     updateUserWithToken: token => dispatch(UserActions.updateUserWithToken(token)),
     toggleHideSubmitted: value => dispatch(UserActions.setUserHideSubmitted(value))
 });

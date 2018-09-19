@@ -1,0 +1,18 @@
+.SortOptions--item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px;
+    border-top: 0.5px solid #eeeeee;
+    transition: background 0.2s ease;
+}
+
+.SortOptions--item-name {
+    font-weight: bold;
+}
+
+.SortOptions--item:hover {
+    background: #eeeeee;
+    cursor: pointer;
+}

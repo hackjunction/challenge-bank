@@ -79,3 +79,10 @@ export const setUserHideSubmitted = hideSubmitted => dispatch => {
         payload: hideSubmitted
     });
 };
+
+export const setSelectedSort = sortOption => dispatch => {
+    dispatch({
+        type: ActionTypes.UPDATE_USER_SORT_OPTION,
+        payload: sortOption
+    });
+};

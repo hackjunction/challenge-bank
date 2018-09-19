@@ -6,6 +6,7 @@ import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min
 import { Form, Input } from 'formsy-react-components';
 import { connect } from 'react-redux';
 import API from '../../../services/api';
+import Switch from '@material-ui/core/Switch';
 import './style.css';
 
 class EditEvent extends Component {
@@ -247,6 +248,36 @@ class EditEvent extends Component {
                         type="text"
                         required
                     />
+                    <Input
+                        name="participantCount"
+                        label="Number of participants"
+                        value={this.state.eventData.participantCount}
+                        onChange={(key, value) =>
+                            this.setState({ eventData: { ...this.state.eventData, [key]: value } })
+                        }
+                        type="number"
+                        placeholder="Amount of participants (you can edit this later)"
+                        required
+                    />
+                    <Input name="isTechRace" value={this.state.eventData.isTechRace} type="hidden" required />
+                    <div class="form-group row">
+                        <label class="control-label col-sm-3" data-required="true" for="timezone">
+                            This is a TechRace event
+                            <span class="required-symbol"> *</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <Switch
+                                checked={this.state.eventData.isTechRace}
+                                value={this.state.eventData.isTechRace}
+                                onChange={event =>
+                                    this.setState({
+                                        eventData: { ...this.state.eventData, isTechRace: event.target.checked }
+                                    })
+                                }
+                                color="primary"
+                            />
+                        </div>
+                    </div>
                     <button
                         className={this.state.valid ? 'pull-right btn btn-primary' : 'pull-right btn btn-light'}
                         type="submit"
