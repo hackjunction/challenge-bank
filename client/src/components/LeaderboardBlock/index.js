@@ -24,20 +24,41 @@ class LeaderboardBlock extends Component {
     };
 
     renderHeaders() {
-        return _.map(this.props.columns, column => {
+        const cols = _.map(this.props.columns, (column, idx) => {
+            const style = idx === this.props.columns.length - 1 ? { 'text-align': 'right' } : {};
             return (
-                <th key={column.key} scope="col">
+                <th key={column.key} style={style} scope="col">
                     {column.name}
                 </th>
             );
         });
+
+        cols.push(<th key="star" />);
+
+        return cols;
     }
 
     renderRows() {
         return _.map(this.props.items.slice(0, this.props.limit), (item, index) => {
-            const cols = _.map(this.props.columns, col => {
-                return <td key={col.key}>{col.getValue(item, index)}</td>;
+            const cols = _.map(this.props.columns, (col, idx) => {
+                const style = idx === this.props.columns.length - 1 ? { 'text-align': 'right' } : {};
+
+                return (
+                    <td key={col.key} style={style}>
+                        {col.getValue(item, index)}
+                    </td>
+                );
             });
+
+            if (this.props.isSelf(item)) {
+                cols.push(
+                    <td key="star" style={{ 'text-align': 'right' }}>
+                        <i class="fas fa-star" style={{ color: 'gold' }} />
+                    </td>
+                );
+            } else {
+                cols.push(<td style={{ 'text-align': 'right' }} key="star" />);
+            }
 
             return <tr>{cols}</tr>;
         });

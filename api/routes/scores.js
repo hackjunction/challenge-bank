@@ -19,14 +19,16 @@ function getScoresForEvents(req, res) {
         .populate('event')
         .then(submissions => {
             const groupedByEvent = _.groupBy(submissions, 'event._id');
+            const maxParticipants = _.maxBy(submissions, 'event.participantCount').event.participantCount;
+
+            console.log('MAX', maxParticipants);
 
             const eventArray = [];
 
             _.forOwn(groupedByEvent, (submissions, eventId) => {
                 const submissionCount = submissions.length;
 
-                const userCount = Object.keys(_.groupBy(submissions, 'user._id')).length;
-                console.log(submissions[0].event.eventName, userCount + ' users');
+                const event = submissions[0].event;
 
                 const points = _.reduce(
                     submissions,
@@ -38,10 +40,9 @@ function getScoresForEvents(req, res) {
 
                 eventArray.push({
                     eventId,
-                    eventName: submissions[0].event.eventName,
+                    eventName: event.eventName,
                     submissionCount,
-                    points,
-                    weightedPoints: points
+                    weightedPoints: getWeightedScore(points, event.participantCount, maxParticipants)
                 });
             });
 
@@ -50,9 +51,18 @@ function getScoresForEvents(req, res) {
         .then(data => {
             return res.status(status.OK).send({
                 status: 'success',
-                data: _.reverse(_.sortBy(data, 'points'))
+                data: _.reverse(_.sortBy(data, 'weightedPoints'))
             });
         });
+}
+
+//How much weight does participant difference have in score?
+const SCALE_FACTOR = 0.5;
+
+function getWeightedScore(points, participants, maxParticipants) {
+    const ratio = (maxParticipants / participants - 1) * SCALE_FACTOR + 1;
+
+    return Math.floor(10 * ratio * points) / 10;
 }
 
 function getScoresForUsers(req, res) {

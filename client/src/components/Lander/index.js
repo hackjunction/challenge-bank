@@ -74,11 +74,6 @@ class Lander extends React.Component {
                                     getValue: (item, index) => item.eventName
                                 },
                                 {
-                                    key: 'score',
-                                    name: 'Score',
-                                    getValue: (item, index) => item.points
-                                },
-                                {
                                     key: 'weightedScore',
                                     name: 'Weighted Score',
                                     getValue: (item, index) => item.weightedPoints
@@ -101,14 +96,14 @@ class Lander extends React.Component {
                                     getValue: (item, index) => item.username
                                 },
                                 {
-                                    key: 'score',
-                                    name: 'Score',
-                                    getValue: (item, index) => item.points
-                                },
-                                {
                                     key: 'event',
                                     name: 'Event',
                                     getValue: (item, index) => item.eventName
+                                },
+                                {
+                                    key: 'score',
+                                    name: 'Score',
+                                    getValue: (item, index) => item.points
                                 }
                             ]}
                             isSelf={item => item.userId === this.props.user._id}
