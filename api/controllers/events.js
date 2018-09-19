@@ -35,19 +35,17 @@ const EventController = {
         eventData.platformOpens = platformOpens.toISOString();
         eventData.platformCloses = platformCloses.toISOString();
 
-        console.log('EVENT DATA', eventData);
-
         const schema = Joi.object().keys({
             eventName: Joi.string()
-                .min(3)
+                .min(1)
                 .max(30)
                 .required(),
             locationName: Joi.string()
-                .min(3)
+                .min(1)
                 .max(100)
                 .required(),
             locationAddress: Joi.string()
-                .min(3)
+                .min(1)
                 .max(200)
                 .required(),
             eventStartTime: Joi.date()
@@ -91,7 +89,7 @@ const EventController = {
             })
             .catch(error => {
                 console.log('ERROR', error);
-                throw new Error('Event validation failed');
+                throw new Error('Event validation failed: ' + error.message);
             });
     },
 
@@ -113,7 +111,7 @@ const EventController = {
             })
             .catch(error => {
                 console.log('ERROR', error);
-                throw new Error('Event validation failed');
+                throw new Error('Event validation failed: ' + error.message);
             });
     },
 

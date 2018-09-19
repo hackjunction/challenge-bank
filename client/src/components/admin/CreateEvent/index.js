@@ -36,14 +36,16 @@ class CreateEvent extends Component {
             .then(event => {
                 this.setState({
                     loading: false,
-                    submitted: true
+                    submitted: true,
+                    error: ''
                 });
             })
             .catch(error => {
                 this.setState({
                     loading: false,
                     submitted: false,
-                    error: 'Oops, something went wrong'
+                    error:
+                        'Oops, something went wrong. Please check that you have entered valid values into all required fields. For example, the platform must open and close between the event start and end times.'
                 });
             });
     }

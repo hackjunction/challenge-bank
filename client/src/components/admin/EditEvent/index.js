@@ -75,11 +75,12 @@ class EditEvent extends Component {
                     submitted: true
                 });
             })
-            .catch(() => {
+            .catch(error => {
                 this.setState({
                     loadingEventSave: false,
                     submitted: false,
-                    eventSaveError: 'Oops, something went wrong'
+                    eventSaveError:
+                        'Oops, something went wrong. Please check that you have entered valid values into all required fields. For example, the platform must open and close between the event start and end times.'
                 });
             });
     }
@@ -125,7 +126,7 @@ class EditEvent extends Component {
                 <h1 className="CreateEvent--title">{'Edit event'}</h1>
                 {this.state.eventSaveError ? (
                     <div className="alert alert-danger" role="alert">
-                        {this.state.error}
+                        {this.state.eventSaveError}
                     </div>
                 ) : null}
                 {!this.state.valid ? (
