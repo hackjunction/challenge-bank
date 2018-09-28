@@ -61,6 +61,9 @@ class Lander extends React.Component {
                     <div>
                         <LeaderboardBlock
                             title={'Top events'}
+                            description={
+                                'The best HackTour and TechRace events by weighted score. The weighted score is calculated by looking at the difference in participant count with the largest event, and giving smaller events a slight multiplier to their total score.'
+                            }
                             items={this.props.eventScores.data}
                             columns={[
                                 {
@@ -74,6 +77,11 @@ class Lander extends React.Component {
                                     getValue: (item, index) => item.eventName
                                 },
                                 {
+                                    key: 'score',
+                                    name: 'Score',
+                                    getValue: (item, index) => item.points
+                                },
+                                {
                                     key: 'weightedScore',
                                     name: 'Weighted Score',
                                     getValue: (item, index) => item.weightedPoints
@@ -83,6 +91,7 @@ class Lander extends React.Component {
                         />
                         <LeaderboardBlock
                             title={'Top users'}
+                            description={'The best users between all HackTour and TechRace events.'}
                             items={this.props.userScores.data}
                             columns={[
                                 {

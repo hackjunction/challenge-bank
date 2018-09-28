@@ -21,8 +21,6 @@ function getScoresForEvents(req, res) {
             const groupedByEvent = _.groupBy(submissions, 'event._id');
             const maxParticipants = _.maxBy(submissions, 'event.participantCount').event.participantCount;
 
-            console.log('MAX', maxParticipants);
-
             const eventArray = [];
 
             _.forOwn(groupedByEvent, (submissions, eventId) => {
@@ -42,7 +40,8 @@ function getScoresForEvents(req, res) {
                     eventId,
                     eventName: event.eventName,
                     submissionCount,
-                    weightedPoints: getWeightedScore(points, event.participantCount, maxParticipants)
+                    weightedPoints: getWeightedScore(points, event.participantCount, maxParticipants),
+                    points
                 });
             });
 

@@ -6,6 +6,7 @@ import './style.css';
 class LeaderboardBlock extends Component {
     static propTypes = {
         title: PropTypes.string,
+        description: PropTypes.string,
         items: PropTypes.array,
         isSelf: PropTypes.func,
         limit: PropTypes.number,
@@ -68,6 +69,9 @@ class LeaderboardBlock extends Component {
         return (
             <div className="LeaderboardBlock">
                 <h3 className="LeaderboardBlock--title">{this.props.title}</h3>
+                {this.props.description ? (
+                    <p className="LeaderboardBlock--description">{this.props.description}</p>
+                ) : null}
                 <table class="table">
                     <thead>
                         <tr>{this.renderHeaders()}</tr>
