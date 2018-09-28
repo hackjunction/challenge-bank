@@ -57,7 +57,7 @@ function getScoresForEvents(req, res) {
 }
 
 //How much weight does participant difference have in score?
-const SCALE_FACTOR = 0.5;
+const SCALE_FACTOR = 0.28;
 
 function getWeightedScore(points, participants, maxParticipants) {
     const ratio = (maxParticipants / participants - 1) * SCALE_FACTOR + 1;
