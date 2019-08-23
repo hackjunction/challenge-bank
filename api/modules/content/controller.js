@@ -17,7 +17,7 @@ controller.sync = async () => {
     const lastSync = await Sync.getLastSync();
 
     /** If content was synced within 60 seconds, abort the sync */
-    if (Date.now() - lastSync.createdAt < 1000 * 60) {
+    if (lastSync !== null && Date.now() - lastSync.createdAt < 1000 * 60) {
         return;
     }
 
