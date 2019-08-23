@@ -1,0 +1,11 @@
+@import '~styles/variables';
+
+.wrapper {
+    padding: 0 $padding-page;
+}
+
+.inner {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+}

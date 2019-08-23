@@ -42,7 +42,7 @@ ChallengeSchema.set('timestamps', true);
 
 /** Public fields: everything except answer */
 ChallengeSchema.plugin(publicFieldsPlugin, {
-    blacklist: ['answer']
+    blacklist: ['answer', 'gradingInstructions']
 });
 
 const Challenge = mongoose.model('Challenge', ChallengeSchema);

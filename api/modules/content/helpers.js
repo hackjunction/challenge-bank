@@ -66,6 +66,7 @@ const ContentHelpers = {
     },
     performUpdates: entries => {
         const formattedEntries = ContentHelpers.parseEntries(entries);
+
         const updates = ContentHelpers.getUpdatesByType(formattedEntries);
 
         const promises = Object.keys(updates).map(type => {

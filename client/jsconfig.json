@@ -1,10 +1,10 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es2016",
-        "jsx": "preserve",
-        "checkJs": true,
-        "baseUrl": "./src"
-    },
-    "exclude": ["node_modules", "**/node_modules/*"]
+    "extends": ["react-app", "plugin:import/errors", "plugin:import/warnings"],
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "moduleDirectory": ["node_modules", "src/"]
+            }
+        }
+    }
 }

@@ -27,16 +27,6 @@ require('./api/auth/passport');
 
 /* Routes */
 require('./api/modules/routes')(app);
-// require('./api/routes/login')(app);
-// require('./api/routes/events')(app);
-// require('./api/routes/submissions')(app);
-// require('./api/routes/puzzle')(app);
-// require('./api/routes/scores')(app);
-
-/* Models */
-// require('./api/models/Event');
-// require('./api/models/Submission');
-// require('./api/models/User');
 
 // React config for production
 if (process.env.NODE_ENV === 'production') {

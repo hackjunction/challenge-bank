@@ -9,8 +9,8 @@ const CategoryController = require('../category/controller');
 const DifficultyController = require('../difficulty/controller');
 
 const client = contentful.createClient({
-    space: 'btin3qa49w60',
-    accessToken: 'YyOH0hVHTVVsrZEn-qnF0MxF7Ij6oQAp28P-19dBy7o'
+    space: process.env.CONTENTFUL_SPACE,
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
 });
 
 controller.sync = async () => {
