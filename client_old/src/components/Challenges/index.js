@@ -10,12 +10,12 @@ import Switch from '@material-ui/core/Switch';
 
 import * as UserActions from '../../actions/user';
 
-import DifficultyFilters from '../DifficultyFilters/';
-import CategoryFilters from '../CategoryFilters/';
-import SortOptions from '../SortOptions/';
-import ChallengeGrid from '../ChallengeGrid/';
-import SubmissionsBlock from '../SubmissionsBlock/';
-import EventTimer from '../EventTimer/';
+import DifficultyFilters from '../DifficultyFilters';
+import CategoryFilters from '../CategoryFilters';
+import SortOptions from '../SortOptions';
+import ChallengeGrid from '../ChallengeGrid';
+import SubmissionsBlock from '../SubmissionsBlock';
+import EventTimer from '../EventTimer';
 
 class Home extends Component {
     componentWillMount() {

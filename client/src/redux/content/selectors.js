@@ -1,0 +1,1 @@
+export const syncId = state => state.content.syncId;

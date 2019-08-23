@@ -20,7 +20,7 @@ class LeaderboardBlock extends Component {
     };
 
     static defaultProps = {
-        limit: 10,
+        limit: 30,
         isSelf: () => false
     };
 

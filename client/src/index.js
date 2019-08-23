@@ -1,36 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './normalize.css';
-import './index.css';
 import App from './App';
-import { Provider } from 'react-redux';
-import configureStore from './configureStore';
-import registerServiceWorker from './registerServiceWorker';
-import { PersistGate } from 'redux-persist/integration/react';
+import * as serviceWorker from './serviceWorker';
 
-//GraphCMS imports
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloProvider } from 'react-apollo';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 
-const GRAPHCMS_API = 'https://api.graphcms.com/simple/v1/cjiyie4xo1k0x0149nyl9lqvt';
-
-const client = new ApolloClient({
-    link: new HttpLink({ uri: GRAPHCMS_API }),
-    cache: new InMemoryCache()
-});
+import configureStore, {history} from 'redux/configureStore';
 
 const { store, persistor } = configureStore();
 
 ReactDOM.render(
-    <ApolloProvider client={client}>
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <App />
-            </PersistGate>
-        </Provider>
-    </ApolloProvider>,
+    <Provider store={store}>
+        <PersistGate loading={<div className="Preload" />} persistor={persistor}>
+                <App history={history} />
+        </PersistGate>
+    </Provider>,
     document.getElementById('root')
 );
-registerServiceWorker();
+
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();

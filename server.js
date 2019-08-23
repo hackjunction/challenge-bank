@@ -26,22 +26,17 @@ app.use(passport.initialize());
 require('./api/auth/passport');
 
 /* Routes */
-require('./api/routes/login')(app);
-require('./api/routes/events')(app);
-require('./api/routes/submissions')(app);
-require('./api/routes/puzzle')(app);
-require('./api/routes/scores')(app);
+require('./api/modules/routes')(app);
+// require('./api/routes/login')(app);
+// require('./api/routes/events')(app);
+// require('./api/routes/submissions')(app);
+// require('./api/routes/puzzle')(app);
+// require('./api/routes/scores')(app);
 
 /* Models */
-require('./api/models/Event');
-require('./api/models/Submission');
-require('./api/models/User');
-
-app.get('/api/', function(req, res) {
-    res.send({
-        message: 'Hello from the API'
-    });
-});
+// require('./api/models/Event');
+// require('./api/models/Submission');
+// require('./api/models/User');
 
 // React config for production
 if (process.env.NODE_ENV === 'production') {
@@ -54,4 +49,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(port);
-console.log('Node gavel started at port' + port);
+console.log('Challenge bank started on port ' + port);

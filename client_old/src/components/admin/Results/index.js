@@ -3,7 +3,7 @@ import * as AdminActions from '../../../actions/admin';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import Points from '../../../constants/points';
-import LeaderboardBlock from '../../LeaderboardBlock/';
+import LeaderboardBlock from '../../LeaderboardBlock';
 import './style.css';
 
 class Results extends Component {
