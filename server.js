@@ -7,7 +7,11 @@ var express = require('express'),
     bluebird = require('bluebird'),
     path = require('path'),
     passport = require('passport'),
-    port = process.env.PORT || 3000;
+    port = process.env.PORT || 3000,
+    sslRedirect = require('heroku-ssl-redirect');
+
+/* Force SSL Redirect in production */
+app.use(sslRedirect(['production'], 301));
 
 /* Set mongoose  & global to use Bluebird promises */
 global.Promise = bluebird;
