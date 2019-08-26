@@ -24,7 +24,9 @@ const Header = ({ user, logout }) => {
                 <Countdown
                     date={platformOpens}
                     zeroPadTime={2}
-                    renderer={({ hours, minutes, seconds, completed }) => {
+                    renderer={props => {
+                        const { completed } = props;
+                        const { hours, minutes, seconds } = props.formatted;
                         if (completed) {
                             return <span className={styles.timeStatus}>The race is on!</span>;
                         } else {
@@ -40,7 +42,9 @@ const Header = ({ user, logout }) => {
                 <Countdown
                     date={platformCloses}
                     zeroPadTime={2}
-                    renderer={({ hours, minutes, seconds, completed }) => {
+                    renderer={props => {
+                        const { completed } = props;
+                        const { hours, minutes, seconds } = props.formatted;
                         if (completed) {
                             return <span className={styles.timeStatus}>The race has ended!</span>;
                         } else {
