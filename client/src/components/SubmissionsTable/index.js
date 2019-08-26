@@ -38,11 +38,62 @@ const SubmissionsTable = ({ updateSubmissions, submissions, challenges, title })
         return moment(date).fromNow();
     };
 
+    const getPointsForStatus = (status, challengeId) => {
+        const challenge = challenges[challengeId];
+        const points = challenge.difficulty.pointValue;
+
+        switch (status) {
+            case 0:
+                return 0;
+            case 1:
+                return points * 0.5;
+            case 2:
+                return points;
+            case 3:
+                return 0;
+            default:
+                return 0;
+        }
+    };
+
+    const formatPoints = (status, record) => {
+        return getPointsForStatus(status, record.challenge);
+    };
+
+    const renderFooter = () => {
+        const totalPoints = submissions.reduce((sum, submission) => {
+            return sum + getPointsForStatus(submission.reviewStatus, submission.challenge);
+        }, 0);
+        return 'Total points: ' + totalPoints;
+    };
+
     return (
         <div className={styles.wrapper}>
             <Collapse bordered={false}>
                 <Collapse.Panel header={`${title} (${submissions.length})`} key="1">
-                    <Table dataSource={submissions} pagination={false}>
+                    <Table
+                        dataSource={submissions}
+                        pagination={false}
+                        rowKey="_id"
+                        footer={renderFooter}
+                        expandedRowRender={submission => {
+                            if (submission.reviewFeedback) {
+                                return (
+                                    <div>
+                                        <strong>Feedback</strong>
+                                        <p>{submission.reviewFeedback}</p>
+                                    </div>
+                                );
+                            } else {
+                                return (
+                                    <div>
+                                        <strong>Feedback</strong>
+                                        <p>No feedback yet from the reviewers :(</p>
+                                    </div>
+                                );
+                            }
+                        }}
+                    >
                         <Table.Column
                             title="Challenge"
                             dataIndex="challenge"
@@ -57,6 +108,7 @@ const SubmissionsTable = ({ updateSubmissions, submissions, challenges, title })
                             key="reviewStatus"
                             render={status => <StatusBadge status={status} />}
                         />
+                        <Table.Column title="Points" dataIndex="reviewStatus" key="points" render={formatPoints} />
                     </Table>
                 </Collapse.Panel>
             </Collapse>

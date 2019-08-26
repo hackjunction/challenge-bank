@@ -67,7 +67,7 @@ const Header = ({ user, logout }) => {
                 {renderCountdown()}
             </div>
             <div className={styles.top}>
-                <span className={styles.user}>Logged in as Juuso</span>
+                <span className={styles.user}>Logged in as {user.username}</span>
                 <Divider size={1} />
                 <span className={styles.logout} onClick={logout}>
                     Logout

@@ -7,9 +7,11 @@ const StatusBadge = ({ status }) => {
         case 0:
             return <Tag color="grey">Pending review</Tag>;
         case 1:
-            return <Tag color="yellow">Half points</Tag>;
+            return <Tag color="orange">Half points</Tag>;
         case 2:
             return <Tag color="green">Full points</Tag>;
+        case 3:
+            return <Tag color="red">Rejected</Tag>;
         default:
             return <Tag color="grey">Unknown</Tag>;
     }

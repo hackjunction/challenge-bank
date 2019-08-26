@@ -7,4 +7,12 @@ controller.getAllChallenges = () => {
     });
 };
 
+controller.getAllChallengesAsAdmin = () => {
+    return Challenge.find({});
+};
+
+controller.getChallengeById = challengeId => {
+    return Challenge.findOne({ contentful_id: challengeId });
+};
+
 module.exports = controller;

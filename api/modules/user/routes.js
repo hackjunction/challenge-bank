@@ -21,7 +21,12 @@ const createUser = asyncHandler(async (req, res) => {
 
     const eventId = event.toJSON().contentful_id;
 
-    const user = await UserController.createUser(req.body.username, req.body.password, eventId);
+    const user = await UserController.createUser(
+        req.body.username,
+        req.body.password,
+        eventId,
+        req.body.secretCode === event.adminSecretCode
+    );
     return res.status(200).send(user);
 });
 

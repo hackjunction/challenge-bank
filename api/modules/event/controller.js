@@ -1,8 +1,13 @@
 const Event = require('./model');
 const controller = {};
 
-controller.findBySecretCode = secretCode => {
-    return Event.findOne({ secretCode });
+controller.findBySecretCode = async secretCode => {
+    const event = await Event.findOne({ secretCode });
+    if (!event) {
+        return Event.findOne({ adminSecretCode: secretCode });
+    } else {
+        return event;
+    }
 };
 
 controller.getAllEvents = () => {

@@ -20,12 +20,16 @@ const EventSchema = new Schema({
     secretCode: {
         type: String,
         required: true
+    },
+    adminSecretCode: {
+        type: String,
+        required: true
     }
 });
 
 /** Public fields: everything but secretCode */
 EventSchema.plugin(publicFieldsPlugin, {
-    blacklist: ['secretCode']
+    blacklist: ['secretCode', 'adminSecretCode']
 });
 
 EventSchema.set('timestamps', true);

@@ -30,11 +30,30 @@ const createSubmissionForChallenge = asyncHandler(async (req, res) => {
     }
 });
 
+const getAllSubmissions = asyncHandler(async (req, res) => {
+    const submissions = await SubmissionsController.getAllSubmissionsForEvent(req.user.event);
+    return res.status(200).json(submissions);
+});
+
+const reviewSubmission = asyncHandler(async (req, res) => {
+    const submission = await SubmissionsController.reviewSubmission(
+        req.params.submissionId,
+        req.body.feedback,
+        req.body.status
+    );
+    console.log('REVIEWD SUBMISSION', submission);
+    return res.status(200).json(submission);
+});
+
 router.route('/').get(passport.authenticate('token', { session: false }), getSubmissions);
+
+router.route('/all').get(passport.authenticate('admin', { session: false }), getAllSubmissions);
 
 router
     .route('/:challengeId')
     .get(passport.authenticate('token', { session: false }), getSubmissionsForChallenge)
     .post(passport.authenticate('token', { session: false }), createSubmissionForChallenge);
+
+router.route('/review/:submissionId').post(passport.authenticate('admin', { session: false }), reviewSubmission);
 
 module.exports = router;

@@ -15,6 +15,9 @@ const DifficultySchema = new Schema({
     },
     description: {
         type: String
+    },
+    pointValue: {
+        type: Number
     }
 });
 

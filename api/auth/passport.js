@@ -1,26 +1,26 @@
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
 const HeaderStrategy = require('passport-http-header-strategy').Strategy;
 const UserController = require('../modules/user/controller');
 
 //Admin route authentication
 passport.use(
     'admin',
-    new LocalStrategy(
+    new HeaderStrategy(
         {
-            usernameField: 'user',
-            passwordField: 'pass'
+            header: 'x-access-token',
+            passReqToCallback: true
         },
-        function(username, password, done) {
-            if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
-                return done(null, {
-                    user: {
-                        admin: true
+        function(req, token, done) {
+            UserController.getUserWithToken(token)
+                .then(user => {
+                    if (!user && !user.admin) {
+                        return done(null, false);
                     }
+                    return done(null, user);
+                })
+                .catch(error => {
+                    return done(error);
                 });
-            } else {
-                return done(null, false, { message: 'Invalid admin username or password' });
-            }
         }
     )
 );

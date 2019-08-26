@@ -9,5 +9,12 @@ const getAllChallenges = asyncHandler(async (req, res) => {
     return res.status(200).json(challenges);
 });
 
+const getAllChallengesAdmin = asyncHandler(async (req, res) => {
+    const challenges = await ChallengeController.getAllChallengesAsAdmin();
+    return res.status(200).json(challenges);
+});
+
 router.route('/').get(getAllChallenges);
+
+router.route('/admin').get(getAllChallengesAdmin);
 module.exports = router;

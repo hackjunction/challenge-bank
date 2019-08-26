@@ -8,12 +8,13 @@ controller.findByUsername = username => {
     return User.findOne({ username });
 };
 
-controller.createUser = (username, password, eventId) => {
+controller.createUser = (username, password, eventId, admin = false) => {
     const user = new User({
         username,
         hash: md5(password + process.env.PASSWORD_SALT),
         token: uuid(),
-        event: eventId
+        event: eventId,
+        admin
     });
 
     return user.save();

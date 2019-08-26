@@ -5,6 +5,12 @@ import * as ContentSelectors from 'redux/content/selectors';
 export const isLoggedIn = state => !isEmpty(state.auth.user);
 export const user = state => state.auth.user;
 
+export const isEventAdmin = createSelector(
+    isLoggedIn,
+    user,
+    (isLoggedIn, user) => isLoggedIn && user.admin
+);
+
 export const token = createSelector(
     user,
     user => (user ? user.token : null)

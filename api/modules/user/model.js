@@ -18,6 +18,10 @@ const UserSchema = new Schema({
     event: {
         type: String,
         required: true
+    },
+    admin: {
+        type: Boolean,
+        default: false
     }
 });
 
