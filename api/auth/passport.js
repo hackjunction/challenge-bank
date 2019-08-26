@@ -1,8 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const TokenStrategy = require('passport-token').Strategy;
-const mongoose = require('mongoose');
-const UserController = require('../controllers/users');
+const HeaderStrategy = require('passport-http-header-strategy').Strategy;
+const UserController = require('../modules/user/controller');
 
 //Admin route authentication
 passport.use(
@@ -29,12 +28,12 @@ passport.use(
 // User token authentication
 passport.use(
     'token',
-    new LocalStrategy(
+    new HeaderStrategy(
         {
-            usernameField: 'token',
-            passwordField: 'token'
+            header: 'x-access-token',
+            passReqToCallback: true
         },
-        function(username, token, done) {
+        function(req, token, done) {
             UserController.getUserWithToken(token)
                 .then(user => {
                     if (!user) {

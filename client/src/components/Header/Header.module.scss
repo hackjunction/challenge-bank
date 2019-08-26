@@ -1,0 +1,71 @@
+.wrapper {
+    height: 400px;
+    width: 100%;
+    position: relative;
+
+    .logoWrapper {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+
+        .logo {
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .eventName {
+            font-size: 22px;
+            color: white;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .timeStatus {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+    }
+
+    .top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 3;
+        padding: 1rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+        .user {
+            color: white;
+            font-weight: bold;
+        }
+
+        .logout {
+            color: white;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    }
+}
+
+.bgImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}

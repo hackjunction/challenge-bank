@@ -3,6 +3,7 @@ const Promise = require('bluebird');
 const Challenge = require('../challenge/model');
 const Difficulty = require('../difficulty/model');
 const Category = require('../category/model');
+const Event = require('../event/model');
 
 const ContentHelpers = {
     parseField: value => {
@@ -60,6 +61,8 @@ const ContentHelpers = {
                 return Difficulty.bulkWrite(updates);
             case 'category':
                 return Category.bulkWrite(updates);
+            case 'event':
+                return Event.bulkWrite(updates);
             default:
                 throw new Error('Invalid content type for updates');
         }
@@ -83,7 +86,12 @@ const ContentHelpers = {
             }
         };
 
-        const promises = [Challenge.deleteMany(query), Category.deleteMany(query), Difficulty.deleteMany(query)];
+        const promises = [
+            Challenge.deleteMany(query),
+            Category.deleteMany(query),
+            Difficulty.deleteMany(query),
+            Event.deleteMany(query)
+        ];
 
         return Promise.all(promises);
     }

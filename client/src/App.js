@@ -7,6 +7,10 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import ChallengesPage from './pages/Challenges';
 import ChallengePage from './pages/Challenge';
+import HomePage from './pages/Home';
+import ScrollToTop from './components/ScrollToTop';
+import Header from './components/Header';
+import RequiresLogin from './hocs/RequiresLogin';
 
 import * as ContentActions from 'redux/content/actions';
 
@@ -19,11 +23,16 @@ const App = ({ history, updateContent }) => {
         <ConnectedRouter history={history}>
             <Suspense fallback={null}>
                 <Switch>
-                    <Route path="/challenges" exact component={ChallengesPage} />
-                    <Route path="/challenges/:id" exact component={ChallengePage} />
-                    <Redirect to="/challenges" />
+                    <Route path="/" exact component={HomePage} />
+                    <Route path="/challenges">
+                        <Header />
+                        <Route path="/challenges" exact component={RequiresLogin(ChallengesPage)} />
+                        <Route path="/challenges/:id" exact component={RequiresLogin(ChallengePage)} />
+                    </Route>
+                    <Redirect to="/" />
                 </Switch>
             </Suspense>
+            <ScrollToTop />
         </ConnectedRouter>
     );
 };

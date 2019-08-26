@@ -9,32 +9,12 @@ const EventSchema = new Schema({
         type: String,
         required: true
     },
-    locationName: {
-        type: String,
-        required: true
-    },
-    locationAddress: {
-        type: String,
-        required: true
-    },
-    eventStartTime: {
-        type: Date,
-        required: true
-    },
-    eventEndTime: {
-        type: Date,
-        required: true
-    },
     platformOpens: {
         type: Date,
         required: true
     },
     platformCloses: {
         type: Date,
-        required: true
-    },
-    timezone: {
-        type: String,
         required: true
     },
     secretCode: {

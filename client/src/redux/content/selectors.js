@@ -1,8 +1,28 @@
 import { createSelector } from 'reselect';
-import { reduce, map } from 'lodash-es';
+import { reduce, map, sortBy, filter } from 'lodash-es';
+
+import * as FilterSelectors from 'redux/filters/selectors';
 
 export const syncId = state => state.content.syncId;
 export const content = state => state.content.content || {};
+
+export const events = createSelector(
+    content,
+    content => content.events
+);
+
+export const eventsMap = createSelector(
+    events,
+    events =>
+        reduce(
+            events,
+            (map, event) => {
+                map[event.contentful_id] = event;
+                return map;
+            },
+            {}
+        )
+);
 
 export const challenges = createSelector(
     content,
@@ -25,6 +45,12 @@ export const categories = createSelector(
     content,
     content => content.categories
 );
+
+export const categoriesSorted = createSelector(
+    categories,
+    categories => sortBy(categories, 'name')
+);
+
 export const categoriesMap = createSelector(
     categories,
     categories =>
@@ -42,6 +68,12 @@ export const difficulties = createSelector(
     content,
     content => content.difficulties
 );
+
+export const difficultiesSorted = createSelector(
+    difficulties,
+    difficulties => sortBy(difficulties, 'value')
+);
+
 export const difficultiesMap = createSelector(
     difficulties,
     difficulties =>
@@ -67,6 +99,28 @@ export const challengesPopulated = createSelector(
                 difficulty: diffMap[challenge.difficulty]
             };
         })
+);
+
+export const challengesPopulatedFiltered = createSelector(
+    challengesPopulated,
+    FilterSelectors.selectedCategories,
+    FilterSelectors.selectedDifficulties,
+    (challenges, categories, difficulties) => {
+        return filter(challenges, challenge => {
+            if (categories && categories.length) {
+                if (categories.indexOf(challenge.category.contentful_id) === -1) {
+                    return false;
+                }
+            }
+
+            if (difficulties && difficulties.length) {
+                if (difficulties.indexOf(challenge.difficulty.contentful_id) === -1) {
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
 );
 
 export const challengesMapPopulated = createSelector(

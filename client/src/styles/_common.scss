@@ -24,6 +24,10 @@
     box-shadow: 2px 7px 30px rgba(0, 0, 0, 0.04);
 }
 
+%with-shadow-large {
+    box-shadow: 2px 7px 30px rgba(0, 0, 0, 0.12);
+}
+
 %with-shadow-hover,
 .with-shadow-hover {
     box-shadow: 2px 7px 30px rgba(0, 0, 0, 0.04);

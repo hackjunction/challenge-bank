@@ -7,22 +7,16 @@ const SubmissionSchema = new Schema({
         type: String,
         required: true
     },
-    challengeId: {
+    challenge: {
         type: String,
         required: true
     },
-    challengeDifficulty: {
-        type: Number,
-        required: true
-    },
     event: {
-        type: Schema.Types.ObjectId,
-        ref: 'Event',
+        type: String,
         required: true
     },
     user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
         required: true
     },
     reviewStatus: {

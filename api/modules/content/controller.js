@@ -7,6 +7,7 @@ const Sync = require('./sync');
 const ChallengeController = require('../challenge/controller');
 const CategoryController = require('../category/controller');
 const DifficultyController = require('../difficulty/controller');
+const EventController = require('../event/controller');
 
 const client = contentful.createClient({
     space: process.env.CONTENTFUL_SPACE,
@@ -54,12 +55,14 @@ controller.getSyncedContent = async syncId => {
         const challenges = await ChallengeController.getAllChallenges();
         const difficulties = await DifficultyController.getAllDifficulties();
         const categories = await CategoryController.getAllCategories();
+        const events = await EventController.getAllEvents();
 
         return {
             content: {
                 challenges,
                 difficulties,
-                categories
+                categories,
+                events
             },
             lastSyncId: lastSync ? lastSync.syncId : null
         };

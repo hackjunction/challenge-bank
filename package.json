@@ -34,6 +34,7 @@
         "moment-timezone": "^0.5.21",
         "mongoose": "^5.2.9",
         "passport": "^0.4.0",
+        "passport-http-header-strategy": "^1.0.4",
         "passport-local": "^1.0.0",
         "passport-token": "^0.2.0",
         "react-bootstrap": "^0.32.3",

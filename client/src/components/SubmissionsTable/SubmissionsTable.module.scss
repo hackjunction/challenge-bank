@@ -1,0 +1,6 @@
+@import '~styles/variables';
+
+.wrapper {
+    @extend %with-shadow;
+    background: $white;
+}
