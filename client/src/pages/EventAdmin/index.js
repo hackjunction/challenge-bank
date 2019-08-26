@@ -7,14 +7,16 @@ import { reduce } from 'lodash-es';
 
 import CenteredContainer from 'components/CenteredContainer';
 import AdminSubmissionsTable from 'components/AdminSubmissionsTable';
+import AdminResultsTable from 'components/AdminResultsTable';
 import Divider from 'components/Divider';
 
 import ContentService from 'services/content';
 import SubmissionsService from 'services/submissions';
 
+import * as ContentSelectors from 'redux/content/selectors';
 import * as AuthSelectors from 'redux/auth/selectors';
 
-const EventAdminPage = ({ token }) => {
+const EventAdminPage = ({ token, difficultiesMap, categoriesMap }) => {
     const [loading, setLoading] = useState(false);
     const [challenges, setChallenges] = useState({});
     const [submissions, setSubmissions] = useState([]);
@@ -24,7 +26,11 @@ const EventAdminPage = ({ token }) => {
                 const mapped = reduce(
                     data,
                     (map, challenge) => {
-                        map[challenge.contentful_id] = challenge;
+                        map[challenge.contentful_id] = {
+                            ...challenge,
+                            difficulty: difficultiesMap[challenge.difficulty],
+                            category: categoriesMap[challenge.category]
+                        };
                         return map;
                     },
                     {}
@@ -81,7 +87,11 @@ const EventAdminPage = ({ token }) => {
             </div>
             <CenteredContainer>
                 <Divider size={1} />
+                <h3>Submissions</h3>
                 <AdminSubmissionsTable submissions={submissions} challenges={challenges} reload={reloadSubmissions} />
+                <Divider size={1} />
+                <h3>Results</h3>
+                <AdminResultsTable submissions={submissions} challenges={challenges} />
             </CenteredContainer>
         </div>
     );
@@ -89,7 +99,9 @@ const EventAdminPage = ({ token }) => {
 };
 
 const mapState = state => ({
-    token: AuthSelectors.token(state)
+    token: AuthSelectors.token(state),
+    categoriesMap: ContentSelectors.categoriesMap(state),
+    difficultiesMap: ContentSelectors.difficultiesMap(state)
 });
 
 export default connect(mapState)(EventAdminPage);

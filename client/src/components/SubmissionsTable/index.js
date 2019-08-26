@@ -6,6 +6,7 @@ import { Table, Collapse } from 'antd';
 import { filter } from 'lodash-es';
 import moment from 'moment';
 
+import Utils from 'utils/utils';
 import SubmissionsService from 'services/submissions';
 
 import StatusBadge from 'components/StatusBadge';
@@ -39,21 +40,7 @@ const SubmissionsTable = ({ updateSubmissions, submissions, challenges, title })
     };
 
     const getPointsForStatus = (status, challengeId) => {
-        const challenge = challenges[challengeId];
-        const points = challenge.difficulty.pointValue;
-
-        switch (status) {
-            case 0:
-                return 0;
-            case 1:
-                return points * 0.5;
-            case 2:
-                return points;
-            case 3:
-                return 0;
-            default:
-                return 0;
-        }
+        return Utils.getPointsForStatus(status, challenges, challengeId);
     };
 
     const formatPoints = (status, record) => {
@@ -62,20 +49,7 @@ const SubmissionsTable = ({ updateSubmissions, submissions, challenges, title })
 
     const renderFooter = () => {
         const byChallenge = {};
-        submissions.forEach(submission => {
-            if (byChallenge.hasOwnProperty(submission.challenge)) {
-                if (submission.reviewStatus === 2) {
-                    byChallenge[submission.challenge] = submission;
-                }
-            } else {
-                byChallenge[submission.challenge] = submission;
-            }
-        });
-        let totalPoints = 0;
-        Object.keys(byChallenge).forEach(challengeId => {
-            const reviewStatus = byChallenge[challengeId].reviewStatus;
-            totalPoints += getPointsForStatus(reviewStatus, challengeId);
-        });
+        const totalPoints = Utils.calculateTotalPoints(submissions, challenges);
         return 'Total points: ' + totalPoints;
     };
 
