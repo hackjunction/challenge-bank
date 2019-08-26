@@ -16,7 +16,9 @@ const DifficultyBadge = ({ difficulty }) => {
                 count={difficulty.value}
             />
             <Divider />
-            <span className={styles.label}>{difficulty.name}</span>
+            <span className={styles.label}>
+                {difficulty.name} ({difficulty.pointValue}pts)
+            </span>
         </div>
     );
 };

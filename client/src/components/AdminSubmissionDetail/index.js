@@ -43,6 +43,12 @@ const AdminSubmissionDetail = ({ submission, difficultiesMap, categoriesMap, tok
                     {submission.challenge.submissionInstructions}
                 </Descriptions.Item>
             </Descriptions>
+            <Descriptions title="Grading instructions" layout="vertical" />
+            {submission.challenge.hasExactAnswer ? (
+                <p>This challenge is automatically graded, and the correct answer is {submission.challenge.answer}</p>
+            ) : (
+                <p>{submission.challenge.gradingInstructions}</p>
+            )}
             <Descriptions title="User answered:" layout="vertical" />
             <p>{submission.answer}</p>
             <Descriptions title="Review"></Descriptions>

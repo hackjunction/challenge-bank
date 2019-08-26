@@ -21,6 +21,9 @@ const ChallengeSchema = new Schema({
     submissionInstructions: {
         type: String
     },
+    exampleSolution: {
+        type: String
+    },
     difficulty: {
         type: String
     },

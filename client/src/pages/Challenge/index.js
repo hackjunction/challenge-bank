@@ -37,6 +37,7 @@ const ChallengePage = ({ challenge, createSubmission, challengeId }) => {
             });
     };
 
+    console.log('CHALLENGE', challenge);
     return (
         <CenteredContainer>
             <Divider size={2} />
@@ -74,7 +75,6 @@ const ChallengePage = ({ challenge, createSubmission, challengeId }) => {
                 </Button>
             </div>
             <SubmissionsTable challengeId={challengeId} />
-
             <Divider size={5} />
             <RelatedChallenges category={challenge.category.contentful_id} challengeId={challenge._id} />
             <Divider size={2} />

@@ -78,6 +78,8 @@ const RegisterForm = ({ onSuccess }) => {
     const handleSubmit = () => {
         if (validate()) {
             setLoading(true);
+        } else {
+            return;
         }
         UsersService.register(username.value, password.value, secretCode.value)
             .then(user => {
