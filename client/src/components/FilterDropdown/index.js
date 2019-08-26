@@ -17,6 +17,7 @@ const FilterDropdown = ({
     labelField,
     colorField,
     descriptionField,
+    descriptionExtra,
     idField
 }) => {
     const toggleSelected = item => {
@@ -47,6 +48,7 @@ const FilterDropdown = ({
                     <Icon className={styles.menuItemCheck} type="check" />
                 </div>
                 {descriptionField && <span className={styles.menuItemBottom}>{item[descriptionField]}</span>}
+                {descriptionExtra && <span className={styles.menuItemBottom}>{descriptionExtra(item)}</span>}
             </div>
         );
     };

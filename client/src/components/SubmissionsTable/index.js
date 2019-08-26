@@ -61,9 +61,21 @@ const SubmissionsTable = ({ updateSubmissions, submissions, challenges, title })
     };
 
     const renderFooter = () => {
-        const totalPoints = submissions.reduce((sum, submission) => {
-            return sum + getPointsForStatus(submission.reviewStatus, submission.challenge);
-        }, 0);
+        const byChallenge = {};
+        submissions.forEach(submission => {
+            if (byChallenge.hasOwnProperty(submission.challenge)) {
+                if (submission.reviewStatus === 2) {
+                    byChallenge[submission.challenge] = submission;
+                }
+            } else {
+                byChallenge[submission.challenge] = submission;
+            }
+        });
+        let totalPoints = 0;
+        Object.keys(byChallenge).forEach(challengeId => {
+            const reviewStatus = byChallenge[challengeId].reviewStatus;
+            totalPoints += getPointsForStatus(reviewStatus, challengeId);
+        });
         return 'Total points: ' + totalPoints;
     };
 

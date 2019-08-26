@@ -56,6 +56,14 @@ const ChallengeGridFilters = ({
                     label="Filter by difficulty"
                     labelField="name"
                     descriptionField="description"
+                    descriptionExtra={item => {
+                        return (
+                            <div>
+                                <Divider size={1} />
+                                <span>Points: {item.pointValue}</span>
+                            </div>
+                        );
+                    }}
                     idField="contentful_id"
                 />
             </Col>

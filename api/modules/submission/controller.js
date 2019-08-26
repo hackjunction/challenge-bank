@@ -22,7 +22,7 @@ controller.getSubmissionsForChallenge = (user, challengeId) => {
 controller.getActiveSubmissionForChallenge = (user, challengeId) => {
     return controller.getSubmissionsForChallenge(user, challengeId).then(submissions => {
         return _.find(submissions, submission => {
-            return submission.reviewStatus === 0;
+            return submission.reviewStatus === 0 || submission.reviewStatus === 2;
         });
     });
 };
@@ -31,7 +31,11 @@ controller.createSubmission = async (user, challengeId, answer) => {
     const activeSubmission = await controller.getActiveSubmissionForChallenge(user, challengeId);
 
     if (activeSubmission) {
-        throw new Error('You already have a submission pending review for this challenge');
+        if (activeSubmission.reviewStatus === 2) {
+            throw new Error("You've already solved this challenge with full points!");
+        } else {
+            throw new Error('You already have a submission pending review for this challenge');
+        }
     }
 
     const event = await EventController.getEventById(user.event);
