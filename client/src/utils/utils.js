@@ -14,7 +14,6 @@ const Utils = {
         Object.keys(byChallenge).forEach(challengeId => {
             const reviewStatus = byChallenge[challengeId].reviewStatus;
             const newPoints = Utils.getPointsForStatus(reviewStatus, challenges, challengeId);
-            console.log('NEW POINTS', newPoints);
             totalPoints += newPoints;
         });
 
@@ -22,8 +21,7 @@ const Utils = {
     },
     getPointsForStatus: (status, challenges, challengeId) => {
         const challenge = challenges[challengeId];
-        console.log('CHALLENGES', challenge);
-        const points = challenge.difficulty.pointValue;
+        const points = challenge ? challenge.difficulty.pointValue : 0;
 
         switch (status) {
             case 0:

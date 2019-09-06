@@ -36,12 +36,13 @@ const getAllSubmissions = asyncHandler(async (req, res) => {
 });
 
 const reviewSubmission = asyncHandler(async (req, res) => {
+    console.log('REVIEW', req.body);
     const submission = await SubmissionsController.reviewSubmission(
         req.params.submissionId,
         req.body.feedback,
         req.body.status
     );
-    console.log('REVIEWD SUBMISSION', submission);
+    console.log('SUBMISSION', submission);
     return res.status(200).json(submission);
 });
 

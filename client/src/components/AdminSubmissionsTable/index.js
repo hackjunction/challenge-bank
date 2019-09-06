@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import styles from './AdminSubmissionsTable.module.scss';
 
 import { connect } from 'react-redux';
-import { Table, notification, Radio } from 'antd';
+import { Table, notification, Radio, Badge } from 'antd';
 import { sortBy, reverse } from 'lodash-es';
 import moment from 'moment';
 
@@ -15,6 +15,7 @@ import SubmissionsService from 'services/submissions';
 
 const AdminSubmissionsTable = ({ token, submissions, challenges, loading, reload }) => {
     const [showUnreviewedOnly, setShowUnreviewedOnly] = useState(true);
+    const [expandedRows, setExpandedRows] = useState([]);
     const formatChallenge = challengeId => {
         if (challenges.hasOwnProperty(challengeId)) {
             return challenges[challengeId].name;
@@ -59,9 +60,21 @@ const AdminSubmissionsTable = ({ token, submissions, challenges, loading, reload
                 </Radio.Group>
             </div>
             <Table
+                rowKey="_id"
                 dataSource={formattedData}
                 loading={loading}
-                expandedRowRender={submission => <AdminSubmissionDetail submission={submission} onDone={reload} />}
+                expandedRowRender={submission => (
+                    <AdminSubmissionDetail
+                        submission={submission}
+                        onDone={() => {
+                            setExpandedRows([]);
+                            reload();
+                        }}
+                    />
+                )}
+                expandRowByClick={true}
+                expandedRowKeys={expandedRows}
+                onExpand={(expanded, record) => (expanded ? setExpandedRows([record._id]) : setExpandedRows([]))}
             >
                 <Table.Column
                     title="Challenge"
@@ -71,6 +84,19 @@ const AdminSubmissionsTable = ({ token, submissions, challenges, loading, reload
                 />
                 <Table.Column title="User" dataIndex="user" key="user" />
                 <Table.Column title="Time" dataIndex="createdAt" key="createdAt" />
+                <Table.Column
+                    title="Category"
+                    dataIndex="challenge.category"
+                    key="category"
+                    render={(category = {}) => {
+                        return (
+                            <span>
+                                <Badge color={category.color} />
+                                {category.name}
+                            </span>
+                        );
+                    }}
+                />
                 <Table.Column
                     title="Status"
                     dataIndex="reviewStatus"

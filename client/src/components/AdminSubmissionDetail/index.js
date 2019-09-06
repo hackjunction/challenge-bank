@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './AdminSubmissionDetail.module.scss';
 
-import { Descriptions, Input, Button, notification } from 'antd';
+import { Descriptions, Input, Button, notification, Divider as AntDivider } from 'antd';
 import { connect } from 'react-redux';
+import { Typography } from 'antd';
 
 import Divider from 'components/Divider';
 import * as ContentSelectors from 'redux/content/selectors';
@@ -10,9 +11,15 @@ import * as AuthSelectors from 'redux/auth/selectors';
 
 import SubmissionsService from 'services/submissions';
 
+const { Paragraph } = Typography;
+
 const AdminSubmissionDetail = ({ submission, difficultiesMap, categoriesMap, token, onDone }) => {
     const [feedback, setFeedback] = useState('');
     const [loading, setLoading] = useState('');
+
+    useEffect(() => {
+        setFeedback('');
+    }, [submission._id]);
 
     const handleSubmit = status => {
         setLoading(true);
@@ -36,28 +43,38 @@ const AdminSubmissionDetail = ({ submission, difficultiesMap, categoriesMap, tok
 
     return (
         <div className={styles.wrapper}>
-            <Descriptions title="Challenge details" layout="vertical" column={1}>
+            <AntDivider>Challenge details</AntDivider>
+            <Descriptions bordered column={1}>
                 <Descriptions.Item label="Challenge">{submission.challenge.name}</Descriptions.Item>
                 <Descriptions.Item label="Challenge description">{submission.challenge.description}</Descriptions.Item>
                 <Descriptions.Item label="Submission instructions">
                     {submission.challenge.submissionInstructions}
                 </Descriptions.Item>
+                <Descriptions.Item label="Example solution">
+                    {submission.challenge.exampleSolution ? (
+                        <p>{submission.challenge.exampleSolution}</p>
+                    ) : (
+                        <p>No example solution</p>
+                    )}
+                </Descriptions.Item>
+                <Descriptions.Item label="Grading instructions">
+                    {submission.challenge.hasExactAnswer ? (
+                        <p>
+                            This challenge is automatically graded, and the correct answer is{' '}
+                            {submission.challenge.answer}
+                        </p>
+                    ) : (
+                        <p>{submission.challenge.gradingInstructions || 'No grading instructions'}</p>
+                    )}
+                </Descriptions.Item>
             </Descriptions>
-            <Descriptions title="Example solution" layout="vertical" />
-            {submission.challenge.exampleSolution ? (
-                <p>{submission.challenge.exampleSolution}</p>
-            ) : (
-                <p>This challenge has no example solution</p>
-            )}
-            <Descriptions title="Grading instructions" layout="vertical" />
-            {submission.challenge.hasExactAnswer ? (
-                <p>This challenge is automatically graded, and the correct answer is {submission.challenge.answer}</p>
-            ) : (
-                <p>{submission.challenge.gradingInstructions}</p>
-            )}
-            <Descriptions title="User answered:" layout="vertical" />
-            <p>{submission.answer}</p>
-            <Descriptions title="Review"></Descriptions>
+            <Divider size={1} />
+            <Descriptions bordered column={1}>
+                <Descriptions.Item label="User answered">
+                    <Paragraph copyable>{submission.answer}</Paragraph>
+                </Descriptions.Item>
+            </Descriptions>
+            <AntDivider>Review</AntDivider>
             <div className={styles.actions}>
                 <Input.TextArea
                     placeholder="Type some feedback here (will be shown to the user)"

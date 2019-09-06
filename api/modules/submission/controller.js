@@ -19,22 +19,29 @@ controller.getSubmissionsForChallenge = (user, challengeId) => {
     });
 };
 
-controller.getActiveSubmissionForChallenge = (user, challengeId) => {
+controller.getActiveSubmissionsForChallenge = (user, challengeId) => {
     return controller.getSubmissionsForChallenge(user, challengeId).then(submissions => {
-        return _.find(submissions, submission => {
+        return _.filter(submissions, submission => {
             return submission.reviewStatus === 0 || submission.reviewStatus === 2;
         });
     });
 };
 
 controller.createSubmission = async (user, challengeId, answer) => {
-    const activeSubmission = await controller.getActiveSubmissionForChallenge(user, challengeId);
+    const activeSubmission = await controller.getActiveSubmissionsForChallenge(user, challengeId);
 
-    if (activeSubmission) {
-        if (activeSubmission.reviewStatus === 2) {
+    if (activeSubmissions.length >= 5) {
+        throw new Error("You can't submit this challenge more than 5 times");
+    }
+
+    if (activeSubmissions.length > 0) {
+        const acceptedSubmission = _.find(activeSubmissions, s => s.reviewStatus === 2);
+        if (acceptedSubmission) {
             throw new Error("You've already solved this challenge with full points!");
-        } else {
-            throw new Error('You already have a submission pending review for this challenge');
+        }
+        const pendingSubmission = _.find(pendingSubmission, s => s.reviewStatus === 2);
+        if (pendingSubmission) {
+            throw new Error("You already have a submission pending review for this challenge");
         }
     }
 
@@ -55,7 +62,7 @@ controller.createSubmission = async (user, challengeId, answer) => {
     }
 
     if (challenge.hasExactAnswer && challenge.answer) {
-        const isCorrect = challenge.answer == answer;
+        const isCorrect = challenge.answer.trim() == answer.trim();
         const submission = new Submission({
             event: user.event,
             user: user.username,
@@ -85,7 +92,7 @@ controller.getAllSubmissionsForEvent = event => {
 
 controller.reviewSubmission = (submissionId, feedback, status) => {
     return Submission.findById(submissionId).then(submission => {
-        submission.reviewFeeback = feedback;
+        submission.reviewFeedback = feedback;
         submission.reviewStatus = status;
         return submission.save();
     });

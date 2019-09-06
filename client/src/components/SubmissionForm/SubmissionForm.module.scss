@@ -2,12 +2,11 @@
 
 .wrapper {
     @extend %with-shadow;
-    background: white;
     padding: 1rem;
+    background: $white;
 }
 
-.buttons {
+.form {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
 }

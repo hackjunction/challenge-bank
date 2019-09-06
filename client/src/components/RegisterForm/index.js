@@ -115,7 +115,7 @@ const RegisterForm = ({ onSuccess }) => {
                 <Input {...password2} type="password" placeholder="The same super secret thing" size="large" />
             </InputWrapper>
             <InputWrapper label="Event code" error={secretCode.error}>
-                <Input {...secretCode} type="text" placeholder="The secret code for your event" size="large" />
+                <Input {...secretCode} type="text" placeholder="The code for your event" size="large" />
             </InputWrapper>
             <Divider size={1} />
             <Button type="primary" size="large" block loading={loading} onClick={handleSubmit}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styles from './Challenge.module.scss';
 
 import { connect } from 'react-redux';
@@ -14,13 +14,12 @@ import CategoryBadge from 'components/CategoryBadge';
 import DifficultyBadge from 'components/DifficultyBadge';
 import RelatedChallenges from 'components/RelatedChallenges';
 import SubmissionsTable from 'components/SubmissionsTable';
+import SubmissionForm from 'components/SubmissionForm';
 
 import SubmissionsService from 'services/submissions';
 
 const ChallengePage = ({ challenge, createSubmission, challengeId }) => {
-    const [answer, setAnswer] = useState('');
-
-    const handleSubmit = () => {
+    const handleSubmit = useCallback(answer => {
         createSubmission(answer)
             .then(() => {
                 notification.success({
@@ -29,15 +28,13 @@ const ChallengePage = ({ challenge, createSubmission, challengeId }) => {
                 });
             })
             .catch(err => {
-                console.log('ERR', err);
                 notification.error({
                     message: 'Submission failed',
                     description: err
                 });
             });
-    };
+    });
 
-    console.log('CHALLENGE', challenge);
     return (
         <CenteredContainer>
             <Divider size={2} />
@@ -62,18 +59,7 @@ const ChallengePage = ({ challenge, createSubmission, challengeId }) => {
                 <Markdown source={challenge.submissionInstructions} />
             </div>
             <Divider />
-            <div className={styles.submit}>
-                <Input
-                    size="large"
-                    placeholder="Your answer here"
-                    value={answer}
-                    onChange={e => setAnswer(e.target.value)}
-                />
-                <Divider />
-                <Button size="large" type="primary" disabled={!answer} onClick={handleSubmit}>
-                    Submit
-                </Button>
-            </div>
+            <SubmissionForm challengeId={challengeId} onSubmit={handleSubmit} />
             <SubmissionsTable challengeId={challengeId} />
             <Divider size={5} />
             <RelatedChallenges category={challenge.category.contentful_id} challengeId={challenge._id} />

@@ -95,7 +95,6 @@ const EventAdminPage = ({ token, difficultiesMap, categoriesMap }) => {
             </CenteredContainer>
         </div>
     );
-    return <h1>Event admin page</h1>;
 };
 
 const mapState = state => ({
