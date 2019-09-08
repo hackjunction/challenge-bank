@@ -28,7 +28,7 @@ controller.getActiveSubmissionsForChallenge = (user, challengeId) => {
 };
 
 controller.createSubmission = async (user, challengeId, answer) => {
-    const activeSubmission = await controller.getActiveSubmissionsForChallenge(user, challengeId);
+    const activeSubmissions = await controller.getActiveSubmissionsForChallenge(user, challengeId);
 
     if (activeSubmissions.length >= 5) {
         throw new Error("You can't submit this challenge more than 5 times");
@@ -41,7 +41,7 @@ controller.createSubmission = async (user, challengeId, answer) => {
         }
         const pendingSubmission = _.find(pendingSubmission, s => s.reviewStatus === 2);
         if (pendingSubmission) {
-            throw new Error("You already have a submission pending review for this challenge");
+            throw new Error('You already have a submission pending review for this challenge');
         }
     }
 
