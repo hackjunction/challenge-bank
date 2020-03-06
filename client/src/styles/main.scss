@@ -1,73 +1,73 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Montserrat:400,400i,700,700i');
+@import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Montserrat:400,400i,700,700i");
 
-@import 'colors';
-@import 'sizes';
-@import 'fonts';
-@import 'common';
+@import "colors";
+@import "sizes";
+@import "fonts";
+@import "common";
 
 * {
-    box-sizing: border-box;
-    font-family: $lato;
+  box-sizing: border-box;
+  font-family: $lato;
 }
 
 html,
 body {
-    margin: 0;
+  margin: 0;
 }
 
 html {
-    font-size: 16px;
-    background-color: $lightgrey;
+  font-size: 16px;
+  background-color: $lightgrey;
 }
 
 body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background-color: $lightgrey;
-    display: flex;
-    flex-direction: column;
-    font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: $lightgrey;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
 }
 
 #root {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 #root {
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @extend %font-title;
-    }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @extend %font-title;
+  }
 
-    p,
-    span,
-    li,
-    td,
-    th {
-        @extend %font-body;
-    }
+  p,
+  span,
+  li,
+  td,
+  th {
+    @extend %font-body;
+  }
 
-    label,
-    small {
-        @extend %font-secondary;
-    }
+  label,
+  small {
+    @extend %font-secondary;
+  }
 
-    input,
-    textarea {
-        @extend %font-input;
-    }
+  input,
+  textarea {
+    @extend %font-input;
+  }
 
-    a {
-        @extend %font-link;
-    }
+  a {
+    @extend %font-link;
+  }
 
-    .ant-timeline-item-head-custom {
-        background: $lightgrey;
-    }
+  .ant-timeline-item-head-custom {
+    background: $lightgrey;
+  }
 }

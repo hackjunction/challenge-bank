@@ -1,8 +1,8 @@
-const Category = require('./model');
+const Category = require("./model");
 const controller = {};
 
 controller.getAllCategories = () => {
-    return Category.find({});
+  return Category.find({});
 };
 
 module.exports = controller;

@@ -1,8 +1,8 @@
-const Difficulty = require('./model');
+const Difficulty = require("./model");
 const controller = {};
 
 controller.getAllDifficulties = () => {
-    return Difficulty.find({});
+  return Difficulty.find({});
 };
 
 module.exports = controller;

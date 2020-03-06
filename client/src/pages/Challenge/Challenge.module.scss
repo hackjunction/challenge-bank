@@ -1,21 +1,21 @@
-@import '~styles/variables';
+@import "~styles/variables";
 
 .challenge {
-    @extend %with-shadow;
-    background: $white;
-    padding: 1rem;
+  @extend %with-shadow;
+  background: $white;
+  padding: 1rem;
 }
 
 .row {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
 }
 
 .submit {
-    @extend %with-shadow;
-    background: $white;
-    padding: 1rem;
-    display: flex;
-    flex-direction: row;
+  @extend %with-shadow;
+  background: $white;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
 }

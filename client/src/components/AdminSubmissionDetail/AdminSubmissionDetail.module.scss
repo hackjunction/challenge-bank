@@ -1,13 +1,13 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
 
 .wrapper {
-    @extend %with-shadow;
-    background: white;
-    padding: 1rem;
+  @extend %with-shadow;
+  background: white;
+  padding: 1rem;
 }
 
 .buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }

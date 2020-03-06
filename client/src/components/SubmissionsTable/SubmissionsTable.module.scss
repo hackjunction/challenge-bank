@@ -1,6 +1,6 @@
-@import '~styles/variables';
+@import "~styles/variables";
 
 .wrapper {
-    @extend %with-shadow;
-    background: $white;
+  @extend %with-shadow;
+  background: $white;
 }

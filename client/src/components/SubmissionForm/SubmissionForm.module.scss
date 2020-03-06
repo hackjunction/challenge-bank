@@ -1,12 +1,12 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
 
 .wrapper {
-    @extend %with-shadow;
-    padding: 1rem;
-    background: $white;
+  @extend %with-shadow;
+  padding: 1rem;
+  background: $white;
 }
 
 .form {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }

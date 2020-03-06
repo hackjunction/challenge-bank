@@ -1,1 +1,1 @@
-export const UPDATE_CONTENT = 'content/UPDATE_CONTENT';
+export const UPDATE_CONTENT = "content/UPDATE_CONTENT";
