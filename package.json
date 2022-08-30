@@ -32,7 +32,7 @@
     "joi": "^13.6.0",
     "md5": "^2.2.1",
     "moment": "^2.22.2",
-    "moment-timezone": "^0.5.21",
+    "moment-timezone": "^0.5.35",
     "mongoose": "^5.2.9",
     "passport": "^0.4.0",
     "passport-http-header-strategy": "^1.0.4",
