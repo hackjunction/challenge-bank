@@ -17,3 +17,11 @@ Run `npm run setup`. Only needs to be run again whenever dependencies change.
 **Starting the development server**
 
 Run `yarn dev`, this will start the development server at `localhost:3000`, and the frontend at `localhost:5000`. Both the API and the frontend will automatically reload whenever code changes are saved.
+
+
+**Starting with Docker**
+
+Run `docker build --no-cache -t jumpstart .`
+and: `docker run -p 5000:5000 jumpstart`
+
+
